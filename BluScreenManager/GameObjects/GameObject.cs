@@ -52,5 +52,17 @@ namespace BluEngine.GameObjects
         }
 
         #endregion
+
+        #region Methods
+
+        public virtual GameObject Clone()
+        {
+            return new GameObject()
+            {
+                Position = this.Position
+            };
+        }
+
+        #endregion
     }
 }

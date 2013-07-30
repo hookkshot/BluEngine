@@ -21,7 +21,7 @@ using System.IO;
 using System.Xml.Serialization;
 #endregion
 
-namespace BluEngine
+namespace BluEngine.ScreenManager
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen
