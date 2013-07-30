@@ -12,7 +12,8 @@ namespace BluEngine.GameObjects
     {
         #region Fields
 
-        protected Vector2 position;
+        protected Vector2 position = Vector2.Zero;
+        protected List<GameObjectComponent> components = new List<GameObjectComponent>();
 
         #endregion
 
@@ -27,6 +28,14 @@ namespace BluEngine.GameObjects
             set { position = value; }
         }
 
+        /// <summary>
+        /// Returns list of all attached Game Object components.
+        /// </summary>
+        public List<GameObjectComponent> Components
+        {
+            get { return components; }
+        }
+
         #endregion
 
         #region Update
@@ -36,6 +45,10 @@ namespace BluEngine.GameObjects
         /// </summary>
         public virtual void Update(GameTime gameTime)
         {
+            foreach (GameObjectComponent comp in components)
+            {
+                comp.Update(gameTime);
+            }
         }
 
         #endregion
@@ -49,6 +62,10 @@ namespace BluEngine.GameObjects
         /// <param name="screenOffset">The offset of the gamescreen to the game world.</param>
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenOffset)
         {
+            foreach (GameObjectComponent comp in components)
+            {
+                comp.Draw(spriteBatch, screenOffset);
+            }
         }
 
         #endregion

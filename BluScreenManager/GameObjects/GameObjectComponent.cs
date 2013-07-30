@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BluEngine.GameObjects
 {
-    public class GameObjectComponent
+    public abstract class GameObjectComponent
     {
         #region Fields
 
