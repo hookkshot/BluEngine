@@ -52,20 +52,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameScreen.cs" />
-    <Compile Include="InputControl.cs" />
-    <Compile Include="MenuItems\Button.cs" />
-    <Compile Include="MenuItems\Checkbox.cs" />
-    <Compile Include="MenuItems\DropdownBox.cs" />
-    <Compile Include="MenuItems\Image.cs" />
-    <Compile Include="MenuItems\Label.cs" />
-    <Compile Include="MenuItems\MenuContainer.cs" />
-    <Compile Include="MenuItems\MenuItem.cs" />
-    <Compile Include="MenuItems\Textbox.cs" />
-    <Compile Include="MenuItems\TextWall.cs" />
-    <Compile Include="MenuScreen.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="ScreenManager\GameScreen.cs" />
+    <Compile Include="ScreenManager\InputControl.cs" />
+    <Compile Include="ScreenManager\MenuItems\Button.cs" />
+    <Compile Include="ScreenManager\MenuItems\Checkbox.cs" />
+    <Compile Include="ScreenManager\MenuItems\DropdownBox.cs" />
+    <Compile Include="ScreenManager\MenuItems\Image.cs" />
+    <Compile Include="ScreenManager\MenuItems\Label.cs" />
+    <Compile Include="ScreenManager\MenuItems\MenuContainer.cs" />
+    <Compile Include="ScreenManager\MenuItems\MenuItem.cs" />
+    <Compile Include="ScreenManager\MenuItems\Textbox.cs" />
+    <Compile Include="ScreenManager\MenuItems\TextWall.cs" />
+    <Compile Include="ScreenManager\MenuScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenManager.cs" />
+    <Compile Include="ScreenManager\ScreenManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SDL.dll">
