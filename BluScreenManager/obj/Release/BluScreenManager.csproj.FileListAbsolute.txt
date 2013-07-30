@@ -1,0 +1,19 @@
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\obj\Release\BluScreenManager.csprojResolveAssemblyReference.cache
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\bin\Release\BluScreenManager.dll
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\bin\Release\BluScreenManager.pdb
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\bin\Release\Lidgren.Network.dll
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\bin\Release\MonoGame.Framework.dll
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\bin\Release\OpenTK.dll
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\bin\Release\Tao.Sdl.dll
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\obj\Release\BluScreenManager.dll
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\obj\Release\BluScreenManager.pdb
+G:\Users\Keirron\Documents\Visual Studio 2012\Projects\BluScreenManager\BluScreenManager\bin\Release\SDL.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\bin\Release\SDL.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\bin\Release\BluScreenManager.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\bin\Release\BluScreenManager.pdb
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\bin\Release\Lidgren.Network.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\bin\Release\MonoGame.Framework.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\bin\Release\OpenTK.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\bin\Release\Tao.Sdl.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\obj\Release\BluScreenManager.dll
+G:\Dropbox\Blurift\Projects\BluScreenManager\BluScreenManager\obj\Release\BluScreenManager.pdb
