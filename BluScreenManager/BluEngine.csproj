@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameObjectComponent.cs" />
+    <Compile Include="GameObjects\Sprite.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="ScreenManager\InputControl.cs" />
     <Compile Include="ScreenManager\MenuItems\Button.cs" />
