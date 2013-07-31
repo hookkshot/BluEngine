@@ -1,7 +1,10 @@
 BluEngine
 =========
 
+This engie is built on a edited monogame 3.0.1 build and is currently for PC only.
+
 To Do:
+======
 
 Animated Sprite (Needs to be pulled)
 Collision Simulator (Needs to be pulled)
