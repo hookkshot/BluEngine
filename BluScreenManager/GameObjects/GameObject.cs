@@ -13,6 +13,9 @@ namespace BluEngine.GameObjects
         #region Fields
 
         protected Vector2 position = Vector2.Zero;
+        protected float rotation = 0.0f;
+        protected float scale = 1.0f;
+
         protected List<GameObjectComponent> components = new List<GameObjectComponent>();
 
         #endregion
