@@ -16,7 +16,7 @@ Features:
 
 ## Not Yet Implemented
 
-# SoundBatch
+* SoundBatch
 
 -Needs to be created and should allow sound to be added each frame and does not remove them until they have finished playing
 -Also allows for sound to be universally controlled with volume.
