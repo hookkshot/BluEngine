@@ -17,8 +17,6 @@ Features:
 ## Not Yet Implemented
 
 * SoundBatch
-
--Needs to be created and should allow sound to be added each frame and does not remove them until they have finished playing
--Also allows for sound to be universally controlled with volume.
-  
 * SoundCue
+ 
+SoundBatch will allow soundcue to be added and played and volume controlled. It also allows for the soundCues to be faded out if too far away from the player.
