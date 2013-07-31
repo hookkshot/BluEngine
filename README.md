@@ -8,13 +8,13 @@ This engine is built on a edited monogame 3.0.1 build and is currently for PC on
 Features:
 ======
 
-## To Do
+## Currently Working On
 
 * Animated Sprite (Needs to be pulled)
 * Collision Simulator (Needs to be pulled)
 * Collision Object Component ( Needs to be pulled)
 
-## Not Yet Implemented
+## To Do
 
 * SoundBatch
 * SoundCue
