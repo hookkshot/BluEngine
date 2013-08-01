@@ -13,6 +13,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using BluEngine.ScreenManager;
 
 namespace BluEngine
 {
@@ -21,7 +22,7 @@ namespace BluEngine
         #region Fields
 
         //Misc
-        private ScreenManager screenManager;
+        private BluEngine.ScreenManager.ScreenManager screenManager;
 
         //Input
         protected bool down;
@@ -49,7 +50,7 @@ namespace BluEngine
 
         #region Properties
 
-        public ScreenManager ScreenManager
+        public BluEngine.ScreenManager.ScreenManager ScreenManager
         {
             set { this.screenManager = value; }
         }

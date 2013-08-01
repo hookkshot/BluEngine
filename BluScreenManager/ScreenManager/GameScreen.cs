@@ -68,13 +68,13 @@ namespace BluEngine
         /// <summary>
         /// Gets the manager that this screen belongs to.
         /// </summary>
-        public ScreenManager ScreenManager
+        public BluEngine.ScreenManager.ScreenManager ScreenManager
         {
             get { return screenManager; }
             internal set { screenManager = value; }
         }
 
-        ScreenManager screenManager;
+        BluEngine.ScreenManager.ScreenManager screenManager;
 
 
         #endregion
