@@ -26,6 +26,9 @@ namespace BluEngine
     {
         #region Fields
 
+        //event delegates
+        public delegate void MenuItemEvent(MenuItem sender);
+
         //Misc
         protected bool active;
         protected bool isItemInUse;
