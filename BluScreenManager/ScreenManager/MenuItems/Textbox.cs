@@ -23,6 +23,8 @@ namespace BluEngine
     {
         #region Fields
 
+        public delegate bool TextboxKeyEvent(Textbox sender, Keys key);
+
         protected int index = 0;
 
         protected int width;
@@ -55,7 +57,8 @@ namespace BluEngine
         protected TimeSpan lastSwitch = TimeSpan.FromSeconds(0.0f);
         protected string indexChar = "|";
 
-        public event EventHandler Submited;
+        public event MenuItemEvent Submitted;
+        public event TextboxKeyEvent KeyPressed; //return true if the input is handled
 
         Keys[] keysToCheck = new Keys[] {Keys.A, Keys.B, Keys.C, Keys.D, Keys.E,
             Keys.F, Keys.G, Keys.H, Keys.I, Keys.J,
@@ -163,10 +166,10 @@ namespace BluEngine
                     }
                 }
                 if (isSelected)
-                {
+                {                   
                     foreach (Keys key in keysToCheck)
                     {
-                        if (input.KeyHit(key))
+                        if (input.KeyHit(key) && (KeyPressed == null || !KeyPressed(this, key)))
                         {
                             switch (key)
                             {
@@ -178,8 +181,8 @@ namespace BluEngine
                                     }
                                     break;
                                 case (Keys.Enter):
-                                    if(Submited != null)
-                                        Submited(this, new EventArgs());
+                                    if(Submitted != null)
+                                        Submitted(this);
                                     index = 0;
                                     break;
                                 case (Keys.Space):
