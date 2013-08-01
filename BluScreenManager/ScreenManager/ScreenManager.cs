@@ -183,13 +183,10 @@ namespace BluEngine.ScreenManager
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
-            screensToUpdate.Clear();
+            screensToUpdate.AddRange(screens);
 
             bool otherScreenHasFocus = !Game.IsActive;
             bool coveredByOtherScreen = false;
-
-            foreach (GameScreen screen in screens)
-                screensToUpdate.Add(screen);
 
             // Loop as long as there are screens waiting to be updated.
             while (screensToUpdate.Count > 0)
