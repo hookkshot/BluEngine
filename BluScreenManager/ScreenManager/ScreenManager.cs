@@ -35,31 +35,30 @@ namespace BluEngine.ScreenManager
     {
         #region Fields
 
-        public static string version = "BluScreenManager Version 1.0.3";
+        public const string version = "BluScreenManager Version 1.0.3";
 
-        List<GameScreen> screens = new List<GameScreen>();
-        List<GameScreen> screensToUpdate = new List<GameScreen>();
+        private List<GameScreen> screens = new List<GameScreen>();
+        private List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        InputControl input = new InputControl();
+        private InputControl input = new InputControl();
 
-        string defaultFontLocation;
+        private string defaultFontLocation;
 
         //Sound
-        int soundLevel = 100;
-        int musicLevel = 100;
+        private int soundLevel = 100;
+        private int musicLevel = 100;
 
-        SpriteBatch spriteBatch;
+        private SpriteBatch spriteBatch;
 
-        SpriteFont font;
+        private SpriteFont font;
 
         //fillTexture;
         Texture2D filler;
-        public Texture2D Filler
-        { get { return filler; } }
+        public Texture2D Filler { get { return filler; } }
 
-        bool isInitialized;
+        private bool isInitialized;
 
-        bool traceEnabled;
+        private bool traceEnabled;
 
         Vector2 mousePosition;
 
@@ -163,7 +162,7 @@ namespace BluEngine.ScreenManager
             {
                 screen.UnloadContent();
             }
-            Console.WriteLine("Screen Unlaoded");
+            Console.WriteLine("Screen Unloaded");
         }
 
 
