@@ -14,7 +14,6 @@ namespace BluEngine
 
         SpriteFont font;
 
-        Vector2 position;
         string text;
 
         Alignment align;
@@ -25,7 +24,7 @@ namespace BluEngine
         public Label(SpriteFont font, Vector2 pos, string text, Alignment align,Color color)
         {
             this.font = font;
-            this.position = pos;
+            this.Position = pos;
             this.text = text;
             this.align = align;
             this.color = color;
@@ -37,17 +36,17 @@ namespace BluEngine
             {
                 case Alignment.Left:
                     {
-                        spriteBatch.DrawString(font, text, position, color);
+                        spriteBatch.DrawString(font, text, Position, color);
                     }
                     break;
                 case Alignment.Center:
                     {
-                        spriteBatch.DrawString(font, text, position - new Vector2(font.MeasureString(text).X / 2,0), color);
+                        spriteBatch.DrawString(font, text, Position - new Vector2(font.MeasureString(text).X / 2,0), color);
                     }
                     break;
                 case Alignment.Right:
                     {
-                        spriteBatch.DrawString(font, text, position - new Vector2(font.MeasureString(text).X, 0), color);
+                        spriteBatch.DrawString(font, text, Position - new Vector2(font.MeasureString(text).X, 0), color);
                     }
                     break;
             }

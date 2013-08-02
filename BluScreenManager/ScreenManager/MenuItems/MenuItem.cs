@@ -26,6 +26,9 @@ namespace BluEngine
     {
         #region Fields
 
+        //event delegates
+        public delegate void MenuItemEvent(MenuItem sender);
+
         //Misc
         protected bool active;
         protected bool isItemInUse;
@@ -49,11 +52,12 @@ namespace BluEngine
 
         #region Initialize
 
-        public MenuItem()
+        public MenuItem(Vector2 position) : base(position)
         {
             active = true;
             isItemInUse = false;
         }
+        public MenuItem() : this (Vector2.Zero) {}
 
         #endregion
 

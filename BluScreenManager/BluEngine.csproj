@@ -62,7 +62,7 @@
     <Compile Include="ScreenManager\MenuItems\DropdownBox.cs" />
     <Compile Include="ScreenManager\MenuItems\Image.cs" />
     <Compile Include="ScreenManager\MenuItems\Label.cs" />
-    <Compile Include="ScreenManager\MenuItems\MenuContainer.cs" />
+    <Compile Include="ScreenManager\MenuItems\Container.cs" />
     <Compile Include="ScreenManager\MenuItems\MenuItem.cs" />
     <Compile Include="ScreenManager\MenuItems\Textbox.cs" />
     <Compile Include="ScreenManager\MenuItems\TextWall.cs" />

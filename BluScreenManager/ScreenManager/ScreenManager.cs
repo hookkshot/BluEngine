@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Audio;
 
 using System.IO;
 using System.Xml.Serialization;
+using BluEngine.Engine;
 #endregion
 
 namespace BluEngine.ScreenManager
@@ -31,42 +32,37 @@ namespace BluEngine.ScreenManager
     /// </summary>
     /// 
 
-    public class ScreenManager : DrawableGameComponent
+    public class ScreenManager : DrawableGameComponent, IScreenDimensionsProvider
     {
         #region Fields
 
-        public static string version = "BluScreenManager Version 1.0.3";
-
-        List<GameScreen> screens = new List<GameScreen>();
-        List<GameScreen> screensToUpdate = new List<GameScreen>();
-
-        InputControl input = new InputControl();
-
-        string defaultFontLocation;
-
-        //Sound
-        int soundLevel = 100;
-        int musicLevel = 100;
-
-        SpriteBatch spriteBatch;
-
-        SpriteFont font;
-
-        //fillTexture;
+        public const string version = "BluScreenManager Version 1.0.3";
+        private static ScreenManager instance = null;
+        private List<GameScreen> screens = new List<GameScreen>();
+        private List<GameScreen> screensToUpdate = new List<GameScreen>();
+        private InputControl input = new InputControl();
+        private string defaultFontLocation;
+        private int soundLevel = 100;
+        private int musicLevel = 100;
+        private SpriteBatch spriteBatch;
+        private SpriteFont font;
         Texture2D filler;
-        public Texture2D Filler
-        { get { return filler; } }
-
-        bool isInitialized;
-
-        bool traceEnabled;
-
+        private bool isInitialized;
+        private bool traceEnabled;
         Vector2 mousePosition;
 
         #endregion
 
         #region Properties
+        public Texture2D Filler { get { return filler; } }
 
+        /// <summary>
+        /// A static reference to the current ScreenManager instance.
+        /// </summary>
+        public static ScreenManager Instance
+        {
+            get { return instance; }
+        }
 
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saves
@@ -114,6 +110,9 @@ namespace BluEngine.ScreenManager
         public ScreenManager(Game game, string fontLocation)
             : base(game)
         {
+            if (instance == null)
+                instance = this;
+            
             this.defaultFontLocation = fontLocation;
         }
 
@@ -163,7 +162,7 @@ namespace BluEngine.ScreenManager
             {
                 screen.UnloadContent();
             }
-            Console.WriteLine("Screen Unlaoded");
+            Console.WriteLine("Screen Unloaded");
         }
 
 
@@ -184,13 +183,10 @@ namespace BluEngine.ScreenManager
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
-            screensToUpdate.Clear();
+            screensToUpdate.AddRange(screens);
 
             bool otherScreenHasFocus = !Game.IsActive;
             bool coveredByOtherScreen = false;
-
-            foreach (GameScreen screen in screens)
-                screensToUpdate.Add(screen);
 
             // Loop as long as there are screens waiting to be updated.
             while (screensToUpdate.Count > 0)
@@ -220,8 +216,6 @@ namespace BluEngine.ScreenManager
                 }
             }
         }
-
-
 
         /// <summary>
         /// Tells each screen to draw itself.
@@ -295,5 +289,25 @@ namespace BluEngine.ScreenManager
         }
 
         #endregion
+
+        public float ScreenX
+        {
+            get { return 0.0f; }
+        }
+
+        public float ScreenY
+        {
+            get { return 0.0f; }
+        }
+
+        public float ScreenWidth
+        {
+            get { return (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width; }
+        }
+
+        public float ScreenHeight
+        {
+            get { return (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; }
+        }
     }
 }

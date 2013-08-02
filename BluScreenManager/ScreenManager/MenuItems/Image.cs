@@ -10,17 +10,23 @@ namespace BluEngine
 {
     public class Image : MenuItem
     {
-        protected Texture2D source;
+        private Texture2D texture;
 
         public Texture2D Source
         {
-            get { return source; }
-            set { source = value; }
+            get { return texture; }
+            set { texture = value; }
+        }
+
+        public Image(Vector2 position, Texture2D texture)
+            : base(position)
+        {
+            this.texture = texture;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(source, this.Position, Color);
+            spriteBatch.Draw(texture, this.Position, Color);
         }
     }
 }
