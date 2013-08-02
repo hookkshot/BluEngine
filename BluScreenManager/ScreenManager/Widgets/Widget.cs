@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BluEngine.Engine;
+using Microsoft.Xna.Framework.Input;
 
 namespace BluEngine.ScreenManager.Widgets
 {
@@ -13,8 +14,9 @@ namespace BluEngine.ScreenManager.Widgets
     /// </summary>
     public class Widget : HierarchicalDrawable, IInvalidatable, IScreenDimensionsProvider
     {
-        public delegate bool MouseEvent(int button, Point mousePos);
-        public delegate bool KeyEvent(Keys key);
+        public delegate void MouseEvent(Point mousePos);
+        public delegate void MouseButtonEvent(Point mousePos, int button);
+        public delegate void KeyEvent(Keys key);
         
         private static Style baseStyle = new Style();
         private Vector4 bounds = new Vector4(0.0f,0.0f,1.0f,1.0f); //percentages of the parent control (W = Width, Z = Height)
@@ -22,8 +24,10 @@ namespace BluEngine.ScreenManager.Widgets
         private Vector4 calcBoundsF; //actual bounds in screen dimensions (float)
         private bool valid = false;
         private Style style = new Style(Widget.BaseStyle);
-        public event MouseEvent OnMouseDown;
-        public event MouseEvent OnMouseUp;
+        public event MouseEvent OnMouseEnter;
+        public event MouseEvent OnMouseLeave;
+        public event MouseButtonEvent OnMouseDown;
+        public event MouseButtonEvent OnMouseUp;
         public event KeyEvent OnKeyDown;
         public event KeyEvent OnKeyUp;
 
@@ -250,11 +254,68 @@ namespace BluEngine.ScreenManager.Widgets
         /// <param name="gameTime">The gametime passed since the last frame.</param>
         protected virtual void Update(GameTime gameTime) { }
 
+        /// <summary>
+        /// Return the top-most widget at the given screen coords.
+        /// </summary>
+        /// <param name="pt">The screen coords.</param>
+        /// <returns>The found widget, or null.</returns>
+        public Widget ChildAtPoint(Point pt)
+        {
+            List<HierarchicalObject> children = Children;
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                Widget widget = children[i] as Widget;
+                if (widget != null)
+                {
+                    Widget child = widget.ChildAtPoint(pt);
+                    if (child != null)
+                        return child;
+                }
+            }
+            return CalculatedBoundsI.Contains(pt) ? this : null;
+        }
+
         protected override void Draw(SpriteBatch spriteBatch)
         {
             Texture2D fill = style.Fill;
             if (fill != null)
                 spriteBatch.Draw(fill, CalculatedBoundsI, Color.White);
+        }
+
+        public virtual void MouseEnter(Point pt)
+        {
+            if (OnMouseEnter != null)
+                OnMouseEnter(pt);
+        }
+
+        public virtual void MouseLeave(Point pt)
+        {
+            if (OnMouseLeave != null)
+                OnMouseLeave(pt);
+        }
+
+        public virtual void MouseDown(Point pt, int button)
+        {
+            if (OnMouseDown!= null)
+                OnMouseDown(pt, button);
+        }
+
+        public virtual void MouseUp(Point pt, int button)
+        {
+            if (OnMouseUp != null)
+                OnMouseUp(pt, button);
+        }
+
+        public virtual void KeyDown(Keys key)
+        {
+            if (OnKeyDown != null)
+                OnKeyDown(key);
+        }
+
+        public virtual void KeyUp(Keys key)
+        {
+            if (OnKeyUp != null)
+                OnKeyUp(key);
         }
 
         public float ScreenX
