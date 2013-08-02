@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Audio;
 
 using System.IO;
 using System.Xml.Serialization;
+using BluEngine.Engine;
 #endregion
 
 namespace BluEngine.ScreenManager
@@ -31,41 +32,37 @@ namespace BluEngine.ScreenManager
     /// </summary>
     /// 
 
-    public class ScreenManager : DrawableGameComponent
+    public class ScreenManager : DrawableGameComponent, IScreenDimensionsProvider
     {
         #region Fields
 
         public const string version = "BluScreenManager Version 1.0.3";
-
+        private static ScreenManager instance = null;
         private List<GameScreen> screens = new List<GameScreen>();
         private List<GameScreen> screensToUpdate = new List<GameScreen>();
-
         private InputControl input = new InputControl();
-
         private string defaultFontLocation;
-
-        //Sound
         private int soundLevel = 100;
         private int musicLevel = 100;
-
         private SpriteBatch spriteBatch;
-
         private SpriteFont font;
-
-        //fillTexture;
         Texture2D filler;
-        public Texture2D Filler { get { return filler; } }
-
         private bool isInitialized;
-
         private bool traceEnabled;
-
         Vector2 mousePosition;
 
         #endregion
 
         #region Properties
+        public Texture2D Filler { get { return filler; } }
 
+        /// <summary>
+        /// A static reference to the current ScreenManager instance.
+        /// </summary>
+        public static ScreenManager Instance
+        {
+            get { return instance; }
+        }
 
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saves
@@ -113,6 +110,9 @@ namespace BluEngine.ScreenManager
         public ScreenManager(Game game, string fontLocation)
             : base(game)
         {
+            if (instance == null)
+                instance = this;
+            
             this.defaultFontLocation = fontLocation;
         }
 
@@ -217,8 +217,6 @@ namespace BluEngine.ScreenManager
             }
         }
 
-
-
         /// <summary>
         /// Tells each screen to draw itself.
         /// </summary>
@@ -291,5 +289,25 @@ namespace BluEngine.ScreenManager
         }
 
         #endregion
+
+        public float ScreenX
+        {
+            get { return 0.0f; }
+        }
+
+        public float ScreenY
+        {
+            get { return 0.0f; }
+        }
+
+        public float ScreenWidth
+        {
+            get { return (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width; }
+        }
+
+        public float ScreenHeight
+        {
+            get { return (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; }
+        }
     }
 }
