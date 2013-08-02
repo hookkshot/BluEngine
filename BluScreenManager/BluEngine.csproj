@@ -77,8 +77,11 @@
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Engine\IInvalidatable.cs" />
     <Compile Include="ScreenManager\WidgetScreen.cs" />
+    <Compile Include="ScreenManager\Widgets\Button.cs" />
+    <Compile Include="ScreenManager\Widgets\Control.cs" />
     <Compile Include="ScreenManager\Widgets\ScreenWidget.cs" />
     <Compile Include="ScreenManager\Widgets\Style.cs" />
+    <Compile Include="ScreenManager\Widgets\StyleSheet.cs" />
     <Compile Include="ScreenManager\Widgets\Widget.cs" />
   </ItemGroup>
   <ItemGroup>

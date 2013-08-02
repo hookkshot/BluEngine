@@ -17,13 +17,13 @@ namespace BluEngine.ScreenManager.Widgets
         public delegate void MouseEvent(Point mousePos);
         public delegate void MouseButtonEvent(Point mousePos, int button);
         public delegate void KeyEvent(Keys key);
-        
-        private static Style baseStyle = new Style();
+
+        private static StyleSheet styles = new StyleSheet();
         private Vector4 bounds = new Vector4(0.0f,0.0f,1.0f,1.0f); //percentages of the parent control (W = Width, Z = Height)
         private Rectangle calcBoundsI; //actual bounds in screen dimensions (int)
         private Vector4 calcBoundsF; //actual bounds in screen dimensions (float)
         private bool valid = false;
-        private Style style = new Style(Widget.BaseStyle);
+        private Style style = new Style(Styles.Base);
         private HitFlags hitFlags = HitFlags.None;
         public event MouseEvent OnMouseEnter;
         public event MouseEvent OnMouseLeave;
@@ -35,7 +35,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The widget's parent (container) widget.
         /// </summary>
-        new public Widget Parent
+        new public virtual Widget Parent
         {
             get { return base.Parent == null ? null : base.Parent as Widget; }
             set { base.Parent = value; }
@@ -44,7 +44,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The IScreenDimensionsProvider object currently acting as the source resolution for this widget.
         /// </summary>
-        public IScreenDimensionsProvider DimensionsProvider
+        public virtual IScreenDimensionsProvider DimensionsProvider
         {
             get
             {
@@ -63,17 +63,25 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
-        /// Base style inherited by all widgets.
+        /// Base styles inherited by all widgets.
         /// </summary>
-        public static Style BaseStyle
+        public static StyleSheet Styles
         {
-            get { return baseStyle; }
+            get { return styles; }
         }
 
         /// <summary>
-        /// This widget's style object.
+        /// This style used by this widget when it is in a normal state.
         /// </summary>
         public Style Style
+        {
+            get { return style; }
+        }
+
+        /// <summary>
+        /// The style currently being used by this widget, according to state.
+        /// </summary>
+        public virtual Style CurrentStyle
         {
             get { return style; }
         }
@@ -89,7 +97,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// Flags this widget (and all children) as in need of refreshing before next redraw.
         /// </summary>
-        public virtual void Invalidate()
+        public void Invalidate()
         {
             valid = false;
             foreach (HierarchicalObject obj in Children)
@@ -104,7 +112,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// This widget's bounds in percentages, relative to the parent (or the Screen if parent is null; W = Width, Z = Height).
         /// Note that changes made here will not be reflected in the CalculatedBounds values until the next call to Update().
         /// </summary>
-        public Vector4 Bounds
+        public virtual Vector4 Bounds
         {
             get { return bounds; }
             set
@@ -121,7 +129,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// This widget's bounds in pixels as floats, relative to the parent (or the Screen if parent is null; W = Width, Z = Height).
         /// Note that changes made here will not be reflected in the CalculatedBounds values until the next call to Update().
         /// </summary>
-        public Vector4 CalculatedBoundsF
+        public virtual Vector4 CalculatedBoundsF
         {
             get { return calcBoundsF; }
             set
@@ -141,7 +149,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// This widget's bounds in pixels as integers, relative to the parent (or the Screen if parent is null; W = Width, Z = Height).
         /// Note that changes made here will not be reflected in the CalculatedBounds values until the next call to Update().
         /// </summary>
-        public Rectangle CalculatedBoundsI
+        public virtual Rectangle CalculatedBoundsI
         {
             get { return calcBoundsI; }
             set
@@ -160,7 +168,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The percentage Left of this widget.
         /// </summary>
-        public float Left
+        public virtual float Left
         {
             get { return bounds.X; }
             set
@@ -173,7 +181,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The percentage Top of this widget.
         /// </summary>
-        public float Top
+        public virtual float Top
         {
             get { return bounds.Y; }
             set
@@ -186,7 +194,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The percentage Right of this widget.
         /// </summary>
-        public float Right
+        public virtual float Right
         {
             get { return bounds.X + bounds.W; }
             set { Left = value - bounds.W; }
@@ -195,7 +203,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The percentage Bottom of this widget.
         /// </summary>
-        public float Bottom
+        public virtual float Bottom
         {
             get { return bounds.Y + bounds.Z; }
             set { Top = value - bounds.Z; }
@@ -204,7 +212,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The percentage width of this widget.
         /// </summary>
-        public float Width
+        public virtual float Width
         {
             get { return bounds.W; }
             set
@@ -217,7 +225,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// The percentage Height of this widget.
         /// </summary>
-        public float Height
+        public virtual float Height
         {
             get { return bounds.Z; }
             set
@@ -232,11 +240,6 @@ namespace BluEngine.ScreenManager.Widgets
         /// </summary>
         /// <param name="parent">The Widget's parent.</param>
         public Widget(Widget parent) : base(parent) { }
-
-        /// <summary>
-        /// Create a new Widget.
-        /// </summary>
-        public Widget() : this(null) { }
 
         /// <summary>
         /// Refresh resolution-dependant properties.
@@ -306,10 +309,19 @@ namespace BluEngine.ScreenManager.Widgets
                 Refresh();
                 valid = true;
             }
-            
-            Texture2D fill = style.Fill;
-            if (fill != null)
-                spriteBatch.Draw(fill, CalculatedBoundsI, Color.White);
+
+            Style currentStyle = CurrentStyle;
+            float alpha = currentStyle.Alpha ?? 1.0f;
+
+            //fill
+            Texture2D tex = currentStyle.Fill;
+            if (tex != null)
+                spriteBatch.Draw(tex, CalculatedBoundsI, Color.White * alpha);
+
+            //overlay
+            tex = currentStyle.Overlay;
+            if (tex != null)
+                spriteBatch.Draw(tex, CalculatedBoundsI, Color.White * alpha);
         }
 
         public virtual void MouseEnter(Point pt)
@@ -368,9 +380,10 @@ namespace BluEngine.ScreenManager.Widgets
             get { return CalculatedBoundsF.Z; }
         }
 
-        public float ScreenRatio
+        public virtual float ScreenRatio
         {
             get { return CalculatedBoundsF.W / CalculatedBoundsF.Z; }
+            set { ; }
         }
     }
 }
