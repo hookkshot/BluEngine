@@ -9,9 +9,6 @@ namespace BluEngine
 {
     public class InputControl
     {
-        public delegate bool MouseEvent(int button, Point mousePos);
-        public delegate bool KeyEvent(Keys key);
-        
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
 
