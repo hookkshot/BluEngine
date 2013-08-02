@@ -39,6 +39,6 @@ namespace BluEngine.Engine
         /// You do not need to call this directly; it is called hierarchically by the base object via DrawAll().
         /// </summary>
         /// <param name="spriteBatch">The SpriteBatch object used for drawing.</param>
-        public abstract void Draw(SpriteBatch spriteBatch);
+        protected abstract void Draw(SpriteBatch spriteBatch);
     }
 }
