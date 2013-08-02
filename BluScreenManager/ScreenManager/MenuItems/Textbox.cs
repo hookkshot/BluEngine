@@ -19,9 +19,11 @@ namespace BluEngine
     /// <summary>
     /// A textbox that simple text can be entered ranging from letters and numbers.
     /// </summary>
-    public class Textbox : MenuItem
+    public class Textbox : Image
     {
         #region Fields
+
+        public delegate bool TextboxKeyEvent(Textbox sender, Keys key);
 
         protected int index = 0;
 
@@ -33,7 +35,6 @@ namespace BluEngine
         /// </summary>
         public int Padding = 0;
 
-        protected Texture2D texture;
         protected SpriteFont font;
         protected Color textColor;
 
@@ -55,7 +56,8 @@ namespace BluEngine
         protected TimeSpan lastSwitch = TimeSpan.FromSeconds(0.0f);
         protected string indexChar = "|";
 
-        public event EventHandler Submited;
+        public event MenuItemEvent Submitted;
+        public event TextboxKeyEvent KeyPressed; //return true if the input is handled
 
         Keys[] keysToCheck = new Keys[] {Keys.A, Keys.B, Keys.C, Keys.D, Keys.E,
             Keys.F, Keys.G, Keys.H, Keys.I, Keys.J,
@@ -94,35 +96,21 @@ namespace BluEngine
             set { locked = value; }
         }
 
-        public int Width
-        {
-            get { return width; }
-            set { width = value; }
-        }
-
-        public int Height
-        {
-            get { return height; }
-            set { height = value; }
-        }
-
         #endregion
 
         #region Initialization
 
         public Textbox(int width, int max, Vector2 position, SpriteFont font, Texture2D texture)
+            : base (position,texture)
         {
             this.active = true;
             this.isItemInUse = false;
-            this.position = position;
 
             this.width = width;
             this.max = max;
-            this.position = position;
             this.font = font;
             this.isSelected = false;
             this.textValue = "";
-            this.texture = texture;
         }
 
         #endregion
@@ -163,10 +151,10 @@ namespace BluEngine
                     }
                 }
                 if (isSelected)
-                {
+                {                   
                     foreach (Keys key in keysToCheck)
                     {
-                        if (input.KeyHit(key))
+                        if (input.KeyHit(key) && (KeyPressed == null || !KeyPressed(this, key)))
                         {
                             switch (key)
                             {
@@ -178,8 +166,8 @@ namespace BluEngine
                                     }
                                     break;
                                 case (Keys.Enter):
-                                    if(Submited != null)
-                                        Submited(this, new EventArgs());
+                                    if(Submitted != null)
+                                        Submitted(this);
                                     index = 0;
                                     break;
                                 case (Keys.Space):
@@ -229,6 +217,7 @@ namespace BluEngine
                     this.textValue = "";
                 }
 
+                Texture2D texture = Source;
                 if (texture != null)
                 {
                     if (StretchBackgroundImage)

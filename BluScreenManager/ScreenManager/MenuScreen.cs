@@ -71,26 +71,7 @@ namespace BluEngine.ScreenManager
         public override void HandleInput(InputControl input)
         {
             for (int i = 0; i < menuItems.Count(); i++)
-            {
-                if (selectedMenuItem != null)
-                {
-                    if (selectedMenuItem == menuItems[i])
-                    {
-                        menuItems[i].HandleInput(input, true);
-                    }
-                    else
-                    {
-                        menuItems[i].HandleInput(input, false);
-                    }
-                }
-                else
-                {
-                    menuItems[i].HandleInput(input, true);
-                }
-               
-            }
-
-            
+                menuItems[i].HandleInput(input, selectedMenuItem == null || selectedMenuItem == menuItems[i]);
         }
 
         #endregion

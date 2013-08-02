@@ -23,7 +23,6 @@ namespace BluEngine
         Hidden,
     }
 
-
     /// <summary>
     /// A screen is a single layer that has update and draw logic, and which
     /// can be combined with other layers to build up a complex menu system.
@@ -48,8 +47,7 @@ namespace BluEngine
             get { return isPopup; }
             protected set { isPopup = value; }
         }
-
-        bool isPopup = false;
+        private bool isPopup = false;
 
         /// <summary>
         /// Gets the current screen transition state.
@@ -59,23 +57,19 @@ namespace BluEngine
             get { return screenState; }
             protected set { screenState = value; }
         }
+        private ScreenState screenState = ScreenState.Active;
 
-        ScreenState screenState = ScreenState.Active;
-
-        bool otherScreenHasFocus;
-
+        private bool otherScreenHasFocus;
 
         /// <summary>
         /// Gets the manager that this screen belongs to.
         /// </summary>
-        public ScreenManager ScreenManager
+        public BluEngine.ScreenManager.ScreenManager ScreenManager
         {
             get { return screenManager; }
             internal set { screenManager = value; }
         }
-
-        ScreenManager screenManager;
-
+        private BluEngine.ScreenManager.ScreenManager screenManager;
 
         #endregion
 
@@ -112,7 +106,6 @@ namespace BluEngine
         /// screen has taken the focus.
         /// </summary>
         public virtual void HandleInput(InputControl input) { }
-
 
         /// <summary>
         /// This is called when the screen should draw itself.
