@@ -13,7 +13,7 @@ namespace BluEngine.ScreenManager
 {
     public class WidgetScreen : GameScreen
     {
-        private Widget baseWidget = new ScreenWidget();
+        private ScreenWidget baseWidget = new ScreenWidget();
         private Widget[] mouseDownWidgets = new Widget[]{null,null,null,null,null};
         private Widget mouseHoverWidget = null;
         private Widget selectedWidget = null;
@@ -51,7 +51,7 @@ namespace BluEngine.ScreenManager
         /// <summary>
         /// The base widget object. Add your child widgets to this via their constructors or by setting their Parent property.
         /// </summary>
-        public Widget Base
+        public ScreenWidget Base
         {
             get { return baseWidget; }
         }

@@ -11,5 +11,6 @@ namespace BluEngine.Engine
         float ScreenY { get; }
         float ScreenWidth { get; }
         float ScreenHeight { get; }
+        float ScreenRatio { get; }
     }
 }

@@ -309,5 +309,11 @@ namespace BluEngine.ScreenManager
         {
             get { return (float)Game.Window.ClientBounds.Height; }
         }
+
+
+        public float ScreenRatio
+        {
+            get { return (float)Game.Window.ClientBounds.Width / (float)Game.Window.ClientBounds.Height; }
+        }
     }
 }

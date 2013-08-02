@@ -367,5 +367,10 @@ namespace BluEngine.ScreenManager.Widgets
         {
             get { return CalculatedBoundsF.Z; }
         }
+
+        public float ScreenRatio
+        {
+            get { return CalculatedBoundsF.W / CalculatedBoundsF.Z; }
+        }
     }
 }
