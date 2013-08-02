@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using BluEngine.Engine;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BluEngine.ScreenManager
 {
     public class WidgetScreen : GameScreen
     {
         private Widget baseWidget = new ScreenWidget();
-        private ContentManager content;
         private Widget[] mouseDownWidgets = new Widget[]{null,null,null,null,null};
         private Widget mouseHoverWidget = null;
         private Widget selectedWidget = null;
@@ -54,12 +54,6 @@ namespace BluEngine.ScreenManager
         public Widget Base
         {
             get { return baseWidget; }
-        }
-
-        public override void LoadContent()
-        {
-            content = new ContentManager(ScreenManager.Game.Services);
-            content.RootDirectory = "Content";
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -121,6 +115,14 @@ namespace BluEngine.ScreenManager
                         selectedWidget.KeyDown(watchedKeys[i]);
                 }
             }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+            spriteBatch.Begin();
+            baseWidget.DrawAll(spriteBatch);
+            spriteBatch.End();
         }
     }
 

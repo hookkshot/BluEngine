@@ -71,19 +71,33 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
+        /// This widget's style object.
+        /// </summary>
+        public Style Style
+        {
+            get { return style; }
+        }
+
+        /// <summary>
         /// If true, this widget's dimensions are in need of refreshing.
         /// </summary>
         public bool Invalidated
         {
-            get { return valid; }
+            get { return !valid; }
         }
 
         /// <summary>
-        /// Flags this widget as in need of refreshing before next redraw.
+        /// Flags this widget (and all children) as in need of refreshing before next redraw.
         /// </summary>
         public virtual void Invalidate()
         {
             valid = false;
+            foreach (HierarchicalObject obj in Children)
+            {
+                Widget widget = obj as Widget;
+                if (widget != null)
+                    widget.Invalidate();
+            }
         }
 
         /// <summary>
@@ -235,7 +249,6 @@ namespace BluEngine.ScreenManager.Widgets
             calcBoundsF.W = dimensionsProvider.ScreenWidth * bounds.W;
             calcBoundsF.Z = dimensionsProvider.ScreenHeight * bounds.Z;
 
-
             calcBoundsI.X = (int)calcBoundsF.X;
             calcBoundsI.Y = (int)calcBoundsF.Y;
             calcBoundsI.Width = (int)calcBoundsF.W;
@@ -288,6 +301,12 @@ namespace BluEngine.ScreenManager.Widgets
 
         protected override void Draw(SpriteBatch spriteBatch)
         {
+            if (Invalidated)
+            {
+                Refresh();
+                valid = true;
+            }
+            
             Texture2D fill = style.Fill;
             if (fill != null)
                 spriteBatch.Draw(fill, CalculatedBoundsI, Color.White);

@@ -302,12 +302,12 @@ namespace BluEngine.ScreenManager
 
         public float ScreenWidth
         {
-            get { return (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width; }
+            get { return (float)Game.Window.ClientBounds.Width; }
         }
 
         public float ScreenHeight
         {
-            get { return (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; }
+            get { return (float)Game.Window.ClientBounds.Height; }
         }
     }
 }
