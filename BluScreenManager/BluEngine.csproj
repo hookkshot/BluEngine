@@ -52,7 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameObjects\CollisionBox.cs" />
+    <Compile Include="GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameObjectComponent.cs" />
     <Compile Include="GameObjects\Sprite.cs" />
