@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameObjects\CollisionBoxComponent.cs" />
+    <Compile Include="Engine\HierarchicalDrawable.cs" />
+    <Compile Include="Engine\HierarchicalObject.cs" />
+    <Compile Include="Engine\IScreenDimensionsProvider.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameObjectComponent.cs" />
     <Compile Include="GameObjects\Sprite.cs" />
@@ -71,15 +74,17 @@
     <Compile Include="ScreenManager\MenuScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
+    <Compile Include="Engine\IInvalidatable.cs" />
+    <Compile Include="ScreenManager\WidgetScreen.cs" />
+    <Compile Include="ScreenManager\Widgets\Style.cs" />
+    <Compile Include="ScreenManager\Widgets\Widget.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SDL.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engine\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

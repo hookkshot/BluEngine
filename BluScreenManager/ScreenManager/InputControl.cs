@@ -38,9 +38,14 @@ namespace BluEngine
             currentKeyboardState = Keyboard.GetState();
         }
 
-        public bool KeyHit(Keys key)
+        public bool KeyPressed(Keys key)
         {
             return currentKeyboardState.IsKeyDown(key) && previousKeyboardState.IsKeyUp(key);
+        }
+
+        public bool KeyReleased(Keys key)
+        {
+            return currentKeyboardState.IsKeyUp(key) && previousKeyboardState.IsKeyDown(key);
         }
 
         public bool KeyDown(Keys key)
@@ -48,7 +53,12 @@ namespace BluEngine
             return currentKeyboardState.IsKeyDown(key);
         }
 
-        public bool MousePress(int i)
+        public bool KeyHold(Keys key)
+        {
+            return currentKeyboardState.IsKeyDown(key) && previousKeyboardState.IsKeyDown(key);
+        }
+
+        public bool MousePressed(int i)
         {
             ButtonState state;
             return MouseChanged(i, out state) && state == ButtonState.Pressed;
@@ -62,18 +72,8 @@ namespace BluEngine
         
         public bool MouseHold(int i)
         {
-            ButtonState current;
-            switch (i)
-            {
-                case 5: current = currentMouseState.XButton2; break;
-                case 4: current = currentMouseState.XButton1; break;
-                case 3: current = currentMouseState.MiddleButton; break;
-                case 2: current = currentMouseState.RightButton; break;
-                default:
-                case 1: current = currentMouseState.LeftButton; break;
-            }
-
-            return current == ButtonState.Pressed;
+            ButtonState state;
+            return !MouseChanged(i, out state) && state == ButtonState.Pressed;
         }
 
         public Vector2 LeftMouseOrigin()
@@ -113,7 +113,6 @@ namespace BluEngine
 
         public string InputField(string val)
         {
-            
             return val;
         }
 
