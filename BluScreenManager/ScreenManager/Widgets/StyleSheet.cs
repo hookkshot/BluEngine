@@ -14,7 +14,6 @@ namespace BluEngine.ScreenManager.Widgets
     {
         private Style baseStyle;
         private Style control;
-        private Style controlDisabled;
         private Style button;
         private Style buttonDisabled;
         private Style buttonHover;
