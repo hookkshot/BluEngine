@@ -40,86 +40,40 @@ namespace BluEngine
 
         public bool KeyHit(Keys key)
         {
-            bool ret = false;
-
-            if (currentKeyboardState.IsKeyDown(key) && previousKeyboardState.IsKeyUp(key))
-            {
-                ret = true;
-            }
-
-            return ret;
+            return currentKeyboardState.IsKeyDown(key) && previousKeyboardState.IsKeyUp(key);
         }
 
         public bool KeyDown(Keys key)
         {
-            if(currentKeyboardState.IsKeyDown(key)) return true;
-            return false;
+            return currentKeyboardState.IsKeyDown(key);
         }
 
         public bool MousePress(int i)
         {
-            bool ret = false;
-
-            if (i == 1)
-            {
-                if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed)
-                {
-                    ret = true;
-                }
-            }
-
-            if (i == 2)
-            {
-                if (currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton != ButtonState.Pressed)
-                {
-                    ret = true;
-                }
-            }
-
-            return ret;
+            ButtonState state;
+            return MouseChanged(i, out state) && state == ButtonState.Pressed;
         }
 
         public bool MouseReleased(int i)
         {
-            bool ret = false;
-
-            if (i == 1)
-            {
-                if (currentMouseState.LeftButton != ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Pressed)
-                {
-                    ret = true;
-                }
-            }
-
-            return ret;
+            ButtonState state;
+            return MouseChanged(i, out state) && state == ButtonState.Released;
         }
-
+        
         public bool MouseHold(int i)
         {
-            bool ret = false;
-
+            ButtonState current;
             switch (i)
             {
-                case 1:
-                    {
-                        if (currentMouseState.LeftButton == ButtonState.Pressed)
-                        {
-                            ret = true;
-                        }
-                    }
-                    break;
-                case 2:
-                    {
-                        if (currentMouseState.RightButton == ButtonState.Pressed)
-                        {
-                            ret = true;
-                        }
-                    }
-                    break;
+                case 5: current = currentMouseState.XButton2; break;
+                case 4: current = currentMouseState.XButton1; break;
+                case 3: current = currentMouseState.MiddleButton; break;
+                case 2: current = currentMouseState.RightButton; break;
+                default:
+                case 1: current = currentMouseState.LeftButton; break;
             }
-            
 
-            return ret;
+            return current == ButtonState.Pressed;
         }
 
         public Vector2 LeftMouseOrigin()
@@ -161,6 +115,21 @@ namespace BluEngine
         {
             
             return val;
+        }
+
+        public bool MouseChanged(int button, out ButtonState current)
+        {
+            ButtonState previous;
+            switch (button)
+            {
+                case 5: current = currentMouseState.XButton2; previous = previousMouseState.XButton2; break;
+                case 4: current = currentMouseState.XButton1; previous = previousMouseState.XButton1; break;
+                case 3: current = currentMouseState.MiddleButton; previous = previousMouseState.MiddleButton; break;
+                case 2: current = currentMouseState.RightButton; previous = previousMouseState.RightButton; break;
+                default:
+                case 1: current = currentMouseState.LeftButton; previous = previousMouseState.LeftButton; break;
+            }
+            return current != previous;
         }
     }
 }
