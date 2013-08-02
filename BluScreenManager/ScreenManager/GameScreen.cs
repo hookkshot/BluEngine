@@ -10,6 +10,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using System.IO;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace BluEngine
@@ -33,7 +34,12 @@ namespace BluEngine
     public abstract class GameScreen
     {
         #region Properties
-
+        
+        public ContentManager Content
+        {
+            get { return content; }
+        }
+        private ContentManager content;
 
         /// <summary>
         /// Normally when one screen is brought up over the top of another,
@@ -78,13 +84,20 @@ namespace BluEngine
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
-        public virtual void LoadContent() { }
+        public virtual void LoadContent()
+        {
+            content = new ContentManager(ScreenManager.Game.Services);
+            content.RootDirectory = "Content";
+        }
 
 
         /// <summary>
         /// Unload content for the screen.
         /// </summary>
-        public virtual void UnloadContent() { }
+        public virtual void UnloadContent()
+        {
+            content.Dispose();
+        }
 
 
         #endregion

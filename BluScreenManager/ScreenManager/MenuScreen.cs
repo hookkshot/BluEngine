@@ -27,20 +27,12 @@ namespace BluEngine.ScreenManager
 
         protected MenuItem selectedMenuItem;
 
-        protected ContentManager content;
-
         #endregion
 
         #region Initialization
 
         public MenuScreen()
         {
-        }
-
-        public override void LoadContent()
-        {
-            content = new ContentManager(ScreenManager.Game.Services);
-            content.RootDirectory = "Content";
         }
 
         #endregion
