@@ -24,6 +24,7 @@ namespace BluEngine.ScreenManager.Widgets
         private Vector4 calcBoundsF; //actual bounds in screen dimensions (float)
         private bool valid = false;
         private Style style = new Style(Widget.BaseStyle);
+        private HitFlags hitFlags = HitFlags.None;
         public event MouseEvent OnMouseEnter;
         public event MouseEvent OnMouseLeave;
         public event MouseButtonEvent OnMouseDown;
@@ -50,6 +51,15 @@ namespace BluEngine.ScreenManager.Widgets
                 Widget parent = Parent;
                 return parent == null ? ScreenManager.Instance as IScreenDimensionsProvider : parent;
             }
+        }
+
+        /// <summary>
+        /// A mask containing the set of flags this widget should respond to for ChildAtPoint calls.
+        /// </summary>
+        public HitFlags HitFlags
+        {
+            get { return hitFlags; }
+            set { hitFlags = value; }
         }
 
         /// <summary>
@@ -258,8 +268,9 @@ namespace BluEngine.ScreenManager.Widgets
         /// Return the top-most widget at the given screen coords.
         /// </summary>
         /// <param name="pt">The screen coords.</param>
+        /// <param name="hitflags">The set of flags to check for.</param>
         /// <returns>The found widget, or null.</returns>
-        public Widget ChildAtPoint(Point pt)
+        public Widget ChildAtPoint(Point pt, HitFlags hitflags)
         {
             List<HierarchicalObject> children = Children;
             for (int i = children.Count - 1; i >= 0; i--)
@@ -267,12 +278,12 @@ namespace BluEngine.ScreenManager.Widgets
                 Widget widget = children[i] as Widget;
                 if (widget != null)
                 {
-                    Widget child = widget.ChildAtPoint(pt);
+                    Widget child = widget.ChildAtPoint(pt, hitflags);
                     if (child != null)
                         return child;
                 }
             }
-            return CalculatedBoundsI.Contains(pt) ? this : null;
+            return (HitFlags & hitflags) != 0 && CalculatedBoundsI.Contains(pt) ? this : null;
         }
 
         protected override void Draw(SpriteBatch spriteBatch)
