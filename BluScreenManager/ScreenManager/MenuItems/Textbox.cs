@@ -19,7 +19,7 @@ namespace BluEngine
     /// <summary>
     /// A textbox that simple text can be entered ranging from letters and numbers.
     /// </summary>
-    public class Textbox : MenuItem
+    public class Textbox : Image
     {
         #region Fields
 
@@ -35,7 +35,6 @@ namespace BluEngine
         /// </summary>
         public int Padding = 0;
 
-        protected Texture2D texture;
         protected SpriteFont font;
         protected Color textColor;
 
@@ -97,35 +96,21 @@ namespace BluEngine
             set { locked = value; }
         }
 
-        public int Width
-        {
-            get { return width; }
-            set { width = value; }
-        }
-
-        public int Height
-        {
-            get { return height; }
-            set { height = value; }
-        }
-
         #endregion
 
         #region Initialization
 
         public Textbox(int width, int max, Vector2 position, SpriteFont font, Texture2D texture)
+            : base (position,texture)
         {
             this.active = true;
             this.isItemInUse = false;
-            this.position = position;
 
             this.width = width;
             this.max = max;
-            this.position = position;
             this.font = font;
             this.isSelected = false;
             this.textValue = "";
-            this.texture = texture;
         }
 
         #endregion
@@ -232,6 +217,7 @@ namespace BluEngine
                     this.textValue = "";
                 }
 
+                Texture2D texture = Source;
                 if (texture != null)
                 {
                     if (StretchBackgroundImage)

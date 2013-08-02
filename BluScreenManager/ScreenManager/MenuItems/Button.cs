@@ -17,7 +17,7 @@ using BluEngine.ScreenManager;
 
 namespace BluEngine
 {
-    public class Button : MenuItem
+    public class Button : Image
     {
         #region Fields
 
@@ -29,7 +29,6 @@ namespace BluEngine
         protected bool downPrevious;
 
         //Graphical
-        protected Texture2D texture;
         protected Texture2D textureDown;
         protected Texture2D textureOver;
 
@@ -57,7 +56,7 @@ namespace BluEngine
 
         public Texture2D Texture
         {
-            set { this.texture = value; }
+            set { this.Source = value; }
         }
 
         public Texture2D TextureDown
@@ -81,12 +80,8 @@ namespace BluEngine
         #region Initialization
 
         public Button(Vector2 position, Texture2D texture, Texture2D textureDown)
+            : base(position, texture)
         {
-            this.position = position;
-            this.active = true;
-            this.isItemInUse = false;
-            
-            this.texture = texture;
             this.textureDown = textureDown;
         }
 
@@ -114,6 +109,7 @@ namespace BluEngine
                 downPrevious = down;
                 down = false;
 
+                Texture2D texture = Source;
                 if (texture != null)
                 {
                     int offset = (int)GetAlignment(texture).X;
@@ -149,7 +145,7 @@ namespace BluEngine
                         case Alignment.Center: { mx -= mw / 2; } break;
                         case Alignment.Right: { mx -= mw; } break;
                     }
-                    int my = (int)position.Y;
+                    int my = (int)Position.Y;
 
                     if (input.MouseX() > mx && input.MouseX() < mx + mw && input.MouseY() > my && input.MouseY() < my + mh)
                     {
@@ -174,6 +170,7 @@ namespace BluEngine
         {
             if (this.active)
             {
+                Texture2D texture = Source;
                 if (down)
                 {
                     if (texture != null)
@@ -184,13 +181,14 @@ namespace BluEngine
                         }
                         else
                         {
-                            spriteBatch.Draw(this.texture, Position - GetAlignment(texture), Color.White);
+                            spriteBatch.Draw(texture, Position - GetAlignment(texture), Color.White);
                         }
                     }
                 }
                 else
                 {
-                    if (texture != null) spriteBatch.Draw(this.texture, Position - GetAlignment(texture), Color.White);
+                    if (texture != null)
+                        spriteBatch.Draw(texture, Position - GetAlignment(texture), Color.White);
 
                     if(font != null || text != null)
                         spriteBatch.DrawString(font, text, Position - GetAlignment(text, font), Color.Black);
