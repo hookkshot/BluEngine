@@ -9,6 +9,9 @@ namespace BluEngine
 {
     public class InputControl
     {
+        public delegate bool MouseEvent(int button, Point mousePos);
+        public delegate bool KeyEvent(Keys key);
+        
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
 
@@ -62,18 +65,8 @@ namespace BluEngine
         
         public bool MouseHold(int i)
         {
-            ButtonState current;
-            switch (i)
-            {
-                case 5: current = currentMouseState.XButton2; break;
-                case 4: current = currentMouseState.XButton1; break;
-                case 3: current = currentMouseState.MiddleButton; break;
-                case 2: current = currentMouseState.RightButton; break;
-                default:
-                case 1: current = currentMouseState.LeftButton; break;
-            }
-
-            return current == ButtonState.Pressed;
+            ButtonState state;
+            return !MouseChanged(i, out state) && state == ButtonState.Pressed;
         }
 
         public Vector2 LeftMouseOrigin()
@@ -113,7 +106,6 @@ namespace BluEngine
 
         public string InputField(string val)
         {
-            
             return val;
         }
 
