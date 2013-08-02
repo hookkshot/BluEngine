@@ -57,7 +57,7 @@ namespace BluEngine
         protected string indexChar = "|";
 
         public event MenuItemEvent Submitted;
-        public event TextboxKeyEvent KeyPressed; //return true if the input is handled
+        public event TextboxKeyEvent OnKeyPressed; //return true if the input is handled
 
         Keys[] keysToCheck = new Keys[] {Keys.A, Keys.B, Keys.C, Keys.D, Keys.E,
             Keys.F, Keys.G, Keys.H, Keys.I, Keys.J,
@@ -138,7 +138,7 @@ namespace BluEngine
         {
             if (inFocus)
             {
-                if (input.MousePress(1))
+                if (input.MousePressed(1))
                 {
                     if (input.MouseX() > Position.X && input.MouseX() < (Position.X + width) && input.MouseY() > Position.Y && input.MouseY() < (Position.Y + height))
                     {
@@ -154,7 +154,7 @@ namespace BluEngine
                 {                   
                     foreach (Keys key in keysToCheck)
                     {
-                        if (input.KeyHit(key) && (KeyPressed == null || !KeyPressed(this, key)))
+                        if (input.KeyPressed(key) && (OnKeyPressed == null || !OnKeyPressed(this, key)))
                         {
                             switch (key)
                             {
