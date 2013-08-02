@@ -6,12 +6,13 @@ using BluEngine.ScreenManager.Widgets;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using BluEngine.Engine;
 
 namespace BluEngine.ScreenManager
 {
     public class WidgetScreen : GameScreen
     {
-        private Widget baseWidget = new Widget();
+        private Widget baseWidget = new ScreenWidget();
         private ContentManager content;
         private Widget[] mouseDownWidgets = new Widget[]{null,null,null,null,null};
         private Widget mouseHoverWidget = null;
@@ -47,6 +48,14 @@ namespace BluEngine.ScreenManager
             Keys.RightControl, Keys.LeftAlt, Keys.RightAlt
         };
 
+        /// <summary>
+        /// The base widget object. Add your child widgets to this via their constructors or by setting their Parent property.
+        /// </summary>
+        public Widget Base
+        {
+            get { return baseWidget; }
+        }
+
         public override void LoadContent()
         {
             content = new ContentManager(ScreenManager.Game.Services);
@@ -64,9 +73,7 @@ namespace BluEngine.ScreenManager
             Point mousePos = new Point(input.MouseX(), input.MouseY());
             
             //get widget at mouse point
-            //(consider the base widget as being null)
-            Widget widgetAtPoint = baseWidget.ChildAtPoint(mousePos);
-            widgetAtPoint = widgetAtPoint == baseWidget ? null : widgetAtPoint;
+            Widget widgetAtPoint = baseWidget.ChildAtPoint(mousePos,HitFlags.Mouse);
 
             //fire off mouse enter/leave events
             if (widgetAtPoint != mouseHoverWidget)

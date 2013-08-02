@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\HitFlags.cs" />
     <Compile Include="GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="Engine\HierarchicalDrawable.cs" />
     <Compile Include="Engine\HierarchicalObject.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="Engine\IInvalidatable.cs" />
     <Compile Include="ScreenManager\WidgetScreen.cs" />
+    <Compile Include="ScreenManager\Widgets\ScreenWidget.cs" />
     <Compile Include="ScreenManager\Widgets\Style.cs" />
     <Compile Include="ScreenManager\Widgets\Widget.cs" />
   </ItemGroup>
