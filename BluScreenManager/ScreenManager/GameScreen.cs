@@ -11,6 +11,7 @@ using System;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using AurelienRibon.TweenEngine;
 #endregion
 
 namespace BluEngine
@@ -34,7 +35,23 @@ namespace BluEngine
     public abstract class GameScreen
     {
         #region Properties
-        
+
+        /// <summary>
+        /// TweenManager instance for animations, etc.
+        /// </summary>
+        public TweenManager TweenManager
+        {
+            get { return tweenManager; }
+        }
+        private TweenManager tweenManager;
+
+        public float TweenSpeed
+        {
+            get { return tweenSpeed; }
+            set { tweenSpeed = value < 0.1f || value > 5.0f ? 1.0f : value; }
+        }
+        private float tweenSpeed = 1.0f;
+
         public ContentManager Content
         {
             get { return content; }
@@ -88,6 +105,7 @@ namespace BluEngine
         {
             content = new ContentManager(ScreenManager.Game.Services);
             content.RootDirectory = "Content";
+            tweenManager = new TweenManager();
         }
 
 
@@ -96,6 +114,7 @@ namespace BluEngine
         /// </summary>
         public virtual void UnloadContent()
         {
+            tweenManager.KillAll();
             content.Dispose();
         }
 
@@ -110,8 +129,10 @@ namespace BluEngine
         /// Unlike HandleInput, this method is called regardless of whether the screen
         /// is active, hidden, or in the middle of a transition.
         /// </summary>
-        public virtual void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) { }
-
+        public virtual void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        {
+            tweenManager.Update((float)gameTime.ElapsedGameTime.TotalSeconds * tweenSpeed);
+        }
 
         /// <summary>
         /// Allows the screen to handle user input. Unlike Update, this method

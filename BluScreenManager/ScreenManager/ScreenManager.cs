@@ -103,7 +103,6 @@ namespace BluEngine.ScreenManager
 
         #region Initialization
 
-
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
@@ -136,7 +135,6 @@ namespace BluEngine.ScreenManager
         {
             // Load content belonging to the screen manager.
             ContentManager content = Game.Content;
-
             
             spriteBatch = new SpriteBatch(GraphicsDevice);
             filler = new Texture2D(GraphicsDevice, 1, 1);
@@ -146,9 +144,7 @@ namespace BluEngine.ScreenManager
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
-            {
                 screen.LoadContent();
-            }
         }
 
 
@@ -159,9 +155,7 @@ namespace BluEngine.ScreenManager
         {
             // Tell each of the screens to unload their content.
             foreach (GameScreen screen in screens)
-            {
                 screen.UnloadContent();
-            }
             Console.WriteLine("Screen Unloaded");
         }
 
@@ -271,9 +265,7 @@ namespace BluEngine.ScreenManager
         {
             // If we have a graphics device, tell the screen to unload content.
             if (isInitialized)
-            {
                 screen.UnloadContent();
-            }
 
             screens.Remove(screen);
             screensToUpdate.Remove(screen);

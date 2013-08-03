@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using BluEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 
+
 namespace BluEngine.ScreenManager
 {
     public class WidgetScreen : GameScreen
@@ -58,11 +59,15 @@ namespace BluEngine.ScreenManager
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+
             baseWidget.UpdateAll(gameTime);
         }
 
         public override void HandleInput(InputControl input)
         {
+            base.HandleInput(input);
+            
             //store mouse pos
             Point mousePos = new Point(input.MouseX(), input.MouseY());
             
@@ -119,6 +124,8 @@ namespace BluEngine.ScreenManager
 
         public override void Draw(GameTime gameTime)
         {
+            base.Draw(gameTime);
+            
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             spriteBatch.Begin();
             baseWidget.DrawAll(spriteBatch);
