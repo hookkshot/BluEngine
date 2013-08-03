@@ -26,13 +26,21 @@ namespace BluEngine.Engine
         }
         private BluEngine.ScreenManager.ScreenManager screenManager;
 
-        public BluGame(Type firstScreen) : base()
+        public BluGame(Type firstScreenType) : base()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
             Content.RootDirectory = "Content";
-            this.firstScreen = firstScreen;
+
+            if (firstScreenType != null)
+            {
+                //check that the supplied type is valid
+                if (firstScreenType == typeof(GameScreen) || firstScreenType.IsSubclassOf(typeof(GameScreen)))
+                    firstScreen = firstScreenType;
+                else
+                    Console.WriteLine("Reflection error: Type supplied to BluGame xtor is not a valid GameScreen type!");
+            }
         }
         public BluGame() : this(null) { }
 
