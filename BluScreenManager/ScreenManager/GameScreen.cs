@@ -45,6 +45,9 @@ namespace BluEngine
         }
         private TweenManager tweenManager;
 
+        /// <summary>
+        /// The global speed multiplier of all Tweens used on this screen.
+        /// </summary>
         public float TweenSpeed
         {
             get { return tweenSpeed; }
@@ -52,6 +55,9 @@ namespace BluEngine
         }
         private float tweenSpeed = 1.0f;
 
+        /// <summary>
+        /// ContentManager for this screen's content.
+        /// </summary>
         public ContentManager Content
         {
             get { return content; }
