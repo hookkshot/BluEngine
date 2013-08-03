@@ -63,7 +63,7 @@ namespace BluEngine.ScreenManager.Widgets
 
         public override Style CurrentStyle
         {
-            get { return Enabled ? (mouseDown ? (mouseEntered ? downStyle : Style) : (mouseEntered ? hoverStyle : Style)) : disabledStyle; }
+            get { return Enabled ? (OnClick != null ? (mouseDown ? (mouseEntered ? downStyle : Style) : (mouseEntered ? hoverStyle : Style)) : Style) : disabledStyle; }
         }
 
         public override void MouseEnter(Point pt)
