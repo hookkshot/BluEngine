@@ -15,6 +15,7 @@ namespace BluEngine.Engine
 	public class BluGame : Game
 	{
         private GraphicsDeviceManager graphics;
+        private Type firstScreen = null;
 
         /// <summary>
         /// ScreenManager instance in use by this BluGame.
@@ -25,13 +26,15 @@ namespace BluEngine.Engine
         }
         private BluEngine.ScreenManager.ScreenManager screenManager;
 
-        public BluGame() : base()
+        public BluGame(Type firstScreen) : base()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
             Content.RootDirectory = "Content";
+            this.firstScreen = firstScreen;
         }
+        public BluGame() : this(null) { }
 
         protected override void Initialize()
         {
@@ -45,6 +48,8 @@ namespace BluEngine.Engine
             RegisterTweenAccessors();
             screenManager = new BluEngine.ScreenManager.ScreenManager(this, "Fonts\\smallfont");
             screenManager.Initialize();
+            if (firstScreen != null)
+                screenManager.AddScreen((GameScreen)firstScreen.GetConstructor(new Type[] {}).Invoke(new object[] {}));
         }
 
         protected virtual void RegisterTweenAccessors()
