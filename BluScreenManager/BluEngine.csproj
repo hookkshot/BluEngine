@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\BluGame.cs" />
     <Compile Include="Engine\HitFlags.cs" />
     <Compile Include="GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="Engine\HierarchicalDrawable.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="ScreenManager\Widgets\Style.cs" />
     <Compile Include="ScreenManager\Widgets\StyleSheet.cs" />
     <Compile Include="ScreenManager\Widgets\Widget.cs" />
+    <Compile Include="TweenAccessors\WidgetAccessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SDL.dll">
