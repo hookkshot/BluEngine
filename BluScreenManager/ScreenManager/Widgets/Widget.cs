@@ -197,7 +197,7 @@ namespace BluEngine.ScreenManager.Widgets
         public virtual float Right
         {
             get { return bounds.X + bounds.W; }
-            set { Left = value - bounds.W; }
+            set { float diff = value - bounds.W; bounds.W += diff; bounds.X -= diff; }
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace BluEngine.ScreenManager.Widgets
         public virtual float Bottom
         {
             get { return bounds.Y + bounds.Z; }
-            set { Top = value - bounds.Z; }
+            set { float diff = value - bounds.Z; bounds.Z += diff; bounds.Y -= diff; }
         }
 
         /// <summary>
@@ -313,15 +313,12 @@ namespace BluEngine.ScreenManager.Widgets
             Style currentStyle = CurrentStyle;
             float alpha = currentStyle.Alpha ?? 1.0f;
 
-            //fill
-            Texture2D tex = currentStyle.Fill;
-            if (tex != null)
-                spriteBatch.Draw(tex, CalculatedBoundsI, Color.White * alpha);
-
-            //overlay
-            tex = currentStyle.Overlay;
-            if (tex != null)
-                spriteBatch.Draw(tex, CalculatedBoundsI, Color.White * alpha);
+            for (int i = 0; i < Style.STYLE_LAYERS; i++)
+            {
+                ImageLayer layer = currentStyle[i];
+                if (layer != null)
+                    layer.Draw(spriteBatch,this,Color.White * alpha);
+            }
         }
 
         public virtual void MouseEnter(Point pt)

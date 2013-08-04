@@ -28,14 +28,10 @@ namespace BluEngine.ScreenManager.Widgets
             control = new Style(baseStyle);
 
             //button styles
-            button = new Style(control) { Alpha = 0.5f };
+            button = new Style(control);
             buttonDisabled = new Style(button);
-            buttonDisabled.Overlay = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            buttonDisabled.Overlay.SetData<Color>(new Color[] { Color.DimGray * 0.3f });
-            buttonHover = new Style(button) { Alpha = 1.0f };
-            buttonDown = new Style(buttonHover);
-            buttonDown.Overlay = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            buttonDown.Overlay.SetData<Color>(new Color[] { Color.White * 0.3f });
+            buttonHover = new Style(button);
+            buttonDown = new Style(button);
         }
 
         public Style Base { get { return baseStyle; } }

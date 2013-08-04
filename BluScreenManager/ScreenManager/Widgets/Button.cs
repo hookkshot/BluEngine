@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BluEngine.ScreenManager.Widgets
 {
+    /// <summary>
+    /// A specialised widget designed for handling click events.
+    /// </summary>
     public class Button : Control
     {
         private bool mouseEntered = false;
@@ -53,12 +56,12 @@ namespace BluEngine.ScreenManager.Widgets
             hoverStyle = new Style(Widget.Styles.ButtonHover);
         }
 
-        public virtual void SetAllStateFills(Texture2D tex)
+        public void SetAllStyleLayers(int imageLayerIndex, ImageLayer value)
         {
-            Style.Fill = tex;
-            disabledStyle.Fill = tex;
-            downStyle.Fill = tex;
-            hoverStyle.Fill = tex;
+            Style[imageLayerIndex]
+                = downStyle[imageLayerIndex]
+                = hoverStyle[imageLayerIndex]
+                = disabledStyle[imageLayerIndex] = value;
         }
 
         public override Style CurrentStyle

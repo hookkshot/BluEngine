@@ -84,6 +84,7 @@
     <Compile Include="ScreenManager\WidgetScreen.cs" />
     <Compile Include="ScreenManager\Widgets\Button.cs" />
     <Compile Include="ScreenManager\Widgets\Control.cs" />
+    <Compile Include="ScreenManager\Widgets\ImageLayer.cs" />
     <Compile Include="ScreenManager\Widgets\ScreenWidget.cs" />
     <Compile Include="ScreenManager\Widgets\Style.cs" />
     <Compile Include="ScreenManager\Widgets\StyleSheet.cs" />
