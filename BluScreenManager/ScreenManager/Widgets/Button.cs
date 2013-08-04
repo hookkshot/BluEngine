@@ -97,10 +97,8 @@ namespace BluEngine.ScreenManager.Widgets
                     mouseDown = false;
                     if (Enabled && CalculatedBoundsI.Contains(pt))
                     {
-                        Console.WriteLine("Click! ^_^");
-                        
                         if (OnClick != null)
-                            OnClick(pt);
+                            OnClick(this, pt);
                     }
                 }
             }

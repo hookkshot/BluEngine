@@ -14,9 +14,9 @@ namespace BluEngine.ScreenManager.Widgets
     /// </summary>
     public class Widget : HierarchicalDrawable, IInvalidatable, IScreenDimensionsProvider
     {
-        public delegate void MouseEvent(Point mousePos);
-        public delegate void MouseButtonEvent(Point mousePos, int button);
-        public delegate void KeyEvent(Keys key);
+        public delegate void MouseEvent(Widget widget, Point mousePos);
+        public delegate void MouseButtonEvent(Widget widget, Point mousePos, int button);
+        public delegate void KeyEvent(Widget widget, Keys key);
 
         private static StyleSheet styles = new StyleSheet();
         private Vector4 bounds = new Vector4(0.0f,0.0f,1.0f,1.0f); //percentages of the parent control (W = Width, Z = Height)
@@ -324,37 +324,37 @@ namespace BluEngine.ScreenManager.Widgets
         public virtual void MouseEnter(Point pt)
         {
             if (OnMouseEnter != null)
-                OnMouseEnter(pt);
+                OnMouseEnter(this, pt);
         }
 
         public virtual void MouseLeave(Point pt)
         {
             if (OnMouseLeave != null)
-                OnMouseLeave(pt);
+                OnMouseLeave(this, pt);
         }
 
         public virtual void MouseDown(Point pt, int button)
         {
             if (OnMouseDown!= null)
-                OnMouseDown(pt, button);
+                OnMouseDown(this, pt, button);
         }
 
         public virtual void MouseUp(Point pt, int button)
         {
             if (OnMouseUp != null)
-                OnMouseUp(pt, button);
+                OnMouseUp(this, pt, button);
         }
 
         public virtual void KeyDown(Keys key)
         {
             if (OnKeyDown != null)
-                OnKeyDown(key);
+                OnKeyDown(this, key);
         }
 
         public virtual void KeyUp(Keys key)
         {
             if (OnKeyUp != null)
-                OnKeyUp(key);
+                OnKeyUp(this, key);
         }
 
         public float ScreenX
