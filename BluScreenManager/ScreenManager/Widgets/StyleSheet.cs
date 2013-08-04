@@ -29,7 +29,7 @@ namespace BluEngine.ScreenManager.Widgets
 
             //button styles
             button = new Style(control);
-            buttonDisabled = new Style(button);
+            buttonDisabled = new Style(button) { Alpha = 0.6f};
             buttonHover = new Style(button);
             buttonDown = new Style(button);
         }
