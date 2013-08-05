@@ -6,9 +6,7 @@ using System.Xml.Serialization;
 
 using Microsoft.Xna.Framework;
 
-using BluEngine.Engine;
-
-namespace BluEngine.GameObjects
+namespace BluEngine.Engine.GameObjects
 {
     public class CollisionBoxComponent : Transform
     {

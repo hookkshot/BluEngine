@@ -5,7 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
-namespace BluEngine.GameObjects
+namespace BluEngine.Engine.GameObjects
 {
     public class Transform : GameObjectComponent
     {
