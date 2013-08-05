@@ -69,26 +69,26 @@ namespace BluEngine.ScreenManager.Widgets
             get { return Enabled ? (OnClick != null ? (mouseDown ? (mouseEntered ? downStyle : Style) : (mouseEntered ? hoverStyle : Style)) : Style) : disabledStyle; }
         }
 
-        public override void MouseEnter(Point pt)
+        public override bool MouseEnter(Point pt)
         {
-            base.MouseEnter(pt);
             mouseEntered = true;
+            return base.MouseEnter(pt);
         }
 
-        public override void MouseLeave(Point pt)
+        public override bool MouseLeave(Point pt)
         {
             mouseEntered = false;
-            base.MouseLeave(pt);
+            return base.MouseLeave(pt);
         }
 
-        public override void MouseDown(Point pt, int button)
+        public override bool MouseDown(Point pt, int button)
         {
-            base.MouseDown(pt, button);
             if (button == 1 && Enabled)
                 mouseDown = true;
+            return base.MouseDown(pt, button);
         }
 
-        public override void MouseUp(Point pt, int button)
+        public override bool MouseUp(Point pt, int button)
         {
             if (button == 1)
             {
@@ -102,7 +102,7 @@ namespace BluEngine.ScreenManager.Widgets
                     }
                 }
             }
-            base.MouseUp(pt, button);
+            return base.MouseUp(pt, button);
         }
     }
 }

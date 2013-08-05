@@ -14,9 +14,9 @@ namespace BluEngine.ScreenManager.Widgets
     /// </summary>
     public class Widget : HierarchicalDrawable, IInvalidatable, IScreenDimensionsProvider
     {
-        public delegate void MouseEvent(Widget widget, Point mousePos);
-        public delegate void MouseButtonEvent(Widget widget, Point mousePos, int button);
-        public delegate void KeyEvent(Widget widget, Keys key);
+        public delegate bool MouseEvent(Widget widget, Point mousePos);
+        public delegate bool MouseButtonEvent(Widget widget, Point mousePos, int button);
+        public delegate bool KeyEvent(Widget widget, Keys key);
 
         private static StyleSheet styles = new StyleSheet();
         private Vector4 bounds = new Vector4(0.0f,0.0f,1.0f,1.0f); //percentages of the parent control (W = Width, Z = Height)
@@ -25,6 +25,7 @@ namespace BluEngine.ScreenManager.Widgets
         private bool valid = false;
         private Style style = new Style(Styles.Base);
         private HitFlags hitFlags = HitFlags.None;
+
         public event MouseEvent OnMouseEnter;
         public event MouseEvent OnMouseLeave;
         public event MouseButtonEvent OnMouseDown;
@@ -302,6 +303,10 @@ namespace BluEngine.ScreenManager.Widgets
             return (HitFlags & hitflags) != 0 && CalculatedBoundsI.Contains(pt) ? this : null;
         }
 
+        /// <summary>
+        /// Draws this widget.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch passed in from the ScreenManager.</param>
         protected override void Draw(SpriteBatch spriteBatch)
         {
             if (Invalidated)
@@ -321,40 +326,66 @@ namespace BluEngine.ScreenManager.Widgets
             }
         }
 
-        public virtual void MouseEnter(Point pt)
+        /// <summary>
+        /// Function called when this Widget recieves a MouseEnter event from the WidgetScreen base.
+        /// </summary>
+        /// <param name="pt">The screen coords of the event.</param>
+        /// <returns>True if this event has been handled and should not be passed down to a "world" layer (if one is present), false otherwise.</returns>
+        public virtual bool MouseEnter(Point pt)
         {
-            if (OnMouseEnter != null)
-                OnMouseEnter(this, pt);
+            return OnMouseEnter != null ? OnMouseEnter(this, pt) : false;
         }
 
-        public virtual void MouseLeave(Point pt)
+        /// <summary>
+        /// Function called when this Widget recieves a MouseLeave event from the WidgetScreen base.
+        /// </summary>
+        /// <param name="pt">The screen coords of the event.</param>
+        /// <returns>True if this event has been handled and should not be passed down to a "world" layer (if one is present), false otherwise.</returns>
+        public virtual bool MouseLeave(Point pt)
         {
-            if (OnMouseLeave != null)
-                OnMouseLeave(this, pt);
+            return OnMouseLeave != null ? OnMouseLeave(this, pt) : false;
         }
 
-        public virtual void MouseDown(Point pt, int button)
+        /// <summary>
+        /// Function called when this Widget recieves a MouseDown event from the WidgetScreen base.
+        /// </summary>
+        /// <param name="pt">The screen coords of the event.</param>
+        /// <param name="button">The 1-indexed number of the mouse button according to the constants defined in InputControl.</param>
+        /// <returns>True if this event has been handled and should not be passed down to a "world" layer (if one is present).</returns>
+        public virtual bool MouseDown(Point pt, int button)
         {
-            if (OnMouseDown!= null)
-                OnMouseDown(this, pt, button);
+            return OnMouseDown != null ? OnMouseDown(this, pt, button) : false;
         }
 
-        public virtual void MouseUp(Point pt, int button)
+        /// <summary>
+        /// Function called when this Widget recieves a MouseUp event from the WidgetScreen base.
+        /// </summary>
+        /// <param name="pt">The screen coords of the event.</param>
+        /// <param name="button">The 1-indexed number of the mouse button according to the constants defined in InputControl.</param>
+        /// <returns>True if this event has been handled and should not be passed down to a "world" layer (if one is present).</returns>
+        public virtual bool MouseUp(Point pt, int button)
         {
-            if (OnMouseUp != null)
-                OnMouseUp(this, pt, button);
+            return OnMouseUp != null ? OnMouseUp(this, pt, button) : false;
         }
 
-        public virtual void KeyDown(Keys key)
+        /// <summary>
+        /// Function called when this Widget recieves a KeyDown event from the WidgetScreen base.
+        /// </summary>
+        /// <param name="key">The key that was pressed.</param>
+        /// <returns>True if this event has been handled and should not be passed down to a "world" layer (if one is present).</returns>
+        public virtual bool KeyDown(Keys key)
         {
-            if (OnKeyDown != null)
-                OnKeyDown(this, key);
+            return OnKeyDown != null ? OnKeyDown(this, key) : false;
         }
 
-        public virtual void KeyUp(Keys key)
+        /// <summary>
+        /// Function called when this Widget recieves a KeyUp event from the WidgetScreen base.
+        /// </summary>
+        /// <param name="key">The key that was released.</param>
+        /// <returns>True if this event has been handled and should not be passed down to a "world" layer (if one is present).</returns>
+        public virtual bool KeyUp(Keys key)
         {
-            if (OnKeyUp != null)
-                OnKeyUp(this, key);
+            return OnKeyUp != null ? OnKeyUp(this, key) : false;
         }
 
         public float ScreenX
