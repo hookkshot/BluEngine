@@ -16,7 +16,7 @@ namespace BluEngine.Engine.GameObjects
         protected float rotation = 0.0f;
         protected float scale = 1.0f;
 
-        protected List<GameObjectComponent> components = new List<GameObjectComponent>();
+        private Dictionary<Type, GameObjectComponent> components = new Dictionary<Type, GameObjectComponent>();
 
         #endregion
 
@@ -33,10 +33,35 @@ namespace BluEngine.Engine.GameObjects
 
         /// <summary>
         /// Returns list of all attached Game Object components.
+        ///
+        /// I'd recommend not leaving the actual data structure exposed as it will cause a bit of a security issue, since in doing that you can't police how the collection is accessed directly...
         /// </summary>
-        public List<GameObjectComponent> Components
+        //public Dictionary<Type, GameObjectComponent> Components
+        //{
+        //    get { return components; }
+        //}
+
+        /// <summary>
+        /// The attached GameObjectComponent of the given Type.
+        /// </summary>
+        /// <param name="t">The type of the component to access (a subclass of GameObjectComponent).</param>
+        /// <returns>The GameObjectComponent, or null.</returns>
+        public GameObjectComponent this[Type t]
         {
-            get { return components; }
+            get
+            {
+                if (t == null || !t.IsSubclassOf(typeof(GameObjectComponent)))
+                    return null;
+                GameObjectComponent outValue = null;
+                components.TryGetValue(t, out outValue);
+                return outValue;
+            }
+            set
+            {
+                if (t == null || !t.IsSubclassOf(typeof(GameObjectComponent)))
+                    return;
+                components[t] = value;
+            }
         }
 
         #endregion
@@ -48,9 +73,9 @@ namespace BluEngine.Engine.GameObjects
         /// </summary>
         public virtual void Update(GameTime gameTime)
         {
-            foreach (GameObjectComponent comp in components)
+            foreach (KeyValuePair<Type,GameObjectComponent> kvp in components)
             {
-                comp.Update(gameTime);
+                kvp.Value.Update(gameTime);
             }
         }
 
@@ -65,9 +90,9 @@ namespace BluEngine.Engine.GameObjects
         /// <param name="screenOffset">The offset of the gamescreen to the game world.</param>
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenOffset)
         {
-            foreach (GameObjectComponent comp in components)
+            foreach (KeyValuePair<Type, GameObjectComponent> kvp in components)
             {
-                comp.Draw(spriteBatch, screenOffset);
+                kvp.Value.Draw(spriteBatch, screenOffset);
             }
         }
 
