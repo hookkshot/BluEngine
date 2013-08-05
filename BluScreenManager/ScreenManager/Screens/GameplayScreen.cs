@@ -28,25 +28,26 @@ namespace BluEngine.ScreenManager.Screens
         }
 
         /*
-        //functions you could directly
+        //functions you can directly
         //override in subclasses of this class:
         protected override void MouseMove(Point mousePos, Point prevPos) {}
         protected override void MouseDown(Point mousePos, int button) { }
         protected override void MouseUp(Point mousePos, int button) { }
         protected override void KeyDown(Keys key) { }
         protected override void KeyUp(Keys key) { }
-        protected virtual void UpdateWorld(GameTime gameTime) { }
+        protected override void UpdateWorld(GameTime gameTime) { }
          
-        //you could also override these, but ensure you call the base versionsotherwise the UI will be invisible or dead
+        //you can also override these, but ensure you call the base
+        //versions otherwise the UI will be invisible or dead
         protected override void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.DrawUI(gameTime,spriteBatch);
         }
 
-        protected virtual void UpdateUI(GameTime gameTime)
+        protected override void UpdateUI(GameTime gameTime)
         {
             base.UpdateUI(gameTime,spriteBatch);
         }
-         */ 
+         */
     }
 }
