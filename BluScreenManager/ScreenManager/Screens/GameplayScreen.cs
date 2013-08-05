@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using BluEngine.Engine.GameObjects;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace BluEngine.ScreenManager.Screens
+{
+    public class GameplayScreen : WidgetScreen
+    {
+        private List<GameObject> gameObjects = new List<GameObject>();
+        private GameObject viewScreen;
+
+        protected override void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.Draw(spriteBatch, viewScreen.Position);
+            }
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            viewScreen = new GameObject();
+        }
+
+        /*
+        //functions you could directly
+        //override in subclasses of this class:
+        protected override void MouseMove(Point mousePos, Point prevPos) {}
+        protected override void MouseDown(Point mousePos, int button) { }
+        protected override void MouseUp(Point mousePos, int button) { }
+        protected override void KeyDown(Keys key) { }
+        protected override void KeyUp(Keys key) { }
+        protected virtual void UpdateWorld(GameTime gameTime) { }
+         
+        //you could also override these, but ensure you call the base versionsotherwise the UI will be invisible or dead
+        protected override void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            base.DrawUI(gameTime,spriteBatch);
+        }
+
+        protected virtual void UpdateUI(GameTime gameTime)
+        {
+            base.UpdateUI(gameTime,spriteBatch);
+        }
+         */ 
+    }
+}

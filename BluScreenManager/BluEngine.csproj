@@ -68,6 +68,7 @@
     <Compile Include="Engine\GameObjects\GameObjectComponent.cs" />
     <Compile Include="Engine\GameObjects\Sprite.cs" />
     <Compile Include="Engine\GameObjects\Transform.cs" />
+    <Compile Include="ScreenManager\Screens\GameplayScreen.cs" />
     <Compile Include="ScreenManager\Screens\GameScreen.cs" />
     <Compile Include="ScreenManager\InputControl.cs" />
     <Compile Include="ScreenManager\MenuItems\Button.cs" />

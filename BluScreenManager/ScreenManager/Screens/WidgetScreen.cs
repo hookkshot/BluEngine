@@ -12,6 +12,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BluEngine.ScreenManager
 {
+    /// <summary>
+    /// A generalized screen that maintains a layer of UI "widgets" (resolution-independant controls) over the top of a user-definable "world" layer (can be nothing).
+    /// </summary>
     public class WidgetScreen : GameScreen
     {
         private ScreenWidget baseWidget = new ScreenWidget();
@@ -57,79 +60,187 @@ namespace BluEngine.ScreenManager
             get { return baseWidget; }
         }
 
+        /// <summary>
+        /// Update any "world" layer information, then all widgets. You should not need to override this in children; use UpdateWorld and UpdateUI for specialization.
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Update().</param>
+        /// <param name="otherScreenHasFocus"></param>
+        /// <param name="coveredByOtherScreen"></param>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+            UpdateWorld(gameTime);
+            UpdateUI(gameTime);
+        }
 
+        /// <summary>
+        /// If this WidgetScreen has a "world" layer to it, perform it's updates here.
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Update().</param>
+        protected virtual void UpdateWorld(GameTime gameTime) { }
+
+        /// <summary>
+        /// Update the UI layer of this WidgetScreen.
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Update().</param>
+        protected virtual void UpdateUI(GameTime gameTime)
+        {
             baseWidget.UpdateAll(gameTime);
         }
 
+        /// <summary>
+        /// Handles the input provided by the ScreenManager's InputControl. You should not need to override this - use the specialized input methods instead!
+        /// </summary>
+        /// <param name="input">The InputControl object passed in from the ScreenManager.</param>
         public override void HandleInput(InputControl input)
         {
             base.HandleInput(input);
-            
+
             //store mouse pos
-            Point mousePos = new Point(input.MouseX(), input.MouseY());
+            Point mousePos = input.CurrentMouse;
+
+            //check for a  widget at mouse point
+            Widget widgetAtPoint = baseWidget.ChildAtPoint(mousePos, HitFlags.Mouse);
             
-            //get widget at mouse point
-            Widget widgetAtPoint = baseWidget.ChildAtPoint(mousePos,HitFlags.Mouse);
-
-            //fire off mouse enter/leave events
-            if (widgetAtPoint != mouseHoverWidget)
+            //handle mouse movement
+            bool cascade = true;
+            if (input.MouseMoved())
             {
-                if (mouseHoverWidget != null)
-                    mouseHoverWidget.MouseLeave(mousePos);
+                //check for mouse enter/leave events
+                if (widgetAtPoint != mouseHoverWidget)
+                {
+                    if (mouseHoverWidget != null)
+                        cascade = !mouseHoverWidget.MouseLeave(mousePos);
 
-                mouseHoverWidget = widgetAtPoint;
+                    mouseHoverWidget = widgetAtPoint;
 
-                if (mouseHoverWidget != null)
-                    mouseHoverWidget.MouseEnter(mousePos);
+                    if (mouseHoverWidget != null)
+                        cascade &= !mouseHoverWidget.MouseEnter(mousePos);
+                }
+
+                if (cascade)
+                    MouseMove(mousePos,input.PreviousMouse);
             }
 
-            //check mouse button events
+            //handle mouse clicks
             for (int i = 1; i <= 5; i++)
             {
                 ButtonState current;
                 if (input.MouseChanged(i,out current))
                 {
+                    cascade = true;
                     if (current == ButtonState.Pressed)
                     {
                         mouseDownWidgets[i-1] = widgetAtPoint;
                         if (widgetAtPoint != null)
-                            widgetAtPoint.MouseDown(mousePos,i);
+                            cascade = !widgetAtPoint.MouseDown(mousePos, i);
+
+                        if (cascade)
+                            MouseDown(mousePos, i);
                     }
                     else
                     {
                         if (mouseDownWidgets[i-1] != null)
-                            mouseDownWidgets[i-1].MouseUp(mousePos,i);
+                            cascade = !mouseDownWidgets[i - 1].MouseUp(mousePos, i);
                         mouseDownWidgets[i-1] = null;
-                    }
 
+                        if (cascade)
+                            MouseUp(mousePos, i);
+                    }
                 }
             }
 
             //check keyboard events
-            if (selectedWidget != null)
+            for (int i = 0; i < watchedKeys.Length; i++)
             {
-                for (int i = 0; i < watchedKeys.Length; i++)
+                if (input.KeyReleased(watchedKeys[i]))
                 {
-                    if (input.KeyReleased(watchedKeys[i]))
-                        selectedWidget.KeyUp(watchedKeys[i]);
+                    cascade = true;
+                    if (selectedWidget != null)
+                        cascade = !selectedWidget.KeyUp(watchedKeys[i]);
+                    if (cascade)
+                        KeyUp(watchedKeys[i]);
+                }
 
-                    if (input.KeyPressed(watchedKeys[i]))
-                        selectedWidget.KeyDown(watchedKeys[i]);
+                if (input.KeyPressed(watchedKeys[i]))
+                {
+                    cascade = true;
+                    if (selectedWidget != null)
+                        cascade = !selectedWidget.KeyDown(watchedKeys[i]);
+                    if (cascade)
+                        KeyDown(watchedKeys[i]);
                 }
             }
         }
 
+        /// <summary>
+        /// MouseMove events passed down to the "world" layer. This may not fire - the UI layer can cancel these events before they cascade down to the world layer.
+        /// </summary>
+        /// <param name="mousePos">The new mouse position.</param>
+        /// <param name="prevPos">The old mouse position.</param>
+        protected virtual void MouseMove(Point mousePos, Point prevPos) {}
+
+        /// <summary>
+        /// MouseDown events passed down to the "world" layer. This may not fire - the UI layer can cancel these events before they cascade down to the world layer.
+        /// </summary>
+        /// <param name="pt">The screen coords of the event.</param>
+        /// <param name="button">The 1-indexed number of the mouse button according to the constants defined in InputControl.</param>
+        protected virtual void MouseDown(Point mousePos, int button) { }
+
+        /// <summary>
+        /// MouseUp events passed down to the "world" layer. This may not fire - the UI layer can cancel these events before they cascade down to the world layer.
+        /// </summary>
+        /// <param name="pt">The screen coords of the event.</param>
+        /// <param name="button">The 1-indexed number of the mouse button according to the constants defined in InputControl.</param>
+        protected virtual void MouseUp(Point mousePos, int button) { }
+
+        /// <summary>
+        /// KeyDown events passed down to the "world" layer. This may not fire - the UI layer can cancel these events before they cascade down to the world layer.
+        /// </summary>
+        /// <param name="key">The key that was pressed.</param>
+        protected virtual void KeyDown(Keys key) { }
+
+        /// <summary>
+        /// KeyDown events passed down to the "world" layer. This may not fire - the UI layer can cancel these events before they cascade down to the world layer.
+        /// </summary>
+        /// <param name="key">The key that was released.</param>
+        protected virtual void KeyUp(Keys key) { }
+
+        /// <summary>
+        /// Draw any base layer then all widgets. You should not need to override this in children; use DrawWorld and DrawUI for specialization.
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Update().</param>
+        /// <param name="otherScreenHasFocus"></param>
+        /// <param name="coveredByOtherScreen"></param>
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred,BlendState.NonPremultiplied);
-            baseWidget.DrawAll(spriteBatch);
+
+            spriteBatch.Begin();
+            DrawWorld(gameTime, spriteBatch);
             spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            DrawUI(gameTime, spriteBatch);
+            spriteBatch.End();
+        }
+
+        /// <summary>
+        /// If this WidgetScreen has a "world" layer to it, perform it's drawing here.
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Draw().</param>
+        /// <param name="gameTime">The SpriteBatch object passed in from the ScreenManager.</param>
+        protected virtual void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch) {}
+
+        /// <summary>
+        /// If this WidgetScreen has a "world" layer to it, perform it's drawing here.
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Draw().</param>
+        /// <param name="gameTime">The SpriteBatch object passed in from the SCreenManager.</param>
+        protected virtual void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            baseWidget.DrawAll(spriteBatch);
         }
     }
 
