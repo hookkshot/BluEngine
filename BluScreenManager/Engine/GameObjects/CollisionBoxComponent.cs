@@ -44,7 +44,7 @@ namespace BluEngine.Engine.GameObjects
         public override Vector2 Position
         {
             get { return position; }
-            private set
+            protected set
             {
                 dirtyMatrix = true;
                 position = value;
@@ -58,7 +58,7 @@ namespace BluEngine.Engine.GameObjects
             {
                 return rotation;
             }
-            private set
+            protected set
             {
                 dirtyMatrix = true;
                 rotation = MathHelper.WrapAngle(value);
@@ -72,7 +72,7 @@ namespace BluEngine.Engine.GameObjects
             {
                 return scale;
             }
-            private set
+            protected set
             {
                 dirtyMatrix = true;
                 scale = value;
@@ -154,13 +154,6 @@ namespace BluEngine.Engine.GameObjects
         #endregion
 
         #region Methods
-
-        public void SetTransform(Vector2 Position, float Rotation, float Scale)
-        {
-            this.Position = Position;
-            this.Rotation = Rotation;
-            this.Scale = Scale;
-        }
 
         protected void recalculateTranslationMatrix()
         {

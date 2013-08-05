@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using BluEngine.GameObjects;
+using BluEngine.Engine.GameObjects;
 
 namespace BluEngine.Engine
 {

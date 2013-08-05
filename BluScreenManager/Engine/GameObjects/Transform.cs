@@ -22,19 +22,30 @@ namespace BluEngine.Engine.GameObjects
         public virtual Vector2 Position
         {
             get { return position; }
-            set { position = value; }
+            protected set { position = value; }
         }
 
         public virtual float Rotation
         {
             get { return rotation; }
-            set { rotation = value; }
+            protected set { rotation = value; }
         }
 
         public virtual float Scale
         {
             get { return scale; }
-            set { scale = value; }
+            protected set { scale = value; }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void SetTransform(Vector2 Position, float Rotation, float Scale)
+        {
+            this.Position = Position;
+            this.Rotation = Rotation;
+            this.Scale = Scale;
         }
 
         #endregion
