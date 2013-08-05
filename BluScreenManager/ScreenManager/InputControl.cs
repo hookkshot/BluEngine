@@ -9,6 +9,12 @@ namespace BluEngine
 {
     public class InputControl
     {
+        public const int MOUSE_LEFT = 1;
+        public const int MOUSE_RIGHT = 2;
+        public const int MOUSE_MIDDLE = 3;
+        public const int MOUSE_4 = 4;
+        public const int MOUSE_5 = 5;
+        
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
 
@@ -69,7 +75,7 @@ namespace BluEngine
             ButtonState state;
             return MouseChanged(i, out state) && state == ButtonState.Released;
         }
-        
+
         public bool MouseHold(int i)
         {
             ButtonState state;
@@ -106,9 +112,24 @@ namespace BluEngine
             return currentMouseState.Y;
         }
 
+        public Point CurrentMouse
+        {
+            get {return new Point(currentMouseState.X, currentMouseState.Y);}
+        }
+
+        public Point PreviousMouse
+        {
+            get { return new Point(previousMouseState.X, previousMouseState.Y); }
+        }
+
         public Vector2 MouseMove()
         {
             return new Vector2(currentMouseState.X - previousMouseState.X, currentMouseState.Y - previousMouseState.Y);
+        }
+
+        public bool MouseMoved()
+        {
+            return currentMouseState.X != previousMouseState.X || currentMouseState.Y != previousMouseState.Y;
         }
 
         public string InputField(string val)
@@ -121,12 +142,12 @@ namespace BluEngine
             ButtonState previous;
             switch (button)
             {
-                case 5: current = currentMouseState.XButton2; previous = previousMouseState.XButton2; break;
-                case 4: current = currentMouseState.XButton1; previous = previousMouseState.XButton1; break;
-                case 3: current = currentMouseState.MiddleButton; previous = previousMouseState.MiddleButton; break;
-                case 2: current = currentMouseState.RightButton; previous = previousMouseState.RightButton; break;
+                case MOUSE_5: current = currentMouseState.XButton2; previous = previousMouseState.XButton2; break;
+                case MOUSE_4: current = currentMouseState.XButton1; previous = previousMouseState.XButton1; break;
+                case MOUSE_MIDDLE: current = currentMouseState.MiddleButton; previous = previousMouseState.MiddleButton; break;
+                case MOUSE_RIGHT: current = currentMouseState.RightButton; previous = previousMouseState.RightButton; break;
                 default:
-                case 1: current = currentMouseState.LeftButton; previous = previousMouseState.LeftButton; break;
+                case MOUSE_LEFT: current = currentMouseState.LeftButton; previous = previousMouseState.LeftButton; break;
             }
             return current != previous;
         }
