@@ -56,7 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\BaseEngine.cs" />
     <Compile Include="Engine\BluGame.cs" />
+    <Compile Include="Engine\CollisionSimulator.cs" />
     <Compile Include="Engine\HitFlags.cs" />
     <Compile Include="GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="Engine\HierarchicalDrawable.cs" />

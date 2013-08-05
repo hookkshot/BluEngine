@@ -6,6 +6,8 @@ using System.Xml.Serialization;
 
 using Microsoft.Xna.Framework;
 
+using BluEngine.Engine;
+
 namespace BluEngine.GameObjects
 {
     public class CollisionBoxComponent : Transform
@@ -17,6 +19,8 @@ namespace BluEngine.GameObjects
 
         public int Width = 1;
         public int Height = 1;
+
+        public CollisionType CollisionType;
 
         [XmlIgnore()]
         protected bool dirtyMatrix = true;
@@ -42,7 +46,7 @@ namespace BluEngine.GameObjects
         public override Vector2 Position
         {
             get { return position; }
-            set
+            private set
             {
                 dirtyMatrix = true;
                 position = value;
@@ -56,7 +60,7 @@ namespace BluEngine.GameObjects
             {
                 return rotation;
             }
-            set
+            private set
             {
                 dirtyMatrix = true;
                 rotation = MathHelper.WrapAngle(value);
@@ -70,7 +74,7 @@ namespace BluEngine.GameObjects
             {
                 return scale;
             }
-            set
+            private set
             {
                 dirtyMatrix = true;
                 scale = value;
@@ -152,6 +156,13 @@ namespace BluEngine.GameObjects
         #endregion
 
         #region Methods
+
+        public void SetTransform(Vector2 Position, float Rotation, float Scale)
+        {
+            this.Position = Position;
+            this.Rotation = Rotation;
+            this.Scale = Scale;
+        }
 
         protected void recalculateTranslationMatrix()
         {
