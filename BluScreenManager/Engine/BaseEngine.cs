@@ -8,6 +8,7 @@ using BluEngine.Engine.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using BluEngine.ScreenManager.Screens;
 
 namespace BluEngine.Engine
 {

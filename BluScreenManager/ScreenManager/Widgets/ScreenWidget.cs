@@ -10,7 +10,7 @@ namespace BluEngine.ScreenManager.Widgets
     /// <summary>
     /// A special type of widget that does not allow itself to be re-parented and maintains it's bounds at a fixed ratio.
     /// </summary>
-    public class ScreenWidget : Widget
+    public sealed class ScreenWidget : Widget
     {
         /// <summary>
         /// The ratio of this widget's width to it's parent's height.
@@ -85,6 +85,21 @@ namespace BluEngine.ScreenManager.Widgets
             get { return base.Height; }
             set { ; }
         }
+
+        public override List<Type> Hierarchy
+        {
+            get
+            {
+                if (hierarchy == null)
+                {
+                    hierarchy = new List<Type>();
+                    hierarchy.Add(typeof(ScreenWidget));
+                    hierarchy.AddRange(base.Hierarchy);
+                }
+                return hierarchy;
+            }
+        }
+        private static List<Type> hierarchy = null;
 
         /// <summary>
         /// Create a new ScreenWidget.

@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Audio;
 using System.IO;
 using System.Xml.Serialization;
 using BluEngine.Engine;
+using BluEngine.ScreenManager.Screens;
 #endregion
 
 namespace BluEngine.ScreenManager

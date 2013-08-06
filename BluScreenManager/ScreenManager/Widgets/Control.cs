@@ -10,6 +10,21 @@ namespace BluEngine.ScreenManager.Widgets
     /// </summary>
     public class Control : Widget
     {
+        public override List<Type> Hierarchy
+        {
+            get
+            {
+                if (hierarchy == null)
+                {
+                    hierarchy = new List<Type>();
+                    hierarchy.Add(typeof(Control));
+                    hierarchy.AddRange(base.Hierarchy);
+                }
+                return hierarchy;
+            }
+        }
+        private static List<Type> hierarchy = null;
+        
         /// <summary>
         /// The current "enabled" state of this widget.
         /// </summary>
@@ -23,10 +38,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// Create a new Control with a given parent.
         /// </summary>
-        /// <param name="parent">The Widget's parent.</param>
-        public Control(Widget parent) : base(parent)
-        {
-            Style.Parent = Widget.Styles.Control;
-        }
+        /// <param name="parent">The Control's parent.</param>
+        public Control(Widget parent) : base(parent) { }
     }
 }

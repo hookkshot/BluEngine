@@ -6,25 +6,25 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BluEngine.Engine;
 using Microsoft.Xna.Framework.Input;
+using BluEngine.ScreenManager.Styles;
 
 namespace BluEngine.ScreenManager.Widgets
 {
     /// <summary>
     /// A resolution-independant UI control.
     /// </summary>
-    public class Widget : HierarchicalDrawable, IInvalidatable, IScreenDimensionsProvider
+    public class Widget : IInvalidatable, IScreenDimensionsProvider
     {
         public delegate bool MouseEvent(Widget widget, Point mousePos);
         public delegate bool MouseButtonEvent(Widget widget, Point mousePos, int button);
         public delegate bool KeyEvent(Widget widget, Keys key);
 
-        private static StyleSheet styles = new StyleSheet();
         private Vector4 bounds = new Vector4(0.0f,0.0f,1.0f,1.0f); //percentages of the parent control (W = Width, Z = Height)
         private Rectangle calcBoundsI; //actual bounds in screen dimensions (int)
         private Vector4 calcBoundsF; //actual bounds in screen dimensions (float)
         private bool valid = false;
-        private Style style = new Style(Styles.Base);
         private HitFlags hitFlags = HitFlags.None;
+        private Style style = new Style();
 
         public event MouseEvent OnMouseEnter;
         public event MouseEvent OnMouseLeave;
@@ -34,13 +34,59 @@ namespace BluEngine.ScreenManager.Widgets
         public event KeyEvent OnKeyUp;
 
         /// <summary>
-        /// The widget's parent (container) widget.
+        /// All widget styles.
         /// </summary>
-        new public virtual Widget Parent
+        public static StyleSheet Styles { get { return StyleSheet.Instance; } }
+
+        /// <summary>
+        /// A list representing the widget class hierarchy for this widget up to (and including) itself.
+        /// </summary>
+        public virtual List<Type> Hierarchy
         {
-            get { return base.Parent == null ? null : base.Parent as Widget; }
-            set { base.Parent = value; }
+            get
+            {
+                if (hierarchy == null)
+                {
+                    hierarchy = new List<Type>();
+                    hierarchy.Add(typeof(Widget));
+                }
+                return hierarchy;
+            }
         }
+        private static List<Type> hierarchy = null;
+
+        /// <summary>
+        /// The list of children belonging to this widget. Do not modify this list directly!
+        /// </summary>
+        protected List<Widget> Children
+        {
+            get { return children; }
+        }
+        private List<Widget> children = new List<Widget>();
+
+        /// <summary>
+        /// This widget's parent in the hierarchy.
+        /// Will throw an InvalidOperationException if an attempt to create a hierarchical loop is made.
+        /// </summary>
+        public virtual Widget Parent
+        {
+            get { return parent; }
+            set
+            {
+                if (parent == value)
+                    return;
+
+                if (value != null && value.isAncestor(this))
+                    throw new InvalidOperationException("You cannot set a Widget's parent to one of it's children!");
+
+                if (parent != null)
+                    parent.children.Remove(this);
+                parent = value;
+                if (parent != null)
+                    parent.children.Add(this);
+            }
+        }
+        private Widget parent;
 
         /// <summary>
         /// The IScreenDimensionsProvider object currently acting as the source resolution for this widget.
@@ -64,15 +110,7 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
-        /// Base styles inherited by all widgets.
-        /// </summary>
-        public static StyleSheet Styles
-        {
-            get { return styles; }
-        }
-
-        /// <summary>
-        /// This style used by this widget when it is in a normal state.
+        /// This widget's individal style object. Use this to alter style attributes for a specific widget without modifying the global styles.
         /// </summary>
         public Style Style
         {
@@ -80,11 +118,11 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
-        /// The style currently being used by this widget, according to state.
+        /// Gets a string representing the state of this widget (used for styles).
         /// </summary>
-        public virtual Style CurrentStyle
+        public virtual String State
         {
-            get { return style; }
+            get { return "normal"; }
         }
 
         /// <summary>
@@ -101,12 +139,8 @@ namespace BluEngine.ScreenManager.Widgets
         public void Invalidate()
         {
             valid = false;
-            foreach (HierarchicalObject obj in Children)
-            {
-                Widget widget = obj as Widget;
-                if (widget != null)
-                    widget.Invalidate();
-            }
+            foreach (Widget child in children)
+                child.Invalidate();
         }
 
         /// <summary>
@@ -240,7 +274,34 @@ namespace BluEngine.ScreenManager.Widgets
         /// Create a new Widget with a given parent.
         /// </summary>
         /// <param name="parent">The Widget's parent.</param>
-        public Widget(Widget parent) : base(parent) { }
+        public Widget(Widget parent)
+        {
+            Parent = parent;
+        }
+
+        /// <summary>
+        /// Create a new Widget.
+        /// </summary>
+        public Widget() : this(null) { }
+
+
+        /// <summary>
+        /// Check if a Widget is an ancestor of this one.
+        /// </summary>
+        /// <param name="potentialAncestor">The widget to check.</param>
+        /// <returns>True if potentialAncestor was in the parent hierarchy of the current Widget.</returns>
+        public bool isAncestor(Widget potentialAncestor)
+        {
+            if (potentialAncestor == null)
+                return false;
+
+            if (potentialAncestor == this)
+                return true;
+
+            return parent == null ? false : parent.isAncestor(potentialAncestor);
+        }
+
+
 
         /// <summary>
         /// Refresh resolution-dependant properties.
@@ -266,12 +327,8 @@ namespace BluEngine.ScreenManager.Widgets
         public void UpdateAll (GameTime gameTime)
         {
             Update(gameTime);
-            foreach (HierarchicalObject obj in Children)
-            {
-                Widget widget = obj as Widget;
-                if (widget != null)
-                    widget.UpdateAll(gameTime);
-            }
+            foreach (Widget child in children)
+                child.UpdateAll(gameTime);
         }
 
         /// <summary>
@@ -289,25 +346,31 @@ namespace BluEngine.ScreenManager.Widgets
         /// <returns>The found widget, or null.</returns>
         public Widget ChildAtPoint(Point pt, HitFlags hitflags)
         {
-            List<HierarchicalObject> children = Children;
             for (int i = children.Count - 1; i >= 0; i--)
             {
-                Widget widget = children[i] as Widget;
-                if (widget != null)
-                {
-                    Widget child = widget.ChildAtPoint(pt, hitflags);
-                    if (child != null)
-                        return child;
-                }
+                Widget child = children[i].ChildAtPoint(pt, hitflags);
+                if (child != null)
+                    return child;
             }
             return (HitFlags & hitflags) != 0 && CalculatedBoundsI.Contains(pt) ? this : null;
+        }
+
+        /// <summary>
+        /// Draws itself then all children. If you are using a WidgetScreen you will never need to call this directly, otherwise only call this once on your base widget.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch object used for drawing.</param>
+        public void DrawAll(SpriteBatch spriteBatch)
+        {
+            Draw(spriteBatch);
+            foreach (Widget child in children)
+                child.DrawAll(spriteBatch);
         }
 
         /// <summary>
         /// Draws this widget.
         /// </summary>
         /// <param name="spriteBatch">The SpriteBatch passed in from the ScreenManager.</param>
-        protected override void Draw(SpriteBatch spriteBatch)
+        protected virtual void Draw(SpriteBatch spriteBatch)
         {
             if (Invalidated)
             {
@@ -315,12 +378,14 @@ namespace BluEngine.ScreenManager.Widgets
                 valid = true;
             }
 
-            Style currentStyle = CurrentStyle;
-            float alpha = currentStyle.Alpha ?? 1.0f;
+            //set the target hierarchy to that of this widget
+            Styles.StartLookup(this, State);
+            
+            float alpha = Styles.ValueAttributeLookup<float>("alpha") ?? 1.0f;
 
             for (int i = 0; i < Style.STYLE_LAYERS; i++)
             {
-                ImageLayer layer = currentStyle[i];
+                ImageLayer layer = Styles.ReferenceAttributeLookup<ImageLayer>("layer" + i);
                 if (layer != null)
                     layer.Draw(spriteBatch,this,Color.White * alpha);
             }

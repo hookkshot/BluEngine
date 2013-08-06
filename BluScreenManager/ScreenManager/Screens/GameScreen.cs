@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Content;
 using AurelienRibon.TweenEngine;
 #endregion
 
-namespace BluEngine
+namespace BluEngine.ScreenManager.Screens
 {
     /// <summary>
     /// Enum describes the screen transition state.

@@ -61,8 +61,6 @@
     <Compile Include="Engine\CollisionSimulator.cs" />
     <Compile Include="Engine\HitFlags.cs" />
     <Compile Include="Engine\GameObjects\CollisionBoxComponent.cs" />
-    <Compile Include="Engine\HierarchicalDrawable.cs" />
-    <Compile Include="Engine\HierarchicalObject.cs" />
     <Compile Include="Engine\IScreenDimensionsProvider.cs" />
     <Compile Include="Engine\GameObjects\GameObject.cs" />
     <Compile Include="Engine\GameObjects\GameObjectComponent.cs" />
@@ -86,6 +84,7 @@
     <Compile Include="Engine\IInvalidatable.cs" />
     <Compile Include="ScreenManager\SolidColours.cs" />
     <Compile Include="ScreenManager\Screens\WidgetScreen.cs" />
+    <Compile Include="ScreenManager\Styles\StyleAttributes.cs" />
     <Compile Include="ScreenManager\Widgets\Button.cs" />
     <Compile Include="ScreenManager\Widgets\Control.cs" />
     <Compile Include="ScreenManager\Styles\ImageLayer.cs" />

@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-namespace BluEngine.ScreenManager
+namespace BluEngine.ScreenManager.Screens
 {
     public class MenuScreen : GameScreen
     {

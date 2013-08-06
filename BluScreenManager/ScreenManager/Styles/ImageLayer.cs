@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using BluEngine.ScreenManager.Widgets;
 
-namespace BluEngine.ScreenManager.Widgets
+namespace BluEngine.ScreenManager.Styles
 {
     /// <summary>
     /// An image layer within a widget style. Use these to build up multi-layer widgets.

@@ -10,7 +10,7 @@ using BluEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace BluEngine.ScreenManager
+namespace BluEngine.ScreenManager.Screens
 {
     /// <summary>
     /// A generalized screen that maintains a layer of UI "widgets" (resolution-independant controls) over the top of a user-definable "world" layer (can be nothing).

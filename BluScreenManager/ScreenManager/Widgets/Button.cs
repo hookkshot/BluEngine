@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using BluEngine.ScreenManager.Styles;
 
 namespace BluEngine.ScreenManager.Widgets
 {
@@ -16,33 +17,21 @@ namespace BluEngine.ScreenManager.Widgets
         private bool mouseDown = false;
         public event MouseEvent OnClick;
 
-        /// <summary>
-        /// The style used by this button when it is in a disabled state.
-        /// </summary>
-        public Style DisabledStyle
+        public override List<Type> Hierarchy
         {
-            get { return disabledStyle; }
+            get
+            {
+                if (hierarchy == null)
+                {
+                    hierarchy = new List<Type>();
+                    hierarchy.Add(typeof(Button));
+                    hierarchy.AddRange(base.Hierarchy);
+                }
+                return hierarchy;
+            }
         }
-        private Style disabledStyle;
-        
-        /// <summary>
-        /// The style used by this button when the mouse is hovering over it.
-        /// </summary>
-        public Style HoverStyle
-        {
-            get { return hoverStyle; }
-        }
-        private Style hoverStyle;
-
-        /// <summary>
-        /// The style used by this button when it is currently being clicked/pressed.
-        /// </summary>
-        public Style DownStyle
-        {
-            get { return downStyle; }
-        }
-        private Style downStyle;
-        
+        private static List<Type> hierarchy = null;
+       
         /// <summary>
         /// Create a new Button with a given parent.
         /// </summary>
@@ -50,23 +39,11 @@ namespace BluEngine.ScreenManager.Widgets
         public Button(Widget parent) : base(parent)
         {
             HitFlags = Engine.HitFlags.Mouse;
-            Style.Parent = Widget.Styles.Button;
-            disabledStyle = new Style(Widget.Styles.ButtonDisabled);
-            downStyle = new Style(Widget.Styles.ButtonDown);
-            hoverStyle = new Style(Widget.Styles.ButtonHover);
         }
 
-        public void SetAllStyleLayers(int imageLayerIndex, ImageLayer value)
+        public override String State
         {
-            Style[imageLayerIndex]
-                = downStyle[imageLayerIndex]
-                = hoverStyle[imageLayerIndex]
-                = disabledStyle[imageLayerIndex] = value;
-        }
-
-        public override Style CurrentStyle
-        {
-            get { return Enabled ? (OnClick != null ? (mouseDown ? (mouseEntered ? downStyle : Style) : (mouseEntered ? hoverStyle : Style)) : Style) : disabledStyle; }
+            get { return Enabled ? (OnClick != null ? (mouseDown ? (mouseEntered ? "down" : base.State) : (mouseEntered ? "hover" : base.State)) : base.State) : "disabled"; }
         }
 
         public override bool MouseEnter(Point pt)
