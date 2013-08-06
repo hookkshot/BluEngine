@@ -47,7 +47,7 @@ namespace BluEngine.Engine
         protected override void Initialize()
         {
             base.Initialize();
-            this.IsMouseVisible = true;
+            IsMouseVisible = true;
         }
 
         protected override void LoadContent()
@@ -60,7 +60,10 @@ namespace BluEngine.Engine
                 screenManager.AddScreen((GameScreen)firstScreen.GetConstructor(new Type[] {}).Invoke(new object[] {}));
         }
 
-        protected virtual void RegisterTweenAccessors()
+        /// <summary>
+        /// Add TweenAccessors you'd like to have available from game initialization in this function. It's mainly just to have a neat, logical grouping for them (as opposed to just having them listed in LoadContent()).
+        /// </summary>
+        private void RegisterTweenAccessors()
         {
             Tween.RegisterAccessor(typeof(Widget), new WidgetAccessor());
         }
