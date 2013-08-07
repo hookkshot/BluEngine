@@ -11,11 +11,8 @@ namespace BluEngine.ScreenManager.Styles
     {
         private Dictionary<Type, Style> styles;
         private Style baseStyle;
-        private static StyleSheet instance = null;
         private List<Style> currentStyleHierarchy = null;
         private String[] currentStateList = null;
-
-        public static StyleSheet Instance { get { return instance ?? (instance = new StyleSheet()); } }
 
         public Style this[Type t]
         {
@@ -49,7 +46,7 @@ namespace BluEngine.ScreenManager.Styles
             return style;
         }
 
-        private StyleSheet()
+        public StyleSheet()
         {
             styles = new Dictionary<Type, Style>();
             baseStyle = new Style();

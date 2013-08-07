@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using BluEngine.Engine;
+using BluEngine.ScreenManager.Screens;
 
 namespace BluEngine.ScreenManager.Widgets
 {
@@ -104,7 +105,9 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// Create a new ScreenWidget.
         /// </summary>
-        public ScreenWidget() : base(null) { }
+        ///<param name="widgetScreen">The WidgetScreen this will be associated with.</param>
+        public ScreenWidget(WidgetScreen widgetScreen)
+            : base(widgetScreen) { }
 
         public override void Refresh()
         {

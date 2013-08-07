@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BluEngine.Engine;
 using Microsoft.Xna.Framework.Input;
 using BluEngine.ScreenManager.Styles;
+using BluEngine.ScreenManager.Screens;
 
 namespace BluEngine.ScreenManager.Widgets
 {
@@ -24,7 +25,6 @@ namespace BluEngine.ScreenManager.Widgets
         private Vector4 calcBoundsF; //actual bounds in screen dimensions (float)
         private bool valid = false;
         private HitFlags hitFlags = HitFlags.None;
-        private Style style = new Style();
 
         public event MouseEvent OnMouseEnter;
         public event MouseEvent OnMouseLeave;
@@ -34,9 +34,14 @@ namespace BluEngine.ScreenManager.Widgets
         public event KeyEvent OnKeyUp;
 
         /// <summary>
-        /// All widget styles.
+        /// The WidgetScreen that this widget (and it's hierarchy) belongs to.
         /// </summary>
-        public static StyleSheet Styles { get { return StyleSheet.Instance; } }
+        public WidgetScreen Screen
+        {
+            get { return widgetScreen; }
+            private set { widgetScreen = value; }
+        }
+        private WidgetScreen widgetScreen = null;
 
         /// <summary>
         /// A list representing the widget class hierarchy for this widget up to (and including) itself.
@@ -114,11 +119,17 @@ namespace BluEngine.ScreenManager.Widgets
         /// </summary>
         public Style Style
         {
-            get { return style; }
+            get
+            {
+                if (style == null)
+                    style = new Style();
+                return style;
+            }
         }
+        private Style style = null;
 
         /// <summary>
-        /// Gets a string representing the state of this widget (used for styles).
+        /// String representing the statelist of this widget (used for styles). Multiple states may be represented in descending order of precedence by separating them with a bar, e.g. "down|hover|normal".
         /// </summary>
         public virtual String State
         {
@@ -271,19 +282,29 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
-        /// Create a new Widget with a given parent.
+        /// Create a new Widget.
         /// </summary>
+        /// <param name="screen">The Widget's screen.</param>
         /// <param name="parent">The Widget's parent.</param>
-        public Widget(Widget parent)
+        private Widget(WidgetScreen screen, Widget parent)
         {
+            if (screen == null)
+                throw new ArgumentNullException("screen");
+            Screen = screen;
             Parent = parent;
         }
 
         /// <summary>
         /// Create a new Widget.
         /// </summary>
-        public Widget() : this(null) { }
+        /// <param name="screen">The Widget's screen.</param>
+        protected Widget(WidgetScreen screen) : this(screen, null) { }
 
+        /// <summary>
+        /// Create a new Widget.
+        /// </summary>
+        /// <param name="parent">The Widget's parent.</param>
+        public Widget(Widget parent) : this(parent.Screen, parent) { }
 
         /// <summary>
         /// Check if a Widget is an ancestor of this one.
@@ -379,13 +400,13 @@ namespace BluEngine.ScreenManager.Widgets
             }
 
             //set the target hierarchy to that of this widget
-            Styles.StartLookup(this, State);
-            
-            float alpha = Styles.ValueAttributeLookup<float>("alpha") ?? 1.0f;
+            Screen.Styles.StartLookup(this, State);
+
+            float alpha = Screen.Styles.ValueAttributeLookup<float>("alpha") ?? 1.0f;
 
             for (int i = 0; i < Style.STYLE_LAYERS; i++)
             {
-                ImageLayer layer = Styles.ReferenceAttributeLookup<ImageLayer>("layer" + i);
+                ImageLayer layer = Screen.Styles.ReferenceAttributeLookup<ImageLayer>("layer" + i);
                 if (layer != null)
                     layer.Draw(spriteBatch,this,Color.White * alpha);
             }

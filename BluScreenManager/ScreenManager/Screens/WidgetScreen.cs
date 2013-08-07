@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using BluEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
+using BluEngine.ScreenManager.Styles;
 
 
 namespace BluEngine.ScreenManager.Screens
@@ -17,7 +18,7 @@ namespace BluEngine.ScreenManager.Screens
     /// </summary>
     public class WidgetScreen : GameScreen
     {
-        private ScreenWidget baseWidget = new ScreenWidget();
+        private ScreenWidget baseWidget = null;
         private Widget[] mouseDownWidgets = new Widget[]{null,null,null,null,null};
         private Widget mouseHoverWidget = null;
         private Widget selectedWidget = null;
@@ -58,6 +59,26 @@ namespace BluEngine.ScreenManager.Screens
         public ScreenWidget Base
         {
             get { return baseWidget; }
+        }
+
+        /// <summary>
+        /// All cascading Widget styles used by this screen.
+        /// </summary>
+        public StyleSheet Styles
+        {
+            get
+            {
+                if (styles == null)
+                    styles = new StyleSheet();
+                return styles;
+            }
+        }
+        private StyleSheet styles = null;
+
+        public WidgetScreen()
+            : base()
+        {
+            baseWidget = new ScreenWidget(this);
         }
 
         /// <summary>
