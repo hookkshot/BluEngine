@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BluEngine.ScreenManager.Widgets;
+using System.IO;
 
 namespace BluEngine.ScreenManager.Styles
 {
@@ -211,6 +212,22 @@ namespace BluEngine.ScreenManager.Styles
         public char CharLookup(String attribute, char fallback)
         {
             return ValueAttributeLookup<char>(attribute) ?? fallback;
+        }
+
+        public bool LoadCSSFile(string name)
+        {
+            String file = "Content\\Styles";
+            if (name == null || name.Length == 0 || !Directory.Exists(file) || !File.Exists(file += ("\\" + (name += ".css"))))
+                return false;
+            Console.WriteLine("Styles file \"" + file + "\" exists!");
+            
+            using (StreamReader sr = new StreamReader(file))
+            {
+                String line = sr.ReadToEnd();
+                Console.WriteLine(line);
+            }
+
+            return true;
         }
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="Engine\BaseEngine.cs" />
     <Compile Include="Engine\BluGame.cs" />
     <Compile Include="Engine\CollisionSimulator.cs" />
+    <Compile Include="Engine\CSS\CSSParser.cs" />
     <Compile Include="Engine\HitFlags.cs" />
     <Compile Include="Engine\GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="Engine\IScreenDimensionsProvider.cs" />

@@ -4,6 +4,8 @@ using BluEngine.ScreenManager.Widgets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.IO;
 
 
 namespace BluEngine.ScreenManager.Screens
@@ -74,6 +76,12 @@ namespace BluEngine.ScreenManager.Screens
             : base()
         {
             baseWidget = new ScreenWidget(this);
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            Styles.LoadCSSFile(GetType().Name);
         }
 
         /// <summary>
