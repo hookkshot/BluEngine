@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BluEngine.Engine;
 using BluEngine.ScreenManager.Widgets;
 
 namespace BluEngine.ScreenManager.Styles
@@ -35,6 +34,8 @@ namespace BluEngine.ScreenManager.Styles
         {
             styles = new Dictionary<Type, Style>();
             baseStyle = new Style();
+
+            this[typeof(Button)]["disabled"]["alpha"] = 0.6f;
         }
 
         /// <summary>
