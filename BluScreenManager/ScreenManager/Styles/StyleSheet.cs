@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BluEngine.ScreenManager.Widgets;
 using System.IO;
+using Marzersoft.CSS;
 
 namespace BluEngine.ScreenManager.Styles
 {
@@ -216,17 +217,38 @@ namespace BluEngine.ScreenManager.Styles
 
         public bool LoadCSSFile(string name)
         {
-            String file = "Content\\Styles";
-            if (name == null || name.Length == 0 || !Directory.Exists(file) || !File.Exists(file += ("\\" + (name += ".css"))))
-                return false;
-            Console.WriteLine("Styles file \"" + file + "\" exists!");
-            
-            using (StreamReader sr = new StreamReader(file))
-            {
-                String line = sr.ReadToEnd();
-                Console.WriteLine(line);
-            }
+            CSSDocument document = new CSSDocument("Content\\Styles\\" + name + ".css", true);
+            CSSRulesets rulesets = document.Rulesets;
 
+            foreach (KeyValuePair<String, CSSRuleset> ruleset in rulesets)
+            {
+                Console.WriteLine("Ruleset: {0} ({1} properties)", ruleset.Key, ruleset.Value.Count);
+                String[] selector = ruleset.Key.Substring(1).Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                name = selector[0];
+                String state = selector.Length > 1 ? selector[1] : "normal";
+                Console.WriteLine("  Name: {0}\n  State: {1}", name, state);
+
+                foreach (KeyValuePair<string, string> rule in ruleset.Value)
+                {
+                    Console.WriteLine("    {0}: {1}", rule.Key, rule.Value);
+
+                    if (ruleset.Key[0] == '#') //it's an implicit Type style
+                    {
+                        Console.WriteLine("a");
+                        Type type = Type.GetType(name + ", BluEngine");
+                        if (type != null)
+                        {
+                            Console.WriteLine("b");
+                            this[type][state][rule.Key] = rule.Value;
+                        }
+
+                    }
+                    else if (ruleset.Key[0] == '.') //it's an explicit instance style
+                    {
+
+                    }
+                }
+            }
             return true;
         }
     }
