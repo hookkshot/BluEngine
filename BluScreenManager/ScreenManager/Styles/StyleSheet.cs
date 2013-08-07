@@ -11,6 +11,11 @@ namespace BluEngine.ScreenManager.Styles
         private List<Style> currentStyleHierarchy = null;
         private String[] currentStateList = null;
 
+        /// <summary>
+        /// <para>The Widget Style associated with the given Type.</para>
+        /// </summary>
+        /// <param name="t">The type for which you'd like to look up the style.</param>
+        /// <returns>The style associated with the passed Type. Every style inherits from a Type-less base Style, so if you pass a null type or a type that does not inherit from Widget, the base style will be returned.</returns>
         public Style this[Type t]
         {
             get
@@ -28,12 +33,13 @@ namespace BluEngine.ScreenManager.Styles
             }
         }
 
+        /// <summary>
+        /// Create a new Stylesheet instance.
+        /// </summary>
         public StyleSheet()
         {
             styles = new Dictionary<Type, Style>();
             baseStyle = new Style();
-
-            this[typeof(Button)]["disabled"]["alpha"] = 0.6f;
         }
 
         /// <summary>
@@ -51,6 +57,11 @@ namespace BluEngine.ScreenManager.Styles
             return style;
         }
 
+        /// <summary>
+        /// Sets the lookup state hierarchy information according to the provided widget and/or statelist.
+        /// </summary>
+        /// <param name="widget">A widget from which to take a hierarchy.</param>
+        /// <param name="statelist">A statelist string from which to build a descending-precedence list of states.</param>
         public void StartLookup(Widget widget, String statelist)
         {
             //determine the style hierarchy
@@ -147,6 +158,59 @@ namespace BluEngine.ScreenManager.Styles
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Shortcut for looking up ImageLayer attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the ImageLayer attribute to look up.</param>
+        /// <returns>The ImageLayer, or null.</returns>
+        public ImageLayer ImageLayerLookup(String attribute)
+        {
+            return ReferenceAttributeLookup<ImageLayer>(attribute);
+        }
+
+        /// <summary>
+        /// Shortcut for looking up Float attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the Float attribute to look up.</param>
+        /// <param name="fallback">The value to use as default if the attribute wasn't found.</param>
+        /// <returns>The attribute value or the default.</returns>
+        public float FloatLookup(String attribute, float fallback)
+        {
+            return ValueAttributeLookup<float>(attribute) ?? fallback;
+        }
+        /// <summary>
+        /// Shortcut for looking up Double attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the Double attribute to look up.</param>
+        /// <param name="fallback">The value to use as default if the attribute wasn't found.</param>
+        /// <returns>The attribute value or the default.</returns>
+        public double DoubleLookup(String attribute, double fallback)
+        {
+            return ValueAttributeLookup<double>(attribute) ?? fallback;
+        }
+
+        /// <summary>
+        /// Shortcut for looking up Integer attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the Integer attribute to look up.</param>
+        /// <param name="fallback">The value to use as default if the attribute wasn't found.</param>
+        /// <returns>The attribute value or the default.</returns>
+        public int IntLookup(String attribute, int fallback)
+        {
+            return ValueAttributeLookup<int>(attribute) ?? fallback;
+        }
+
+        /// <summary>
+        /// Shortcut for looking up Char attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the Char attribute to look up.</param>
+        /// <param name="fallback">The value to use as default if the attribute wasn't found.</param>
+        /// <returns>The attribute value or the default.</returns>
+        public char CharLookup(String attribute, char fallback)
+        {
+            return ValueAttributeLookup<char>(attribute) ?? fallback;
         }
     }
 }

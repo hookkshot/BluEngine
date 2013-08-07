@@ -400,11 +400,11 @@ namespace BluEngine.ScreenManager.Widgets
             //set the target hierarchy to that of this widget
             Screen.Styles.StartLookup(this, State);
 
-            float alpha = Screen.Styles.ValueAttributeLookup<float>("alpha") ?? 1.0f;
+            float alpha = Screen.Styles.FloatLookup("alpha", 1.0f);
 
             for (int i = 0; i < Style.STYLE_LAYERS; i++)
             {
-                ImageLayer layer = Screen.Styles.ReferenceAttributeLookup<ImageLayer>("layer-" + i);
+                ImageLayer layer = Screen.Styles.ImageLayerLookup("layer-" + i);
                 if (layer != null)
                     layer.Draw(spriteBatch,this,Color.White * alpha);
             }
