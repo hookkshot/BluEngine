@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
-using BluEngine.Engine;
-using BluEngine.ScreenManager.Styles;
 
 namespace BluEngine.ScreenManager.Styles
 {

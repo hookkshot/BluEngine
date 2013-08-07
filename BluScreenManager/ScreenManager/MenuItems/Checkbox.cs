@@ -6,12 +6,6 @@
 //Copyright (C) Blurift Entertainment
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace BluEngine.ScreenManager.MenuItems
 {

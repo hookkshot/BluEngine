@@ -7,11 +7,9 @@
 #endregion
 
 #region Using Statements
-using System;
-using Microsoft.Xna.Framework;
-using System.IO;
-using Microsoft.Xna.Framework.Content;
 using AurelienRibon.TweenEngine;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace BluEngine.ScreenManager.Screens

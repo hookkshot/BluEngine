@@ -8,19 +8,12 @@
 
 #region Using Statements
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-
+using BluEngine.Engine;
+using BluEngine.ScreenManager.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Audio;
-
-using System.IO;
-using System.Xml.Serialization;
-using BluEngine.Engine;
-using BluEngine.ScreenManager.Screens;
 #endregion
 
 namespace BluEngine.ScreenManager

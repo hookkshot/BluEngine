@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BluEngine.ScreenManager.Widgets;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using BluEngine.Engine;
-using Microsoft.Xna.Framework.Graphics;
+﻿using BluEngine.Engine;
 using BluEngine.ScreenManager.Styles;
+using BluEngine.ScreenManager.Widgets;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 
 namespace BluEngine.ScreenManager.Screens
