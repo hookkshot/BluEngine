@@ -31,6 +31,12 @@ namespace BluEngine.ScreenManager.Styles
             }
         }
 
+        public StyleSheet()
+        {
+            styles = new Dictionary<Type, Style>();
+            baseStyle = new Style();
+        }
+
         /// <summary>
         /// Gets the Style for the given Type; unlike the [] indexer, this will NOT create a Style that did not already exist.
         /// </summary>
@@ -46,13 +52,7 @@ namespace BluEngine.ScreenManager.Styles
             return style;
         }
 
-        public StyleSheet()
-        {
-            styles = new Dictionary<Type, Style>();
-            baseStyle = new Style();
-        }
-
-        public void StartLookup(Widget widget, String state)
+        public void StartLookup(Widget widget, String statelist)
         {
             //determine the style hierarchy
             currentStyleHierarchy = new List<Style>();
@@ -72,7 +72,12 @@ namespace BluEngine.ScreenManager.Styles
             currentStyleHierarchy.Add(baseStyle); //base style
 
             //determine the state list
-            currentStateList = (state == null || state.Length == 0 || state.Equals("normal") ? new String[] { "normal" } : new String[] { state, "normal" });
+            if (statelist == null || statelist.Length == 0)
+                statelist = "normal";
+            if (!statelist.Contains("normal"))
+                statelist += "|normal";
+
+            currentStateList = statelist.Split(new char[]{'|'},StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>

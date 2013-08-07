@@ -43,7 +43,10 @@ namespace BluEngine.ScreenManager.Widgets
 
         public override String State
         {
-            get { return Enabled ? (OnClick != null ? (mouseDown ? (mouseEntered ? "down" : base.State) : (mouseEntered ? "hover" : base.State)) : base.State) : "disabled"; }
+            get
+            {
+                return (!Enabled ? "disabled|" : (OnClick != null && mouseEntered ? (mouseDown ? "down|" : "") + "hover|" : "")) + "normal";
+            }
         }
 
         public override bool MouseEnter(Point pt)
