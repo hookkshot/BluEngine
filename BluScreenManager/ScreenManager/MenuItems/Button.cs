@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using BluEngine.ScreenManager;
 
-namespace BluEngine
+namespace BluEngine.ScreenManager.MenuItems
 {
     public class Button : Image
     {

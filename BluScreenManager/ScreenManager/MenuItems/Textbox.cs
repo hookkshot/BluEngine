@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace BluEngine
+namespace BluEngine.ScreenManager.MenuItems
 {
     /// <summary>
     /// A textbox that simple text can be entered ranging from letters and numbers.

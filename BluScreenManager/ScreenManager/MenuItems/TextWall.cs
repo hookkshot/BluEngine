@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BluEngine
+namespace BluEngine.ScreenManager.MenuItems
 {
     public class TextWall : MenuItem
     {
