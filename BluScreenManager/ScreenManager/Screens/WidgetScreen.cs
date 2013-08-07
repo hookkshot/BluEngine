@@ -86,6 +86,7 @@ namespace BluEngine.ScreenManager.Screens
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             UpdateWorld(gameTime);
+            baseWidget.UpdateAll(gameTime);
             UpdateUI(gameTime);
         }
 
@@ -96,13 +97,10 @@ namespace BluEngine.ScreenManager.Screens
         protected virtual void UpdateWorld(GameTime gameTime) { }
 
         /// <summary>
-        /// Update the UI layer of this WidgetScreen.
+        /// Update the UI layer of this WidgetScreen. This does not include widgets; this function is for doing your own custom UI-layer updating SEPARATE to the widget layer.
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Update().</param>
-        protected virtual void UpdateUI(GameTime gameTime)
-        {
-            baseWidget.UpdateAll(gameTime);
-        }
+        protected virtual void UpdateUI(GameTime gameTime) { }
 
         /// <summary>
         /// Handles the input provided by the ScreenManager's InputControl. You should not need to override this - use the specialized input methods instead!
@@ -238,6 +236,7 @@ namespace BluEngine.ScreenManager.Screens
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            baseWidget.DrawAll(spriteBatch);
             DrawUI(gameTime, spriteBatch);
             spriteBatch.End();
         }
@@ -250,14 +249,11 @@ namespace BluEngine.ScreenManager.Screens
         protected virtual void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch) {}
 
         /// <summary>
-        /// If this WidgetScreen has a "world" layer to it, perform it's drawing here.
+        /// If this WidgetScreen has a "UI" layer to it, perform it's drawing here. This does not include widgets; this function is for doing your own custom rendering ON TOP of the widget layer.
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Draw().</param>
-        /// <param name="gameTime">The SpriteBatch object passed in from the SCreenManager.</param>
-        protected virtual void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            baseWidget.DrawAll(spriteBatch);
-        }
+        /// <param name="gameTime">The SpriteBatch object passed in from the ScreenManager.</param>
+        protected virtual void DrawUI(GameTime gameTime, SpriteBatch spriteBatch) { }
     }
 
 
