@@ -5,18 +5,30 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BluEngine.ScreenManager.Screens
 {
+    /// <summary>
+    /// <para>A specialized WidgetScreen that maintains, updates and renders a list of Game World objects.</para>
+    /// <para>Subclass this to implement your actual "gameplay" functionality. Overrides you may employ to achieve this are as follows:</para>
+    /// <para>protected override void MouseMove(Point mousePos, Point prevPos)</para>
+    /// <para>protected override void MouseDown(Point mousePos, int button)</para>
+    /// <para>protected override void MouseUp(Point mousePos, int button)</para>
+    /// <para>protected override void KeyDown(Keys key)</para>
+    /// <para>protected override void KeyUp(Keys key)</para>
+    /// <para>protected override void UpdateWorld(GameTime gameTime)</para>
+    /// <para>protected override void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)</para>
+    /// <para>protected override void UpdateUI(GameTime gameTime)</para>
+    /// </summary>
     public class GameplayScreen : WidgetScreen
     {
         private List<GameObject> gameObjects = new List<GameObject>();
-        private GameObject viewScreen;
 
-        protected override void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch)
+        /// <summary>
+        /// Represents the "camera" or "viewport" of the game world render layer.
+        /// </summary>
+        protected GameObject ViewScreen
         {
-            foreach (GameObject gameObject in gameObjects)
-            {
-                gameObject.Draw(spriteBatch, viewScreen.Position);
-            }
+            get { return viewScreen; }
         }
+        private GameObject viewScreen;
 
         public override void LoadContent()
         {
@@ -24,27 +36,18 @@ namespace BluEngine.ScreenManager.Screens
             viewScreen = new GameObject();
         }
 
-        /*
-        //functions you can directly
-        //override in subclasses of this class:
-        protected override void MouseMove(Point mousePos, Point prevPos) {}
-        protected override void MouseDown(Point mousePos, int button) { }
-        protected override void MouseUp(Point mousePos, int button) { }
-        protected override void KeyDown(Keys key) { }
-        protected override void KeyUp(Keys key) { }
-        protected override void UpdateWorld(GameTime gameTime) { }
-         
-        //you can also override these, but ensure you call the base
-        //versions otherwise the UI will be invisible or dead
-        protected override void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
+        protected override void UpdateWorld(GameTime gameTime)
         {
-            base.DrawUI(gameTime,spriteBatch);
+            foreach (GameObject gameObject in gameObjects)
+                gameObject.Update(gameTime);
+        }
+        
+        protected override void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (GameObject gameObject in gameObjects)
+                gameObject.Draw(spriteBatch, viewScreen.Position);
         }
 
-        protected override void UpdateUI(GameTime gameTime)
-        {
-            base.UpdateUI(gameTime,spriteBatch);
-        }
-         */
+
     }
 }

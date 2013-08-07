@@ -5,6 +5,11 @@ namespace BluEngine.ScreenManager.Styles
 {
     public class Style
     {
+        /// <summary>
+        /// <para>The maximum number of ImageLayers that may be used in a Style (accessed by "layer-x" where X is the 0-based layer index).</para>
+        /// <para>There is of course nothing stopping you from assigning ImageLayers to whatever you like ("layer-dicks"), but the only ones that
+        /// will actually get rendered by the Widget class's Draw() is "layer-0" to "layer-STYLE_LAYERS".</para>
+        /// </summary>
         public const int STYLE_LAYERS = 5;
         
         private Dictionary<String, StyleAttributes> states;
