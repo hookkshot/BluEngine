@@ -404,7 +404,7 @@ namespace BluEngine.ScreenManager.Widgets
 
             for (int i = 0; i < Style.STYLE_LAYERS; i++)
             {
-                ImageLayer layer = Screen.Styles.ReferenceAttributeLookup<ImageLayer>("layer" + i);
+                ImageLayer layer = Screen.Styles.ReferenceAttributeLookup<ImageLayer>("layer-" + i);
                 if (layer != null)
                     layer.Draw(spriteBatch,this,Color.White * alpha);
             }
