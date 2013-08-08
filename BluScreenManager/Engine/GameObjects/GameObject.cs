@@ -11,6 +11,7 @@ namespace BluEngine.Engine.GameObjects
     {
         #region Fields
 
+        private bool active = true;
         private Transform transform;
         private Dictionary<Type, GameObjectComponent> components;
 
@@ -58,6 +59,12 @@ namespace BluEngine.Engine.GameObjects
         {
             get { return transform.Rotation; }
             set { transform.Rotation = value; }
+        }
+
+        public bool Active
+        {
+            get { return active; }
+            set { active = value; }
         }
 
         /// <summary>
