@@ -222,24 +222,18 @@ namespace BluEngine.ScreenManager.Styles
 
             foreach (KeyValuePair<String, CSSRuleset> ruleset in rulesets)
             {
-                Console.WriteLine("Ruleset: {0} ({1} properties)", ruleset.Key, ruleset.Value.Count);
                 String[] selector = ruleset.Key.Substring(1).Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                 name = selector[0];
                 String state = selector.Length > 1 ? selector[1] : "normal";
-                Console.WriteLine("  Name: {0}\n  State: {1}", name, state);
 
-                foreach (KeyValuePair<string, string> rule in ruleset.Value)
+                foreach (CSSProperty property in ruleset.Value)
                 {
-                    Console.WriteLine("    {0}: {1}", rule.Key, rule.Value);
-
                     if (ruleset.Key[0] == '#') //it's an implicit Type style
                     {
-                        Console.WriteLine("a");
                         Type type = Type.GetType(name + ", BluEngine");
                         if (type != null)
                         {
-                            Console.WriteLine("b");
-                            this[type][state][rule.Key] = rule.Value;
+                            //this[type][state][rule.Key] = rule.Value;
                         }
 
                     }

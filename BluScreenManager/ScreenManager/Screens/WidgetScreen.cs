@@ -81,7 +81,7 @@ namespace BluEngine.ScreenManager.Screens
         public override void LoadContent()
         {
             base.LoadContent();
-            //Styles.LoadCSSFile(GetType().Name);
+            Styles.LoadCSSFile(GetType().Name);
         }
 
         /// <summary>
