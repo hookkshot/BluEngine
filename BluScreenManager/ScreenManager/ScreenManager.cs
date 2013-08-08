@@ -229,37 +229,42 @@ namespace BluEngine.ScreenManager
         /// <summary>
         /// Adds a new screen to the screen manager.
         /// </summary>
-        public void AddScreen(GameScreen screen)
+        /// <param name="screen">The new screen to add to the stack.</param>
+        /// <returns>The screen, or null if it could not be added.</returns>
+        public GameScreen AddScreen(GameScreen screen)
         {
-            screen.ScreenManager = this;
+            if (screen == null || screens.Contains(screen))
+                return null;
 
             // If we have a graphics device, tell the screen to load content.
             if (isInitialized)
             {
                 screen.LoadContent();
-
             }
 
             screens.Add(screen);
+            screen.Added();
+
+            return screen;
 
         }
 
         /// <summary>
         /// Adds a new screen to the screen manager by instantiating a new instance of the provided GameScreen type. The provided type must implement the parameterless constructor.
         /// </summary>
-        public void AddScreen(Type screenType)
+        /// <param name="screenType">The type of the new screen to instantiate and add.</param>
+        /// <returns>The screen, or null if it could not be added.</returns>
+        public GameScreen AddScreen(Type screenType)
         {
             if (screenType == null)
-                return;
-
+                return null;
             //check that the supplied type is valid
             if (screenType != typeof(GameScreen) && !screenType.IsSubclassOf(typeof(GameScreen)))
             {
                 Console.WriteLine("Reflection error: Type supplied to BluGame xtor is not a valid GameScreen type!");
-                return;
+                return null;
             }
-
-            AddScreen((GameScreen)screenType.GetConstructor(new Type[] { }).Invoke(new object[] { }));
+            return AddScreen((GameScreen)screenType.GetConstructor(new Type[] { }).Invoke(new object[] { }));
         }
 
         public GameScreen[] GetScreens()
@@ -275,6 +280,10 @@ namespace BluEngine.ScreenManager
         /// </summary>
         public void RemoveScreen(GameScreen screen)
         {
+            if (screen == null || !screens.Contains(screen))
+
+            screen.Removed();
+            
             // If we have a graphics device, tell the screen to unload content.
             if (isInitialized)
                 screen.UnloadContent();
@@ -283,7 +292,35 @@ namespace BluEngine.ScreenManager
             screensToUpdate.Remove(screen);
         }
 
-        
+        /// <summary>
+        /// Replaces the current topmost screen with the one provided, removing the previous one from the internal screens stack. This does not call LoadContent() or UnloadContent() on either screen; use this to store a screen in "standby" for returning to later.
+        /// </summary>
+        /// <param name="screen">The new screen to add. It must not already be in the screens stack.</param>
+        /// <param name="previousScreen">If successful, this will contain the previous topmost screen (or null if there was no screens).</param>
+        /// <returns>True if the swap was successful.</returns>
+        public bool SwapScreen(GameScreen screen, out GameScreen previousScreen)
+        {
+            previousScreen = null;
+
+            //if the new screen is invalid, return false;
+            if (screen == null || screens.Contains(screen))
+                return false;
+
+            //remove and store old screen
+            if (screens.Count > 0)
+            {
+                previousScreen = screens[screens.Count - 1];
+                previousScreen.Removed();
+                screens.RemoveAt(screens.Count - 1);
+                screensToUpdate.Remove(previousScreen);
+            }
+
+            //push new one
+            screens.Add(screen);
+            screen.Added();
+            return true;
+        }
+
         public void SaveData()
         {
             //StreamWriter stream = new StreamWriter("data.dat");

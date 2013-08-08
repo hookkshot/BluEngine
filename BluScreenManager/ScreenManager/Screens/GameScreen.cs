@@ -93,10 +93,8 @@ namespace BluEngine.ScreenManager.Screens
         /// </summary>
         public BluEngine.ScreenManager.ScreenManager ScreenManager
         {
-            get { return screenManager; }
-            internal set { screenManager = value; }
+            get { return ScreenManager.Instance; }
         }
-        private BluEngine.ScreenManager.ScreenManager screenManager;
 
         #endregion
 
@@ -121,6 +119,17 @@ namespace BluEngine.ScreenManager.Screens
             tweenManager.KillAll();
             content.Dispose();
         }
+
+        /// <summary>
+        /// Called when this screen is added to the screen manager.
+        /// </summary>
+        public virtual void Added() { }
+
+        /// <summary>
+        /// Called when this screen is removed from the screen manager.
+        /// </summary>
+        public virtual void Removed() { }
+
 
 
         #endregion
