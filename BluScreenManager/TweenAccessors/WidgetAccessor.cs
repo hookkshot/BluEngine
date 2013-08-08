@@ -15,6 +15,9 @@ namespace BluEngine.TweenAccessors
         public const int TWEEN_WIDTH = 4;
         public const int TWEEN_HEIGHT = 5;
         public const int TWEEN_SIZE = 6;
+        public const int TWEEN_TOP_SIZE = 7;
+        public const int TWEEN_TINT_STRENGTH = 8;
+        public const int TWEEN_TOP_SIZE_TINT_STRENGTH = 9;
 
         public override int GetValues(object target, int tweenType, float[] returnValues)
         {
@@ -46,6 +49,23 @@ namespace BluEngine.TweenAccessors
                     returnValues[0] = widget.Width;
                     returnValues[1] = widget.Height;
                     return 2;
+
+                case TWEEN_TOP_SIZE:
+                    returnValues[0] = widget.Top;
+                    returnValues[1] = widget.Width;
+                    returnValues[2] = widget.Height;
+                    return 3;
+
+                case TWEEN_TINT_STRENGTH:
+                    returnValues[0] = widget.TintStrength;
+                    return 1;
+
+                case TWEEN_TOP_SIZE_TINT_STRENGTH:
+                    returnValues[0] = widget.Top;
+                    returnValues[1] = widget.Width;
+                    returnValues[2] = widget.Height;
+                    returnValues[3] = widget.TintStrength;
+                    return 4;
             }
             return 0;
         }
@@ -81,6 +101,22 @@ namespace BluEngine.TweenAccessors
                     widget.Height = newValues[1];
                     break;
 
+                case TWEEN_TOP_SIZE:
+                    widget.Top = newValues[0];
+                    widget.Width = newValues[1];
+                    widget.Height = newValues[2];
+                    break;
+
+                case TWEEN_TINT_STRENGTH:
+                    widget.TintStrength = newValues[0];
+                    break;
+
+                case TWEEN_TOP_SIZE_TINT_STRENGTH:
+                    widget.Top = newValues[0];
+                    widget.Width = newValues[1];
+                    widget.Height = newValues[2];
+                    widget.TintStrength = newValues[3];
+                    break;
             }
         }
     }

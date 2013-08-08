@@ -52,6 +52,7 @@ namespace BluEngine.Engine
         /// </summary>
         private void RegisterTweenAccessors()
         {
+            Tween.SetCombinedAttributesLimit(5);
             Tween.RegisterAccessor(typeof(Widget), new WidgetAccessor());
         }
 
