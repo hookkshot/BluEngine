@@ -66,7 +66,7 @@ namespace BluEngine.Engine.GameObjects
         {
             foreach (Sprite sprite in sourceImages)
             {
-                spriteBatch.Draw(sprite.SourceImage, ConnectedGameObject.Position - screenOffset, new Rectangle(frameWidth * currentFrame, 0, frameWidth, frameHeight), Color.White, ConnectedGameObject.Rotation, new Vector2(16,16), ConnectedGameObject.Scale, SpriteEffects.None, sprite.Layer);
+                spriteBatch.Draw(sprite.SourceImage, ConnectedGameObject.Position - screenOffset, new Rectangle(frameWidth * currentFrame, 0, frameWidth, frameHeight), Color.White, ConnectedGameObject.Rotation, new Vector2(Width/2,Height/2), ConnectedGameObject.Scale, SpriteEffects.None, sprite.Layer);
             }
         }
     }

@@ -68,7 +68,7 @@ namespace BluEngine.Engine.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenOffset)
         {
-            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset, sourceImage.Bounds, Color.White, 0.0f, new Vector2(16,16),1.0f, SpriteEffects.None, layer);
+            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset, sourceImage.Bounds, Color.White, 0.0f, new Vector2(Width/2,Height/2),1.0f, SpriteEffects.None, layer);
         }
 
         #endregion
