@@ -10,6 +10,7 @@
 using AurelienRibon.TweenEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using System;
 #endregion
 
 namespace BluEngine.ScreenManager.Screens
@@ -32,6 +33,15 @@ namespace BluEngine.ScreenManager.Screens
     /// </summary>
     public abstract class GameScreen
     {
+        /// <summary>
+        /// A pre-initialized random number generator shared between all screens.
+        /// </summary>
+        public static Random Rand
+        {
+            get { return random; }
+        }
+        private static Random random = new Random();
+        
         #region Properties
 
         /// <summary>
