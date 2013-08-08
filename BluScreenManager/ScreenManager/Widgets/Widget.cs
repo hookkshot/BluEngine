@@ -113,19 +113,19 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
-        /// The strength of this widget's base Tint, between 0.0f and 1.0f.
+        /// This widget's Style["normal"]["tint"], an XNA Color object.
         /// </summary>
-        public float TintStrength
+        public Color Tint
         {
             get
             {
-                object attr = Style["normal"]["tint-strength"];
-                float val = 1.0f;
+                object attr = Style["normal"]["tint"];
+                Color val = Color.White;
                 if (attr != null)
                 {
                     try
                     {
-                        val = Math.Min(Math.Max((float)attr, 0.0f), 1.0f);
+                        val = (Color)attr;
                     }
                     catch
                     {
@@ -136,8 +136,84 @@ namespace BluEngine.ScreenManager.Widgets
             }
             set
             {
-                Style["normal"]["tint-strength"] = Math.Min(Math.Max(value, 0.0f), 1.0f);
+                Style["normal"]["tint"] = value;
             }
+        }
+
+        /// <summary>
+        /// Gets one of this widget's Style["normal"] percentage float values.
+        /// </summary>
+        /// <param name="property">The property to retrieve.</param>
+        /// <param name="fallback">A fallback value to use if the property wasn't found.</param>
+        /// <returns>The property's value</returns>
+        private float GetPercentageStyleValue(String property, float fallback)
+        {
+            object attr = Style["normal"][property];
+            float val = fallback;
+            if (attr != null)
+            {
+                try
+                {
+                    val = Math.Min(Math.Max((float)attr, 0.0f), 1.0f);
+                }
+                catch //cast exception
+                {
+                    ;
+                }
+            }
+            return val;
+        }
+
+        /// <summary>
+        /// Sets one of this widget's Style["normal"] percentage float values.
+        /// </summary>
+        /// <param name="property">The property to set.</param>
+        /// <param name="value">The new value.</param>
+        private void SetPercentageStyleValue(String property, float value)
+        {
+            Style["normal"][property] = Math.Min(Math.Max(value, 0.0f), 1.0f);
+        }
+
+        /// <summary>
+        /// This widget's Style["normal"]["tint-strength"], between 0.0f and 1.0f.
+        /// </summary>
+        public float TintStrength
+        {
+            get { return GetPercentageStyleValue("tint-strength", 1.0f); }
+            set { SetPercentageStyleValue("tint-strength", value); }
+        }
+
+        /// <summary>
+        /// This widget's Style["normal"]["alpha"], between 0.0f and 1.0f.
+        /// </summary>
+        public float Alpha
+        {
+            get { return GetPercentageStyleValue("alpha", 1.0f); }
+            set { SetPercentageStyleValue("alpha", value); }
+        }
+
+
+        /// <summary>
+        /// Get this widget's Style["normal"]["layer-N-alpha"], between 0.0f and 1.0f.
+        /// </summary>
+        /// <param name="N">The N layer index.</param>
+        public float GetLayerNAlpha(int N)
+        {
+            if (N < 0 || N >= Style.STYLE_LAYERS)
+                return 1.0f;
+            return GetPercentageStyleValue("layer-"+N+"-alpha", 1.0f);
+        }
+
+        /// <summary>
+        /// Set this widget's Style["normal"]["layer-N-alpha"], between 0.0f and 1.0f.
+        /// </summary>
+        /// <param name="N">The N layer index.</param>
+        /// <param name="value">The new value.</param>
+        public void SetLayerNAlpha(int N, float value)
+        {
+            if (N < 0 || N >= Style.STYLE_LAYERS)
+                return;
+            SetPercentageStyleValue("layer-" + N + "-alpha", 1.0f);
         }
 
         /// <summary>

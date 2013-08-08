@@ -284,10 +284,7 @@ namespace BluEngine.ScreenManager.Screens
         /// <param name="gameTime">The gametime object passed in from Draw().</param>
         /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
         /// <param name="stringBuilder">The StringBuilder object passed in from the ScreenManager that will be used to output a string after the chain of DrawDebug() calls has finished.</param>
-        protected virtual void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch, StringBuilder stringBuilder)
-        {
-        
-        }
+        protected virtual void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch, StringBuilder stringBuilder) { }
     }
 
 
