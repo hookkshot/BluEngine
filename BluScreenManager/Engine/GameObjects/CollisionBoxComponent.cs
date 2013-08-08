@@ -23,13 +23,13 @@ namespace BluEngine.Engine.GameObjects
         protected Vector2 origin = Vector2.Zero;
 
         [XmlIgnore()]
-        protected Matrix positionMatrix;
+        protected Matrix positionMatrix = Matrix.CreateTranslation(new Vector3(0,0,0));
         [XmlIgnore()]
-        protected Matrix rotationMatrix;
+        protected Matrix rotationMatrix = Matrix.CreateRotationZ(0);
         [XmlIgnore()]
-        protected Matrix scaleMatrix;
+        protected Matrix scaleMatrix = Matrix.CreateScale(0);
         [XmlIgnore()]
-        protected Matrix originMatrix;
+        protected Matrix originMatrix = Matrix.CreateTranslation(new Vector3(0,0,0));
 
         [XmlIgnore()]
         protected Matrix translationMatrix;
@@ -149,6 +149,14 @@ namespace BluEngine.Engine.GameObjects
         }
 
         #endregion
+
+        public override void Initialize(Microsoft.Xna.Framework.Content.ContentManager content, string path)
+        {
+            if (CollisionType != null)
+            {
+                CollisionSimulator.CollisionLists[CollisionType.ID].Add(this);
+            }
+        }
 
         #region Methods
 

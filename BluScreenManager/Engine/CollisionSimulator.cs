@@ -28,6 +28,12 @@ namespace BluEngine.Engine
             if (!CollisionSimulator.CollisionTypes.ContainsKey(id))
                 CollisionSimulator.CollisionTypes.Add(id, this);
 
+            if (!CollisionSimulator.CollisionLists.ContainsKey(id))
+            {
+                CollisionSimulator.CollisionLists.Add(id, new List<CollisionBoxComponent>());
+            }
+
+
         }
     }
 
@@ -45,6 +51,11 @@ namespace BluEngine.Engine
         public static Dictionary<short, CollisionType> CollisionTypes
         {
             get { return collisionTypes; }
+        }
+
+        public static Dictionary<short, List<CollisionBoxComponent>> CollisionLists
+        {
+            get { return collisionLists; }
         }
 
         #endregion

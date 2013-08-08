@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace BluEngine.Engine.GameObjects
 {
@@ -98,6 +99,23 @@ namespace BluEngine.Engine.GameObjects
             transform = new Transform();
             components = new Dictionary<Type, GameObjectComponent>();
             components[typeof(Transform)] = transform;
+        }
+
+        #endregion
+
+        #region Initialize
+
+        public virtual void Initialize()
+        {
+
+        }
+
+        public virtual void Initialize(ContentManager content, string path)
+        {
+            foreach (KeyValuePair<Type, GameObjectComponent> kvp in components)
+            {
+                kvp.Value.Initialize(content,path);
+            }
         }
 
         #endregion
