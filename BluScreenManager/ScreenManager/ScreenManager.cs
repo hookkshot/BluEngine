@@ -251,14 +251,12 @@ namespace BluEngine.ScreenManager
         {
             if (screenType == null)
                 return;
-
             //check that the supplied type is valid
             if (screenType != typeof(GameScreen) && !screenType.IsSubclassOf(typeof(GameScreen)))
             {
                 Console.WriteLine("Reflection error: Type supplied to BluGame xtor is not a valid GameScreen type!");
                 return;
             }
-
             AddScreen((GameScreen)screenType.GetConstructor(new Type[] { }).Invoke(new object[] { }));
         }
 
@@ -283,7 +281,33 @@ namespace BluEngine.ScreenManager
             screensToUpdate.Remove(screen);
         }
 
-        
+        /// <summary>
+        /// Replaces the current topmost screen with the one provided, removing the previous one from the internal screens stack. This does not call LoadContent() or UnloadContent() on either screen; use this to store a screen in "standby" for returning to later.
+        /// </summary>
+        /// <param name="screen">The new screen to add. It must not already be in the screens stack.</param>
+        /// <param name="previousScreen">If successful, this will contain the previous topmost screen (or null if there was no screens).</param>
+        /// <returns>True if the swap was successful.</returns>
+        public bool SwapScreen(GameScreen screen, out GameScreen previousScreen)
+        {
+            previousScreen = null;
+
+            //if the new screen is invalid, return false;
+            if (screen == null || screens.Contains(screen))
+                return false;
+
+            //remove and store old screen
+            if (screens.Count > 0)
+            {
+                previousScreen = screens[screens.Count - 1];
+                screens.RemoveAt(screens.Count - 1);
+                screensToUpdate.Remove(screen);
+            }
+
+            //push new one
+            screens.Add(screen);
+            return true;
+        }
+
         public void SaveData()
         {
             //StreamWriter stream = new StreamWriter("data.dat");
