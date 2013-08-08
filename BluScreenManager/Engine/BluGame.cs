@@ -28,15 +28,6 @@ namespace BluEngine.Engine
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
             Content.RootDirectory = "Content";
-
-            if (firstScreenType != null)
-            {
-                //check that the supplied type is valid
-                if (firstScreenType == typeof(GameScreen) || firstScreenType.IsSubclassOf(typeof(GameScreen)))
-                    firstScreen = firstScreenType;
-                else
-                    Console.WriteLine("Reflection error: Type supplied to BluGame xtor is not a valid GameScreen type!");
-            }
         }
         public BluGame() : this(null) { }
 
@@ -52,8 +43,7 @@ namespace BluEngine.Engine
             RegisterTweenAccessors();
             screenManager = new BluEngine.ScreenManager.ScreenManager(this, "Fonts\\smallfont");
             screenManager.Initialize();
-            if (firstScreen != null)
-                screenManager.AddScreen((GameScreen)firstScreen.GetConstructor(new Type[] {}).Invoke(new object[] {}));
+            screenManager.AddScreen(firstScreen); //won't do anything if firstScreen is null or invalid :)
         }
 
         /// <summary>

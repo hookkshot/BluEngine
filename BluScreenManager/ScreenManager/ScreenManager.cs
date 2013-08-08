@@ -244,6 +244,24 @@ namespace BluEngine.ScreenManager
 
         }
 
+        /// <summary>
+        /// Adds a new screen to the screen manager by instantiating a new instance of the provided GameScreen type. The provided type must implement the parameterless constructor.
+        /// </summary>
+        public void AddScreen(Type screenType)
+        {
+            if (screenType == null)
+                return;
+
+            //check that the supplied type is valid
+            if (screenType != typeof(GameScreen) && !screenType.IsSubclassOf(typeof(GameScreen)))
+            {
+                Console.WriteLine("Reflection error: Type supplied to BluGame xtor is not a valid GameScreen type!");
+                return;
+            }
+
+            AddScreen((GameScreen)screenType.GetConstructor(new Type[] { }).Invoke(new object[] { }));
+        }
+
         public GameScreen[] GetScreens()
         {
             return screens.ToArray();
