@@ -62,25 +62,12 @@ namespace BluEngine.Engine
 
         public static CollisionBoxComponent CheckForCollision(CollisionBoxComponent entity)
         {
-            foreach (short colType in entity.CollisionType.CollidingIDs)
-            {
-                CollisionBoxComponent colbox = CheckForSpecificCollision(entity, colType);
-                if (colbox != null)
-                    return colbox;
-            }
-
-            return null;
+            return CheckForCollision(entity, null);
         }
 
         public static CollisionBoxComponent CheckForSpecificCollision(CollisionBoxComponent entity, short collisionID)
         {
-            foreach (CollisionBoxComponent colBox in collisionLists[collisionID])
-            {
-                if(entity.Intersects(colBox))
-                    return colBox;
-            }
-
-            return null;
+            return CheckForSpecificCollision(entity, collisionID, null);
         }
 
         public static CollisionBoxComponent CheckForCollision(CollisionBoxComponent entity, CollisionBoxComponent ignore)
@@ -99,7 +86,7 @@ namespace BluEngine.Engine
         {
             foreach (CollisionBoxComponent colBox in collisionLists[collisionID])
             {
-                if (entity.Intersects(colBox) && colBox != ignore)
+                if (entity.Intersects(colBox) && colBox != ignore && colBox != entity)
                     return colBox;
             }
 
