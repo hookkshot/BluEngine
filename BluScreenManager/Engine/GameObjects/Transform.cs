@@ -7,9 +7,9 @@ namespace BluEngine.Engine.GameObjects
     {
         #region Fields
 
-        protected Vector2 position = Vector2.Zero;
-        protected float rotation = 0.0f;
-        protected float scale = 1.0f;
+        private Vector2 position = Vector2.Zero;
+        private float rotation = 0.0f;
+        private float scale = 1.0f;
 
         #endregion
 
@@ -18,19 +18,19 @@ namespace BluEngine.Engine.GameObjects
         public virtual Vector2 Position
         {
             get { return position; }
-            protected set { position = value; }
+            set { position = value; }
         }
 
         public virtual float Rotation
         {
             get { return rotation; }
-            protected set { rotation = value; }
+            set { rotation = value; }
         }
 
         public virtual float Scale
         {
             get { return scale; }
-            protected set { scale = value; }
+            set { scale = value; }
         }
 
         #endregion

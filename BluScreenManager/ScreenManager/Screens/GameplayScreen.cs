@@ -27,6 +27,7 @@ namespace BluEngine.ScreenManager.Screens
         protected GameObject ViewScreen
         {
             get { return viewScreen; }
+            set { if (value == null) return; viewScreen = value; }
         }
         private GameObject viewScreen;
 

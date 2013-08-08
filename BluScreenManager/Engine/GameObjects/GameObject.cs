@@ -10,23 +10,53 @@ namespace BluEngine.Engine.GameObjects
     {
         #region Fields
 
-        protected Vector2 position = Vector2.Zero;
-        protected float rotation = 0.0f;
-        protected float scale = 1.0f;
-
-        private Dictionary<Type, GameObjectComponent> components = new Dictionary<Type, GameObjectComponent>();
+        private Transform transform;
+        private Dictionary<Type, GameObjectComponent> components;
 
         #endregion
 
         #region Properties
 
         /// <summary>
+        /// 
+        /// </summary>
+        public virtual Transform Transform
+        {
+            get { return transform; }
+            protected set
+            {
+                if (value == null || value == transform)
+                    return;
+                transform = value;
+                components[typeof(Transform)] = value;
+            }
+        }
+
+        /// <summary>
         /// The game world position of the game object.
         /// </summary>
-        public Vector2 Position
+        public virtual Vector2 Position
         {
-            get { return position; }
-            set { position = value; }
+            get { return transform.Position; }
+            set { transform.Position = value; }
+        }
+
+        /// <summary>
+        /// The game world scale of the game object.
+        /// </summary>
+        public virtual float Scale
+        {
+            get { return transform.Scale; }
+            set { transform.Scale = value; }
+        }
+
+        /// <summary>
+        /// The game world rotation of the game object.
+        /// </summary>
+        public virtual float Rotation
+        {
+            get { return transform.Rotation; }
+            set { transform.Rotation = value; }
         }
 
         /// <summary>
@@ -60,6 +90,13 @@ namespace BluEngine.Engine.GameObjects
                     return;
                 components[t] = value;
             }
+        }
+
+        public GameObject()
+        {
+            transform = new Transform();
+            components = new Dictionary<Type, GameObjectComponent>();
+            components[typeof(Transform)] = transform;
         }
 
         #endregion

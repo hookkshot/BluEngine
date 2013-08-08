@@ -40,12 +40,12 @@ namespace BluEngine.Engine.GameObjects
 
         public override Vector2 Position
         {
-            get { return position; }
-            protected set
+            get { return base.Position; }
+            set
             {
                 dirtyMatrix = true;
-                position = value;
-                positionMatrix = Matrix.CreateTranslation(position.X, position.Y, 0);
+                base.Position = value;
+                positionMatrix = Matrix.CreateTranslation(base.Position.X, base.Position.Y, 0);
             }
         }
 
@@ -53,13 +53,13 @@ namespace BluEngine.Engine.GameObjects
         {
             get
             {
-                return rotation;
+                return base.Rotation;
             }
-            protected set
+            set
             {
                 dirtyMatrix = true;
-                rotation = MathHelper.WrapAngle(value);
-                rotationMatrix = Matrix.CreateRotationZ(rotation);
+                base.Rotation = MathHelper.WrapAngle(value);
+                rotationMatrix = Matrix.CreateRotationZ(base.Rotation);
             }
         }
 
@@ -67,13 +67,13 @@ namespace BluEngine.Engine.GameObjects
         {
             get
             {
-                return scale;
+                return base.Scale;
             }
-            protected set
+            set
             {
                 dirtyMatrix = true;
-                scale = value;
-                scaleMatrix = Matrix.CreateScale(scale);
+                base.Scale = value;
+                scaleMatrix = Matrix.CreateScale(base.Scale);
             }
         }
 
@@ -181,9 +181,9 @@ namespace BluEngine.Engine.GameObjects
             CollisionBoxComponent clone = new CollisionBoxComponent();
 
             clone.connectedGameObject = connectedGameObject;
-            clone.Position = position;
-            clone.Rotation = rotation;
-            clone.Scale = scale;
+            clone.Position = Position;
+            clone.Rotation = Rotation;
+            clone.Scale = Scale;
             clone.Origin = origin;
             clone.Width = Width;
             clone.Height = Height;
