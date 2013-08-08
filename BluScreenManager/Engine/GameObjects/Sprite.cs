@@ -38,6 +38,16 @@ namespace BluEngine.Engine.GameObjects
             set { layer = value; }
         }
 
+        public virtual int Width
+        {
+            get { return sourceImage.Width; }
+        }
+
+        public virtual int Height
+        {
+            get { return sourceImage.Height; }
+        }
+
         #endregion
 
         #region Initialize
@@ -58,7 +68,7 @@ namespace BluEngine.Engine.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenOffset)
         {
-            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position, sourceImage.Bounds, Color.White, 0.0f, new Vector2(sourceImage.Width/2,sourceImage.Height/2),1.0f, SpriteEffects.None, layer);
+            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset, sourceImage.Bounds, Color.White, 0.0f, new Vector2(sourceImage.Width/2,sourceImage.Height/2),1.0f, SpriteEffects.None, layer);
         }
 
         #endregion
