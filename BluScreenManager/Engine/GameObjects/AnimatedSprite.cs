@@ -80,10 +80,11 @@ namespace BluEngine.Engine.GameObjects
                 if (currentFrame >= sourceImage.Width / frameWidth)
                 {
                     timesPlayed++;
+                    currentFrame = 0;
                     
                     if (timesPlayed >= Repeat && Repeat != 0)
                     {
-                        currentFrame = 0;
+                        
                         if (AnimationFinished != null)
                             AnimationFinished(this, new EventArgs());
                         playing = false;
