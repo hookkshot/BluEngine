@@ -125,7 +125,7 @@ namespace BluEngine.ScreenManager.Widgets
                 {
                     try
                     {
-                        Math.Min(Math.Max((float)attr, 0.0f), 1.0f);
+                        val = Math.Min(Math.Max((float)attr, 0.0f), 1.0f);
                     }
                     catch
                     {

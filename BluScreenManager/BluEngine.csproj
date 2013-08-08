@@ -98,6 +98,7 @@
     <Compile Include="ScreenManager\Styles\Style.cs" />
     <Compile Include="ScreenManager\Styles\StyleSheet.cs" />
     <Compile Include="ScreenManager\Widgets\Widget.cs" />
+    <Compile Include="ScreenManager\Widgets\WidgetScreenTransitionCallback.cs" />
     <Compile Include="TweenAccessors\WidgetAccessor.cs" />
   </ItemGroup>
   <ItemGroup>
