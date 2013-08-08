@@ -30,6 +30,7 @@ namespace BluEngine.Engine.GameObjects
                 if (value == null || value == transform)
                     return;
                 transform = value;
+                transform.ConnectedGameObject = this;
                 components[typeof(Transform)] = value;
             }
         }
