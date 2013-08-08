@@ -27,7 +27,7 @@ namespace BluEngine.Engine.GameObjects
         [XmlIgnore()]
         protected Matrix rotationMatrix = Matrix.CreateRotationZ(0);
         [XmlIgnore()]
-        protected Matrix scaleMatrix = Matrix.CreateScale(0);
+        protected Matrix scaleMatrix = Matrix.CreateScale(1);
         [XmlIgnore()]
         protected Matrix originMatrix = Matrix.CreateTranslation(new Vector3(0,0,0));
 

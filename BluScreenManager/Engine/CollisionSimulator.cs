@@ -82,5 +82,16 @@ namespace BluEngine.Engine
 
             return null;
         }
+
+        public static CollisionBoxComponent CheckForSpecificCollision(CollisionBoxComponent entity, short collisionID, CollisionBoxComponent ignore)
+        {
+            foreach (CollisionBoxComponent colBox in collisionLists[collisionID])
+            {
+                if (entity.Intersects(colBox) && colBox != ignore)
+                    return colBox;
+            }
+
+            return null;
+        }
     }
 }
