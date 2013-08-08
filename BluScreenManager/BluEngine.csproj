@@ -65,6 +65,7 @@
     <Compile Include="Engine\CollisionSimulator.cs" />
     <Compile Include="Engine\GameObjects\AnimatedSprite.cs" />
     <Compile Include="Engine\GameObjects\LayeredAnimatedSprite.cs" />
+    <Compile Include="Engine\GameObjects\ViewScreen.cs" />
     <Compile Include="Engine\HitFlags.cs" />
     <Compile Include="Engine\GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="Engine\IScreenDimensionsProvider.cs" />

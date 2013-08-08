@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+
 namespace BluEngine.Engine.GameObjects
 {
-    public class ViewScreen
+    public class ViewScreen : GameObject
     {
         private int width = 0;
         private int height = 0;
@@ -26,6 +28,18 @@ namespace BluEngine.Engine.GameObjects
             get
             {
                 return height;
+            }
+        }
+
+        public override Microsoft.Xna.Framework.Vector2 Position
+        {
+            get
+            {
+                return base.Position;
+            }
+            set
+            {
+                base.Position = value - new Vector2(width / 2, height / 2); ;
             }
         }
     }

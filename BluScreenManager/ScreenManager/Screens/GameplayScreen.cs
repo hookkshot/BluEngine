@@ -3,6 +3,8 @@ using BluEngine.Engine.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using BluEngine.Engine.GameObjects;
+
 namespace BluEngine.ScreenManager.Screens
 {
     /// <summary>
@@ -38,7 +40,7 @@ namespace BluEngine.ScreenManager.Screens
         public override void LoadContent()
         {
             base.LoadContent();
-            viewScreen = new GameObject();
+            viewScreen = new ViewScreen(ScreenManager.GraphicsDevice.Viewport.Width,ScreenManager.GraphicsDevice.Viewport.Height);
         }
 
         protected override void UpdateWorld(GameTime gameTime)
