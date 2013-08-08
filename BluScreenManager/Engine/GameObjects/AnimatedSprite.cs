@@ -101,7 +101,10 @@ namespace BluEngine.Engine.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenOffset)
         {
-            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset, new Rectangle(frameWidth * currentFrame, 0, frameWidth, frameHeight), Color.White, ConnectedGameObject.Rotation, new Vector2(Width/2,Height/2), ConnectedGameObject.Scale, SpriteEffects.None, layer);
+            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset,
+                new Rectangle(frameWidth * currentFrame, 0, frameWidth, frameHeight),
+                Color.White, ConnectedGameObject.Rotation, ImageOffset,
+                ConnectedGameObject.Scale, SpriteEffects.None, layer);
         }
 
 

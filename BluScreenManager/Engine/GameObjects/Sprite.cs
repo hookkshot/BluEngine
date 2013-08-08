@@ -16,6 +16,8 @@ namespace BluEngine.Engine.GameObjects
 
         protected float layer = 0.5f;
 
+        private Vector2 imageOffset = Vector2.Zero;
+
         #endregion
 
         #region Properties
@@ -48,6 +50,12 @@ namespace BluEngine.Engine.GameObjects
             get { return sourceImage.Height; }
         }
 
+        public Vector2 ImageOffset
+        {
+            get { return imageOffset; }
+            set { imageOffset = value; }
+        }
+
         #endregion
 
         #region Initialize
@@ -68,7 +76,16 @@ namespace BluEngine.Engine.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenOffset)
         {
-            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset, sourceImage.Bounds, Color.White, 0.0f, new Vector2(Width/2,Height/2),1.0f, SpriteEffects.None, layer);
+            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset, sourceImage.Bounds, Color.White, 0.0f, imageOffset,1.0f, SpriteEffects.None, layer);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void MakeCenter()
+        {
+            imageOffset = new Vector2(Width / 2, Height / 2);
         }
 
         #endregion
