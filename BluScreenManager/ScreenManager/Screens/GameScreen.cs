@@ -41,6 +41,13 @@ namespace BluEngine.ScreenManager.Screens
             get { return random; }
         }
         private static Random random = new Random();
+
+        public static bool DrawingDebug
+        {
+            get { return drawDebug; }
+            protected set { drawDebug = value; }
+        }
+        private static bool drawDebug = false;
         
         #region Properties
 

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
+using System.Text;
 
 
 namespace BluEngine.ScreenManager.Screens
@@ -220,7 +221,15 @@ namespace BluEngine.ScreenManager.Screens
         /// KeyDown events passed down to the "world" layer. This may not fire - the UI layer can cancel these events before they cascade down to the world layer.
         /// </summary>
         /// <param name="key">The key that was pressed.</param>
-        protected virtual void KeyDown(Keys key) { }
+        protected virtual void KeyDown(Keys key)
+        {
+            switch (key)
+            {
+                case Keys.F5:
+                    DrawingDebug = !DrawingDebug;
+                    break;
+            }
+        }
 
         /// <summary>
         /// KeyDown events passed down to the "world" layer. This may not fire - the UI layer can cancel these events before they cascade down to the world layer.
@@ -246,6 +255,12 @@ namespace BluEngine.ScreenManager.Screens
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             baseWidget.DrawAll(spriteBatch);
             DrawUI(gameTime, spriteBatch);
+            if (DrawingDebug)
+            {
+                StringBuilder sb = new StringBuilder();
+                DrawDebug(gameTime, spriteBatch, sb);
+                spriteBatch.DrawString(ScreenManager.Font, sb.ToString(), new Vector2(2.0f, 2.0f), Color.White);
+            }
             spriteBatch.End();
         }
 
@@ -253,15 +268,26 @@ namespace BluEngine.ScreenManager.Screens
         /// If this WidgetScreen has a "world" layer to it, perform it's drawing here.
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Draw().</param>
-        /// <param name="gameTime">The SpriteBatch object passed in from the ScreenManager.</param>
+        /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
         protected virtual void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch) {}
 
         /// <summary>
         /// If this WidgetScreen has a "UI" layer to it, perform it's drawing here. This does not include widgets; this function is for doing your own custom rendering ON TOP of the widget layer.
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Draw().</param>
-        /// <param name="gameTime">The SpriteBatch object passed in from the ScreenManager.</param>
+        /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
         protected virtual void DrawUI(GameTime gameTime, SpriteBatch spriteBatch) { }
+
+        /// <summary>
+        /// Use this for drawing debug information (toggled with the F5 key).
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Draw().</param>
+        /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
+        /// <param name="stringBuilder">The StringBuilder object passed in from the ScreenManager that will be used to output a string after the chain of DrawDebug() calls has finished.</param>
+        protected virtual void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch, StringBuilder stringBuilder)
+        {
+        
+        }
     }
 
 

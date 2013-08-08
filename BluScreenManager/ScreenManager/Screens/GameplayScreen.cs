@@ -3,8 +3,6 @@ using BluEngine.Engine.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using BluEngine.Engine.GameObjects;
-
 namespace BluEngine.ScreenManager.Screens
 {
     /// <summary>
@@ -30,12 +28,12 @@ namespace BluEngine.ScreenManager.Screens
         /// <summary>
         /// Represents the "camera" or "viewport" of the game world render layer.
         /// </summary>
-        protected GameObject ViewScreen
+        protected ViewScreen ViewScreen
         {
             get { return viewScreen; }
             set { if (value == null) return; viewScreen = value; }
         }
-        private GameObject viewScreen;
+        private ViewScreen viewScreen;
 
         public override void LoadContent()
         {
