@@ -113,6 +113,34 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
+        /// The strength of this widget's base Tint, between 0.0f and 1.0f.
+        /// </summary>
+        public float TintStrength
+        {
+            get
+            {
+                object attr = Style["normal"]["tint-strength"];
+                float val = 1.0f;
+                if (attr != null)
+                {
+                    try
+                    {
+                        Math.Min(Math.Max((float)attr, 0.0f), 1.0f);
+                    }
+                    catch
+                    {
+                        ;
+                    }
+                }
+                return val;
+            }
+            set
+            {
+                Style["normal"]["tint-strength"] = Math.Min(Math.Max(value, 0.0f), 1.0f);
+            }
+        }
+
+        /// <summary>
         /// This widget's individal style object. Use this to alter style attributes for a specific widget without modifying the global styles.
         /// </summary>
         public Style Style
@@ -405,6 +433,15 @@ namespace BluEngine.ScreenManager.Widgets
 
             //color tint
             Color tint = Screen.Styles.ColorLookup("tint", Color.White);
+
+            //tint strength
+            float tintStrength = Screen.Styles.FloatLookup("tint-strength", 1.0f);
+
+            float delta = 255.0f * (1.0f - tintStrength);
+            int R = (int)(((float)tint.R * tintStrength) + delta);
+            int G = (int)(((float)tint.G * tintStrength) + delta);
+            int B = (int)(((float)tint.B * tintStrength) + delta);
+            tint = new Color(R, G, B);
 
             //layers
             for (int i = 0; i < Style.STYLE_LAYERS; i++)
