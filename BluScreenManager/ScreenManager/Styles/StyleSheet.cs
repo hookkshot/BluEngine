@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BluEngine.ScreenManager.Widgets;
 using System.IO;
 using Marzersoft.CSS;
+using Microsoft.Xna.Framework;
 
 namespace BluEngine.ScreenManager.Styles
 {
@@ -213,6 +214,17 @@ namespace BluEngine.ScreenManager.Styles
         public char CharLookup(String attribute, char fallback)
         {
             return ValueAttributeLookup<char>(attribute) ?? fallback;
+        }
+
+        /// <summary>
+        /// Shortcut for looking up Color attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the Color attribute to look up.</param>
+        /// <param name="fallback">The value to use as default if the attribute wasn't found.</param>
+        /// <returns>The attribute value or the default.</returns>
+        public Color ColorLookup(String attribute, Color fallback)
+        {
+            return ValueAttributeLookup<Color>(attribute) ?? fallback;
         }
 
         public bool LoadCSSFile(string name)

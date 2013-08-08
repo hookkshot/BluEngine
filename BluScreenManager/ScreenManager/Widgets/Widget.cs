@@ -400,13 +400,20 @@ namespace BluEngine.ScreenManager.Widgets
             //set the target hierarchy to that of this widget
             Screen.Styles.StartLookup(this, State);
 
+            //alpha
             float alpha = Screen.Styles.FloatLookup("alpha", 1.0f);
 
+            //color tint
+            Color tint = Screen.Styles.ColorLookup("tint", Color.White);
+
+            //layers
             for (int i = 0; i < Style.STYLE_LAYERS; i++)
             {
                 ImageLayer layer = Screen.Styles.ImageLayerLookup("layer-" + i);
+                float layerAlpha = Screen.Styles.FloatLookup("layer-"+i+"-alpha", 1.0f);
+
                 if (layer != null)
-                    layer.Draw(spriteBatch,this,Color.White * alpha);
+                    layer.Draw(spriteBatch, this, tint * alpha * layerAlpha);
             }
         }
 
