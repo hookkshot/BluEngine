@@ -281,7 +281,6 @@ namespace BluEngine.ScreenManager
 
             screens.Remove(screen);
             screensToUpdate.Remove(screen);
-
         }
 
         

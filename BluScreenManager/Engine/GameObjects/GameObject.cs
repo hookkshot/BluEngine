@@ -89,6 +89,7 @@ namespace BluEngine.Engine.GameObjects
                 if (t == null || !t.IsSubclassOf(typeof(GameObjectComponent)))
                     return;
                 components[t] = value;
+                value.ConnectedGameObject = this;
             }
         }
 
@@ -110,6 +111,11 @@ namespace BluEngine.Engine.GameObjects
         {
             foreach (KeyValuePair<Type,GameObjectComponent> kvp in components)
             {
+                if (kvp.Value == null)
+                {
+                    Console.WriteLine("Warning: GameObject.Update() - GameObjectComponent[" + kvp.Key.Name+ "] is null!");
+                    continue;
+                }
                 kvp.Value.Update(gameTime);
             }
         }
@@ -127,6 +133,11 @@ namespace BluEngine.Engine.GameObjects
         {
             foreach (KeyValuePair<Type, GameObjectComponent> kvp in components)
             {
+                if (kvp.Value == null)
+                {
+                    Console.WriteLine("Warning: GameObject.Draw() - GameObjectComponent[" + kvp.Key.Name + "] is null!");
+                    continue;
+                }
                 kvp.Value.Draw(spriteBatch, screenOffset);
             }
         }

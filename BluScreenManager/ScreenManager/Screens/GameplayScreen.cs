@@ -19,6 +19,10 @@ namespace BluEngine.ScreenManager.Screens
     /// </summary>
     public class GameplayScreen : WidgetScreen
     {
+        protected List<GameObject> GameObjects
+        {
+            get { return gameObjects; }
+        }
         private List<GameObject> gameObjects = new List<GameObject>();
 
         /// <summary>
