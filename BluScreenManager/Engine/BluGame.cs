@@ -28,6 +28,7 @@ namespace BluEngine.Engine
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
             Content.RootDirectory = "Content";
+            firstScreen = firstScreenType;
         }
         public BluGame() : this(null) { }
 
