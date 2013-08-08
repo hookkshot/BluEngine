@@ -14,6 +14,7 @@ using BluEngine.ScreenManager.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Text;
 #endregion
 
 namespace BluEngine.ScreenManager
@@ -49,6 +50,16 @@ namespace BluEngine.ScreenManager
 
         #region Properties
         public Texture2D Filler { get { return filler; } }
+        
+        /// <summary>
+        /// Determines if the debug information is being drawn out over the top of the screens.
+        /// </summary>
+        public static bool DrawingDebug
+        {
+            get { return drawDebug; }
+            set { drawDebug = value; }
+        }
+        private static bool drawDebug = false;
 
         /// <summary>
         /// A static reference to the current ScreenManager instance.
@@ -211,13 +222,17 @@ namespace BluEngine.ScreenManager
         public override void Draw(GameTime gameTime)
         {
             foreach (GameScreen screen in screens)
-            {
-                //if (screen.ScreenState == ScreenState.Hidden)
-                //    continue;
-
                 screen.Draw(gameTime);
-            }
 
+            if (DrawingDebug)
+            {
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+                StringBuilder sb = new StringBuilder();
+                foreach (GameScreen screen in screens)
+                    screen.DrawDebug(gameTime, spriteBatch, sb);
+                spriteBatch.DrawString(Font, sb.ToString(), new Vector2(2.0f, 2.0f), Color.White);
+                spriteBatch.End();
+            }
         }
 
 

@@ -11,6 +11,8 @@ using AurelienRibon.TweenEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
+using Microsoft.Xna.Framework.Graphics;
+using System.Text;
 #endregion
 
 namespace BluEngine.ScreenManager.Screens
@@ -41,14 +43,7 @@ namespace BluEngine.ScreenManager.Screens
             get { return random; }
         }
         private static Random random = new Random();
-
-        public static bool DrawingDebug
-        {
-            get { return drawDebug; }
-            protected set { drawDebug = value; }
-        }
-        private static bool drawDebug = false;
-        
+       
         #region Properties
 
         /// <summary>
@@ -174,7 +169,18 @@ namespace BluEngine.ScreenManager.Screens
         /// <summary>
         /// This is called when the screen should draw itself.
         /// </summary>
-        public virtual void Draw(GameTime gameTime) { }
+        public virtual void Draw(GameTime gameTime)
+        {
+        
+        }
+
+        /// <summary>
+        /// Use this for drawing debug information (toggled with the F5 key).
+        /// </summary>
+        /// <param name="gameTime">The gametime object passed in from Draw().</param>
+        /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
+        /// <param name="stringBuilder">The StringBuilder object passed in from the ScreenManager that will be used to output a string after the chain of DrawDebug() calls has finished.</param>
+        public virtual void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch, StringBuilder stringBuilder) { }
 
 
         #endregion
