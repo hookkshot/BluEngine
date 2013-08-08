@@ -38,11 +38,7 @@
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Unwinnable Wars Game Jam\Game\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Unwinnable Wars Game Jam\Game\OpenTK.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,6 +57,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\BluGameInitSettings.cs" />
     <Compile Include="Engine\BluGame.cs" />
     <Compile Include="Engine\CollisionSimulator.cs" />
     <Compile Include="Engine\GameObjects\AnimatedSprite.cs" />
