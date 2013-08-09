@@ -230,6 +230,7 @@ namespace BluEngine.ScreenManager
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                 StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Debug Mode on.");
                 foreach (GameScreen screen in screens)
                     screen.DrawDebug(gameTime, spriteBatch, sb);
                 spriteBatch.DrawString(Font, sb.ToString(), new Vector2(2.0f, 2.0f), Color.White);
