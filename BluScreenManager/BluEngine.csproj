@@ -33,8 +33,9 @@
     <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\..\Unwinnable Wars Game Jam\Game\Lidgren.Network.dll</HintPath>
     </Reference>
-    <Reference Include="Marzersoft.CSS">
-      <HintPath>..\..\..\..\..\..\Unwinnable Wars Game Jam\Game\Marzersoft.CSS.dll</HintPath>
+    <Reference Include="Marzersoft.CSS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CSSParser\bin\Marzersoft.CSS.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
