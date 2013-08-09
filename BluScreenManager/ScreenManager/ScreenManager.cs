@@ -50,6 +50,8 @@ namespace BluEngine.ScreenManager
 
         #region Properties
         public Texture2D Filler { get { return filler; } }
+
+        new public BluGame Game { get { return base.Game as BluGame; } }
         
         /// <summary>
         /// Determines if the debug information is being drawn out over the top of the screens.
@@ -111,7 +113,7 @@ namespace BluEngine.ScreenManager
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
-        public ScreenManager(Game game, string fontLocation)
+        public ScreenManager(BluGame game, string fontLocation)
             : base(game)
         {
             if (instance == null)
