@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using System.Text;
+using BluEngine.Engine;
 #endregion
 
 namespace BluEngine.ScreenManager.Screens
@@ -118,7 +119,7 @@ namespace BluEngine.ScreenManager.Screens
         public virtual void LoadContent()
         {
             content = new ContentManager(ScreenManager.Game.Services);
-            content.RootDirectory = "Content";
+            content.RootDirectory = ScreenManager.Game.ContentRoot;
             tweenManager = new TweenManager();
         }
 

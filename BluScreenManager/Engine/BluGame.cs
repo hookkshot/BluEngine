@@ -14,6 +14,14 @@ namespace BluEngine.Engine
         private GraphicsDeviceManager graphics;
         private BluGameInitSettings initSettings = null;
 
+        public String ContentRoot { get { return initSettings.ContentFolder; } }
+        public String FontsPath { get { return initSettings.FontsFolder + "\\"; } }
+        public String StylesPath { get { return initSettings.StylesFolder + "\\"; } }
+        public String TexturesPath { get { return initSettings.TexturesFolder + "\\"; } }
+        public String SoundsPath { get { return initSettings.SoundsFolder + "\\"; } }
+        public String MusicPath { get { return initSettings.MusicFolder + "\\"; } }
+        public String ShadersPath { get { return initSettings.ShadersFolder + "\\"; } }
+        
         /// <summary>
         /// ScreenManager instance in use by this BluGame.
         /// </summary>
@@ -36,7 +44,7 @@ namespace BluEngine.Engine
             graphics.PreferredBackBufferWidth = initSettings.ScreenWidth;
             graphics.PreferredBackBufferHeight = initSettings.ScreenHeight;
             graphics.IsFullScreen = initSettings.IsFullscreen;
-            Content.RootDirectory = initSettings.ContentRoot;
+            Content.RootDirectory = ContentRoot;
         }
 
         /// <summary>
@@ -59,7 +67,7 @@ namespace BluEngine.Engine
                 foreach (KeyValuePair<Type, TweenAccessor> kvp in initSettings.TweenAccessors)
                     Tween.RegisterAccessor(kvp.Key, kvp.Value);
             }
-            screenManager = new BluEngine.ScreenManager.ScreenManager(this, initSettings.DefaultFont);
+            screenManager = new BluEngine.ScreenManager.ScreenManager(this, FontsPath+initSettings.DefaultFont);
             screenManager.Initialize();
             screenManager.AddScreen(initSettings.FirstScreenType); //won't do anything if firstScreen is null or invalid :)
         }
