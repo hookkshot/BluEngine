@@ -154,7 +154,7 @@ namespace BluEngine.ScreenManager.Widgets
             {
                 try
                 {
-                    val = Math.Min(Math.Max((float)attr, 0.0f), 1.0f);
+                    val = MathHelper.Clamp((float)attr,0.0f,1.0f);
                 }
                 catch //cast exception
                 {
@@ -171,7 +171,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <param name="value">The new value.</param>
         private void SetPercentageStyleValue(String property, float value)
         {
-            Style["normal"][property] = Math.Min(Math.Max(value, 0.0f), 1.0f);
+            Style["normal"][property] = MathHelper.Clamp(value, 0.0f, 1.0f);
         }
 
         /// <summary>
