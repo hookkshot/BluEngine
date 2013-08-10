@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using BluEngine.Engine;
 using BluEngine.ScreenManager.Screens;
 using Microsoft.Xna.Framework;
+using BluEngine.ScreenManager.Styles;
+using Marzersoft.CSS;
 
 namespace BluEngine.ScreenManager.Widgets
 {
@@ -10,21 +12,36 @@ namespace BluEngine.ScreenManager.Widgets
     /// A special type of widget that does not allow itself to be re-parented and maintains it's bounds at a fixed ratio.
     /// </summary>
     public sealed class ScreenWidget : Widget
-    {
+    {       
         /// <summary>
         /// The ratio of this widget's width to it's parent's height.
         /// </summary>
         public override float ScreenRatio
         {
-            get { return screenWidthRatio; }
-            set
-            {
-                screenWidthRatio = value < 0.4f || value > 2.5f ? 1.0f : value;
-                Invalidate();
-            }
+            get { return refWidth / refHeight; }
+            set { RefWidth = (value < 0.4f || value > 2.5f ? 1.0f : value) * refHeight; }
         }
-        private float screenWidthRatio = 1024.0f / 768.0f;
-        
+
+        /// <summary>
+        /// The width used to calculate this widget's ScreenRatio.
+        /// </summary>
+        public float RefWidth
+        {
+            get { return refWidth; }
+            set { refWidth = (value <= 0.0f || value > 3000.0f ? 1280.0f : value); Invalidate(); }
+        }
+        private float refWidth = 800.0f;
+
+        /// <summary>
+        /// The height used to calculate this widget's ScreenRatio.
+        /// </summary>
+        public float RefHeight
+        {
+            get { return refHeight; }
+            set { refHeight = (value <= 0.0f || value > 3000.0f ? 720.0f : value); Invalidate(); }
+        }
+        private float refHeight = 600.0f;
+
         public override Widget Parent
         {
             get { return null; }
@@ -112,6 +129,7 @@ namespace BluEngine.ScreenManager.Widgets
             IScreenDimensionsProvider dimensionsProvider = DimensionsProvider;
             
             float baseRatio = dimensionsProvider.ScreenRatio;
+            float screenWidthRatio = ScreenRatio;
             if (screenWidthRatio == baseRatio) //the same proportions
                 base.Bounds = new Vector4(0.0f, 0.0f, 1.0f, 1.0f);
             else if (screenWidthRatio < baseRatio) //"narrower" than the screen
