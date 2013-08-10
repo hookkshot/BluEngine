@@ -4,6 +4,9 @@ using BluEngine.ScreenManager.Widgets;
 using System.IO;
 using Marzersoft.CSS;
 using Microsoft.Xna.Framework;
+using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework.Graphics;
+using BluEngine.ScreenManager.Screens;
 
 namespace BluEngine.ScreenManager.Styles
 {
@@ -13,6 +16,9 @@ namespace BluEngine.ScreenManager.Styles
         private Style baseStyle;
         private List<Style> currentStyleHierarchy = null;
         private String[] currentStateList = null;
+        private static Regex REGEX_LAYER_N_ALPHA = new Regex("layer-([0-9]+)-alpha");
+        private static Regex REGEX_LAYER_N = new Regex("layer-([0-9]+)");
+        private WidgetScreen screen;
 
         /// <summary>
         /// <para>The Widget Style associated with the given Type.</para>
@@ -39,10 +45,24 @@ namespace BluEngine.ScreenManager.Styles
         /// <summary>
         /// Create a new Stylesheet instance.
         /// </summary>
-        public StyleSheet()
+        public StyleSheet(WidgetScreen owner)
         {
+            if (owner == null)
+                throw new ArgumentNullException("owner");
+            screen = owner;
             styles = new Dictionary<Type, Style>();
             baseStyle = new Style();
+        }
+
+        /// <summary>
+        /// Clears all custom styling information from the stylesheet.
+        /// </summary>
+        public void Clear()
+        {
+            styles.Clear();
+            baseStyle.Clear();
+            currentStyleHierarchy = null;
+            currentStateList = null;
         }
 
         /// <summary>
@@ -94,6 +114,23 @@ namespace BluEngine.ScreenManager.Styles
         }
 
         /// <summary>
+        /// Converts an object to a T, if possible.
+        /// </summary>
+        /// <typeparam name="T">The reference type to convert.</typeparam>
+        /// <param name="value">The candidate for conversion.</param>
+        /// <returns>A nullable value</returns>
+        public static T SafeRefCast<T>(object value) where T : class
+        {
+            if (value != null)
+            {
+                T ret = (value as T);
+                if (ret != null)
+                    return ret;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Gets the Reference attribute from the set style hierarchy (set using StartLookup).
         /// </summary>
         /// <typeparam name="T">The type of value to retrieve.</typeparam>
@@ -112,17 +149,35 @@ namespace BluEngine.ScreenManager.Styles
                     StyleAttributes attrs = currentStyle.Get(currentState);
                     if (attrs != null)
                     {
-                        object attr = attrs[attribute];
-                        if (attr != null)
-                        {
-                            T ret = (attr as T);
-                            if (ret != null)
-                                return ret;
-                        }
+                        T val = SafeRefCast<T>(attrs[attribute]);
+                        if (val != null)
+                            return val;
                     }
                 }
             }
 
+            return null;
+        }
+
+        /// <summary>
+        /// Converts an object to a Nullable<T>, if possible.
+        /// </summary>
+        /// <typeparam name="T">The primitive type to convert.</typeparam>
+        /// <param name="value">The candidate for conversion.</param>
+        /// <returns>A nullable value</returns>
+        public static Nullable<T> SafeCast<T>(object value) where T : struct
+        {
+            if (value != null)
+            {
+                try
+                {
+                    return (T)value;
+                }
+                catch
+                {
+                    ;
+                }
+            }
             return null;
         }
 
@@ -145,18 +200,9 @@ namespace BluEngine.ScreenManager.Styles
                     StyleAttributes attrs = currentStyle.Get(currentState);
                     if (attrs != null)
                     {
-                        object attr = attrs[attribute];
-                        if (attr != null)
-                        {
-                            try
-                            {
-                                return (T)attr;
-                            }
-                            catch
-                            {
-                                ; //keep searching through the hierarchy for a value that might work
-                            }
-                        }
+                        T? attVal = SafeCast<T>(attrs[attribute]);
+                        if (attVal.HasValue)
+                            return attVal.Value;
                     }
                 }
             }
@@ -227,35 +273,128 @@ namespace BluEngine.ScreenManager.Styles
             return ValueAttributeLookup<Color>(attribute) ?? fallback;
         }
 
-        public bool LoadCSSFile(string name)
+        /// <summary>
+        /// Handles the translating of CSS rulesets to WidgetStyle values.
+        /// </summary>
+        /// <param name="widget">The Widget object that is the recipient.</param>
+        /// <param name="state">The state of the recipient.</param>
+        /// <param name="ruleset">The ruleset to parse.</param>
+        public void ApplyCSSStylesToWidget(Widget widget, String state, CSSRuleset ruleset)
         {
-            CSSDocument document = new CSSDocument("Content\\Styles\\" + name + ".css", true);
-            CSSRulesets rulesets = document.Rulesets;
+            ApplyCSSStyles(widget.Style[state],ruleset);
 
-            foreach (KeyValuePair<String, CSSRuleset> ruleset in rulesets)
+            StyleAttributes attrs = widget.Style.Get("normal");
+            if (attrs != null)
             {
-                String[] selector = ruleset.Key.Substring(1).Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-                name = selector[0];
-                String state = selector.Length > 1 ? selector[1] : "normal";
+                float refWidth = screen.Base.RefWidth;
+                float refHeight = screen.Base.RefHeight;
 
-                foreach (CSSProperty property in ruleset.Value)
+                float? left = SafeCast<float>(attrs["left"]);
+                float? width = SafeCast<float>(attrs["width"]);
+                float? top = SafeCast<float>(attrs["top"]);
+                float? height = SafeCast<float>(attrs["height"]);
+                float? right = SafeCast<float>(attrs["right"]);
+                float? bottom = SafeCast<float>(attrs["bottom"]);
+
+                if (left.HasValue)
+                    widget.Left = left.Value / ((left.Value < -2.0f || left.Value > 2.0f) ? refWidth : 1.0f);
+                if (width.HasValue)
+                    widget.Width = width.Value / ((width.Value < -2.0f || width.Value > 2.0f) ? refWidth : 1.0f);
+                if (top.HasValue)
+                    widget.Top = top.Value / ((top.Value < -2.0f || top.Value > 2.0f) ? refHeight : 1.0f);
+                if (height.HasValue)
+                    widget.Height = height.Value / ((height.Value < -2.0f || height.Value > 2.0f) ? refHeight : 1.0f);
+                if (right.HasValue)
+                    widget.Right = right.Value / ((right.Value < -2.0f || right.Value > 2.0f) ? refWidth : 1.0f);
+                if (bottom.HasValue)
+                    widget.Bottom = bottom.Value / ((bottom.Value < -2.0f || bottom.Value > 2.0f) ? refHeight : 1.0f);
+            }
+        }
+
+        /// <summary>
+        /// Handles the translating of CSS rulesets to WidgetStyle values.
+        /// </summary>
+        /// <param name="widget">The Widget object that is the recipient.</param>
+        /// <param name="state">The state of the recipient.</param>
+        /// <param name="ruleset">The ruleset to parse.</param>
+        public void ApplyCSSStylesToType(Type type, String state, CSSRuleset ruleset)
+        {
+            ApplyCSSStyles(this[type][state], ruleset);
+
+            //check if we've applied ScreenWidget-specific ref-width/ref-height values
+            if (type == typeof(ScreenWidget))
+            {
+                Style style = this.Get(typeof(ScreenWidget));
+                if (style != null)
                 {
-                    if (ruleset.Key[0] == '#') //it's an implicit Type style
-                    {
-                        Type type = Type.GetType(name + ", BluEngine");
-                        if (type != null)
-                        {
-                            //this[type][state][rule.Key] = rule.Value;
-                        }
-
-                    }
-                    else if (ruleset.Key[0] == '.') //it's an explicit instance style
+                    StyleAttributes attrs = style.Get("normal");
+                    if (attrs != null)
                     {
 
+                        float? refWidth = SafeCast<float>(attrs["ref-width"]);
+                        if (refWidth.HasValue)
+                            screen.Base.RefWidth = refWidth.Value;
+                        float? refHeight = SafeCast<float>(attrs["ref-height"]);
+                        if (refHeight.HasValue)
+                            screen.Base.RefHeight = refHeight.Value;
                     }
                 }
             }
-            return true;
+        }
+
+        /// <summary>
+        /// Handles the translating of CSS rulesets to WidgetStyle values.
+        /// </summary>
+        /// <param name="state">The StyleAttributes object that is the recipient.</param>
+        /// <param name="ruleset">The ruleset to parse.</param>
+        public void ApplyCSSStyles(StyleAttributes state, CSSRuleset ruleset)
+        {
+            foreach (CSSProperty property in ruleset)
+            {
+                switch (property.PropertyType)
+                {
+                    case CSSPropertyType.URI:
+                        String uri;
+                        if (property.URLValue(out uri))
+                        {
+                            if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
+                                state[property.Name] = new ImageLayer(screen.Content.Load<Texture2D>(uri.Replace('/', '\\')));
+                            else //straight string URL values
+                                state[property.Name] = uri;
+                        }
+                        break;
+
+                    case CSSPropertyType.Color:
+                        int R, G, B;
+                        if (property.ColorValue(out R, out G, out B))
+                        {
+                            Color color = new Color(R, G, B);
+                            if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
+                            {
+                                Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+                                tex.SetData<Color>(new Color[] { color });
+                                state[property.Name] = new ImageLayer(tex);
+                            }
+                            else //straight color values
+                                state[property.Name] = color;
+                        }
+                        break;
+
+                    case CSSPropertyType.Number:
+                        float val;
+                        if (property.FloatValue(out val))
+                            state[property.Name] = val;
+                        break;
+
+                    case CSSPropertyType.String:
+                        state[property.Name] = property.Value;
+                        break;
+
+                    case CSSPropertyType.Identifier:
+                        state[property.Name] = property.Value;
+                        break;
+                }
+            }
         }
     }
 }

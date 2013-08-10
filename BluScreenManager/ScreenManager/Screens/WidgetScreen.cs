@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
 using System.Text;
+using Marzersoft.CSS;
+using System.Collections.Generic;
 
 
 namespace BluEngine.ScreenManager.Screens
@@ -20,6 +22,7 @@ namespace BluEngine.ScreenManager.Screens
         private Widget[] mouseDownWidgets = new Widget[]{null,null,null,null,null};
         private Widget mouseHoverWidget = null;
         private Widget selectedWidget = null;
+        private Dictionary<String, List<Widget>> cssStyleLinks;
         private Keys[] watchedKeys = new Keys[] {
             Keys.Back, Keys.Tab, Keys.Enter,
             Keys.Pause, Keys.CapsLock, Keys.Escape,
@@ -64,25 +67,97 @@ namespace BluEngine.ScreenManager.Screens
         /// </summary>
         public StyleSheet Styles
         {
-            get
-            {
-                if (styles == null)
-                    styles = new StyleSheet();
-                return styles;
-            }
+            get { return styles; }
         }
-        private StyleSheet styles = null;
+        private StyleSheet styles;       
 
         public WidgetScreen()
             : base()
         {
-            baseWidget = new ScreenWidget(this);
+            
+            styles = new StyleSheet(this);
+            cssStyleLinks = new Dictionary<String, List<Widget>>();
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
-            Styles.LoadCSSFile(GetType().Name);
+
+            //create widgets
+            baseWidget = new ScreenWidget(this);
+            LoadWidgets();
+
+            //load CSS
+            LoadCSS(GetType().Name + ".css");
+        }
+
+        /// <summary>
+        /// Loads a CSS document and applies the rules found within. This is automatically called during this screen's
+        /// loading routines to load the CSS file matching the type name, but you may use it to also apply other stylesheets
+        /// to this screen.
+        /// </summary>
+        /// <param name="file">The filename of the css file found in BluGame.StylesPath.</param>
+        protected void LoadCSS(string file)
+        {
+            //load CSS document
+            CSSDocument document = new CSSDocument(ScreenManager.Game.ContentRoot + "\\" + ScreenManager.Game.StylesPath + file, true);
+            CSSRulesets rulesets = document.Rulesets;
+
+            //loop through CSS document
+            foreach (KeyValuePair<String, CSSRuleset> kvp in rulesets)
+            {
+                String[] selector = kvp.Key.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                String name = selector[0];
+                String state = selector.Length > 1 ? selector[1] : "normal";
+
+                if (name[0] == '#') //it's an implicit Type style, pass it to the stylesheet
+                {
+                    selector = name.Substring(1).Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                    String typeName = selector[0].Trim() + ", " + (selector.Length > 1 ? selector[1].Trim() : "BluEngine");
+                    try
+                    {
+                        Type type = Type.GetType(typeName);
+                        if (type != null)
+                            Styles.ApplyCSSStylesToType(type, state, kvp.Value);
+                        else
+                            Console.WriteLine("Reflection error: Cannot create Type from string \"" + typeName + "\"");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Reflection error: " + e.GetType().Name + " thrown while creating Type from string \"" + typeName + "\"");
+                    }
+                }
+                else if (name[0] == '.') //it's an explicit instance style
+                {
+                    List<Widget> explicitWidgets = null;
+                    if (cssStyleLinks.TryGetValue(name.Substring(1), out explicitWidgets))
+                    {
+                        foreach (Widget widget in explicitWidgets)
+                            Styles.ApplyCSSStylesToWidget(widget, state, kvp.Value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Override this to load widgets before the screen loads it's CSS. You can still use LoadContent() as normal, but using this method specifically allows you to use RegisterCSSClass() on widgets that have already been loaded to use CSS styling on them.
+        /// </summary>
+        protected virtual void LoadWidgets()
+        {
+            
+        }
+
+        protected void RegisterCSSClass(String cssClassName, Widget widget)
+        {
+            if (cssClassName == null || cssClassName.Length == 0 || widget == null)
+                return;
+            
+            List<Widget> explicitWidgets = null;
+            if (!cssStyleLinks.TryGetValue(cssClassName, out explicitWidgets))
+                cssStyleLinks[cssClassName] = (explicitWidgets = new List<Widget>());
+
+            if (!explicitWidgets.Contains(widget))
+                explicitWidgets.Add(widget);
         }
 
         /// <summary>

@@ -61,6 +61,14 @@ namespace BluEngine.ScreenManager.Styles
             states = new Dictionary<String, StyleAttributes>();
         }
 
+        /// <summary>
+        /// Clears all custom styling information from the Style.
+        /// </summary>
+        public void Clear()
+        {
+            states.Clear();
+        }
+
 
     }
 }
