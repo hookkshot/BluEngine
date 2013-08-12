@@ -92,5 +92,12 @@ namespace BluEngine.ScreenManager.Styles
                 col);
         }
 
+        public static ImageLayer FromColor(Color color)
+        {
+            Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            tex.SetData<Color>(new Color[] { color });
+            return new ImageLayer(tex);
+        }
+
     }
 }
