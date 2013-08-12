@@ -247,7 +247,7 @@ public override String State
 {
 	get
 	{
-		return (!Enabled ? "disabled|" : "") + (mouseover ? "hover|" : "") + "normal";
+		return (!Enabled ? "disabled|" : (mouseover ? "hover|" : "") ) + "normal";
 	}
 }
 ```
