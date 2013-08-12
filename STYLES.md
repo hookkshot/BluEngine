@@ -1,4 +1,4 @@
-Widget Styles
+Widgets & Styles
 ============
 
 BluEngine widgets support a cascading style sheet system, allowing you to quickly specify global style attributes that can still be customized down to the individual Widget level (much like CSS).
@@ -38,8 +38,8 @@ Note that it is not important for style information to go in loading routines, i
 
 ### Using styles via CSS
 You may also use CSS to style your UI's, which is more practical as it decouples logic code from layout information. It's also far more intuitive as many people are familiar with CSS.
-To use CSS for styling and layouts, create a css file with the same name as your WidgetScreen subclass's Type, and place
-it in Content/Styles. For example, a subclass of WidgetScreen called MyAwesomeHUD would use a css file called MyAwesomeHUD.css,
+To use CSS for styling and layouts, create a css file with the same name as your screen, and place
+it in **Content/Styles**. For example, a subclass of **WidgetScreen** called **MyAwesomeHUD** would use a css file called **MyAwesomeHUD.css**,
 and to achieve the same results as the above example, it might look like this:
 ```css
 #BluEngine.ScreenManager.Widgets.Button
@@ -78,7 +78,7 @@ and to achieve the same results as the above example, it might look like this:
 	layer-1-alpha: 0.5; /*since hsl has no alpha*/
 }
 ```
-Our MyAwesomeHUD.css class could now be changed to take advantage of the CSS, like this:
+Our **MyAwesomeHUD** class could now be changed to take advantage of the CSS, like this:
 ```csharp
 protected override void LoadWidgets()
 {
@@ -139,8 +139,66 @@ Another limitation is that you may not use different dimensions for different st
 	top: 220px; /* ...but this will not! */
 }
 ```
-In the example above, the value **220.0f** will be stored in secondButton.Style["hover"]["top"], but will not be used automatically during widget setup, nor will
-it be used when the state changes (since State is a purely visual property). You may still refer to it yourself, of course.
+In the example above, the value **220.0f** will be stored in **secondButton.Style["hover"]["top"]**, but will not be used automatically during widget setup, nor will
+it be used when the state changes (since **Widget.State** is a purely visual property). You may still refer to it yourself in code, of course.
+
+Another side-effect of the internal percentage representation is that for pragmatic reasons, very small values (between **-2.0f** and **2.0f**, inclusive), are considered
+to be percentages for dimension properties, and anything outside this range is considered to be an absolute value. In the case of percentages in CSS (i.e. values with an explicit
+**%** symbol), these are translated to floats by the CSS parser first, *then* passed to the style system, so this limitation works in reverse, too. This means that:
+```css
+.firstButton
+{
+	/* these are the same: */
+	top: 4000%;
+	top 40px;
+	
+	/* ...so are these: */
+	left: 50%;
+	left 0.5px;
+}
+Note this is *only* for the dimension properties **left**, **top**, **width**, **height**, **bottom** and **right**.
+
+```
+
+#### Using more than one CSS file
+You may wish to store a common set of style information in one CSS file, and have it referred to by many of your Screens, which will each load their own specific style information. This is supported. Example:
+```csharp
+public class StyledScreen : WidgetScreen
+{
+	public override void LoadContent()
+	{
+		// LoadWidgets() is called within WidgetScreen.LoadContent()
+		base.LoadContent();
+		
+		//... so as long as you override LoadWidgets() to create your widgets, and NOT LoadContent(),
+		//you can be certain that the following line(s) will apply to all widgets:
+		LoadCSS("common.css");
+		LoadCSS("more_common.css");
+		LoadCSS("holy_crap_just_merge_these_files_already.css");
+	}
+}
+
+//the child classes do not need to make any calls to LoadCSS(),
+//as they will invoke SomeAwesomeScreen.css and SomeOtherAwesomeScreen.css automatically.
+public class SomeAwesomeScreen : StyledScreen
+{
+	protected override void LoadWidgets()
+	{
+		base.LoadWidgets();
+		//create your widgets...
+	}
+}
+
+public class SomeOtherAwesomeScreen : StyledScreen
+{
+	protected override void LoadWidgets()
+	{
+		base.LoadWidgets();
+		//create your widgets...
+	}
+}
+```
+
 
 #### General attributes:
 - **alpha** - *expects a float between 0.0f and 1.0f*: ; sets the master alpha of the widget.
