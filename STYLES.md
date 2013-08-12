@@ -5,7 +5,7 @@ BluEngine widgets support a cascading style sheet system, allowing you to quickl
 
 Each WidgetScreen contains an instance of StyleSheet; this is the master container of all states and styles applicable to widgets contained by the screen.
 
-Each Widget also contains an instance of Style; this is an override - it is the first point of reference when performing attribute lookups.
+Each Widget also contains an instance of Style; this is an override \- it is the first point of reference when performing attribute lookups.
 
 ### Using styles directly in C-Sharp
 Say you wanted to create a set of buttons that each mostly appeared the same (background colour, hover colour, etc.), but had a different image inside and one had a different hover colour:
@@ -39,7 +39,7 @@ Note that it is not important for style information to go in loading routines, i
 ### Using styles via CSS
 You may also use CSS to style your UI's, which is more practical as it decouples logic code from layout information. It's also far more intuitive as many people are familiar with CSS.
 To use CSS for styling and layouts, create a css file with the same name as your screen, and place
-it in **Content/Styles**. For example, a subclass of **WidgetScreen** called **MyAwesomeHUD** would use a css file called **MyAwesomeHUD.css**,
+it in `Content/Styles`. For example, a subclass of `WidgetScreen` called `MyAwesomeHUD` would use a css file called `MyAwesomeHUD.css`,
 and to achieve the same results as the above example, it might look like this:
 ```css
 #BluEngine.ScreenManager.Widgets.Button
@@ -78,7 +78,7 @@ and to achieve the same results as the above example, it might look like this:
 	layer-1-alpha: 0.5; /*since hsl has no alpha*/
 }
 ```
-Our **MyAwesomeHUD** class could now be changed to take advantage of the CSS, like this:
+Our `MyAwesomeHUD` class could now be changed to take advantage of the CSS, like this:
 ```csharp
 protected override void LoadWidgets()
 {
@@ -123,11 +123,11 @@ You may also set the position and size properties of UI elements from CSS classe
 	height: 40px;
 }
 ```
-Note that before setting any button attributes a special style for the ScreenWidget type is defined; this Type exposes the **ref-width** and **ref-height**
+Note that before setting any button attributes a special style for the `ScreenWidget` type is defined; this Type exposes the `ref-width` and `ref-height`
 properties that allow you to use absolute pixel values for dimensions. If you wish to set dimensions using CSS, this special Type must appear
-before anything else in the CSS file since internally widgets represent all positioning information as being percentages of their parent's width and height.
+before anything else in the CSS file, since internally widgets represent all positioning information as being percentages of their parent's width and height.
 
-Another limitation is that you may not use different dimensions for different states:
+Another limitation is that you may not currently use different dimensions for different states:
 ```css
 .secondButton
 {
@@ -139,10 +139,10 @@ Another limitation is that you may not use different dimensions for different st
 	top: 220px; /* ...but this will not! */
 }
 ```
-In the example above, the value **220.0f** will be stored in **secondButton.Style\["hover"\]\["top"\]**, but will not be used automatically during widget setup, nor will
-it be used when the state changes (since **Widget.State** is a purely visual property). You may still refer to it yourself in code, of course.
+In the example above, the value `220.0f` will be stored in `secondButton.Style["hover"]["top"]`, but will not be used automatically during widget setup, nor will
+it be used when the state changes (since `Widget.State` is a purely visual property). This may change as the engine develops. You may still refer to it yourself in code, of course.
 
-Another side-effect of the internal percentage representation is that for pragmatic reasons, very small values (between **-2.0f** and **2.0f**, inclusive), are considered
+Another side-effect of the internal percentage representation is that for pragmatic reasons, very small values (between `-2.0f` and `2.0f`, inclusive), are considered
 to be percentages for dimension properties, and anything outside this range is considered to be an absolute value. In the case of percentages in CSS (i.e. values with an explicit
 **%** symbol), these are translated to floats by the CSS parser first, *then* passed to the style system, so this limitation works in reverse, too. This means that:
 ```css
@@ -157,7 +157,7 @@ to be percentages for dimension properties, and anything outside this range is c
 	left: 50%;
 }
 ```
-Note this is *only* for the dimension properties **left**, **top**, **width**, **height**, **bottom** and **right**.
+Note this is *only* for the dimension properties `left`, `top`, `width`, `height`, `bottom` and `right`.
 
 ### Using more than one CSS file
 You may wish to store a common set of style information in one CSS file, and have it referred to by many of your Screens, which will each load their own specific style information. This is supported. Example:
@@ -200,24 +200,26 @@ public class SomeOtherAwesomeScreen : StyledScreen
 
 ### Style lookup order
 For visual style attributes that are referenced on-demand (image layers, alpha, etc), the Widget looks up the attributes from the style hierarchy, ensuring that the highest level containing a particular
-attribute is the one used. This hierarchy is dependant on the Widget's state and type. For example, a subclass of Button, **AwesomeButton**, that was currently being hovered over by the mouse would search
+attribute is the one used. This hierarchy is dependant on the Widget's state and type. For example, a subclass of Button, `AwesomeButton`, that was currently being hovered over by the mouse would search
 for a visual attribute in the following order:
 ```csharp
-/* 1*/ buttonInstance.Style["hover"]
-/* 2*/ StyleSheet[AwesomeButton]["hover"]
-/* 3*/ StyleSheet[Button]["hover"]
-/* 4*/ StyleSheet[Widget]["hover"]
-/* 5*/ StyleSheet[null]["hover"]
-/* 6*/ buttonInstance.Style["normal"]
-/* 7*/ StyleSheet[AwesomeButton]["normal"]
-/* 8*/ StyleSheet[Button]["normal"]
-/* 9*/ StyleSheet[Widget]["normal"]
-/*10*/ StyleSheet[null]["normal"]
+/* 1: */ buttonInstance.Style["hover"]
+/* 2: */ StyleSheet[AwesomeButton]["hover"]
+/* 3: */ StyleSheet[Button]["hover"]
+/* 4: */ StyleSheet[Control]["hover"]
+/* 5: */ StyleSheet[Widget]["hover"]
+/* 6: */ StyleSheet[null]["hover"]
+/* 7: */ buttonInstance.Style["normal"]
+/* 8: */ StyleSheet[AwesomeButton]["normal"]
+/* 9: */ StyleSheet[Button]["normal"]
+/*10: */ StyleSheet[Control]["normal"]
+/*11: */ StyleSheet[Widget]["normal"]
+/*12: */ StyleSheet[null]["normal"]
 ```
-Note that **null** is used as a Type; StyleSheet\[null\] is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget.
+Note that `null` is used as a Type; `StyleSheet[null]` is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget.
 
 ### Subclassing Widget types
-Since a Widget's Type is an important piece of information to the StyleSheet, there are two overrides that are very important for any subclass of widget to implement. Again, using our example widget **AwesomeButton**:
+Since a Widget's Type is an important piece of information to the StyleSheet, there are two overrides that are very important for any subclass of widget to implement. Again, using our example widget `AwesomeButton`:
 ```csharp
 // each Widget type has it's own static list representing it's hierarchy,
 // so we don't have to do slow reflection stuff. Drop the code below into any subclass
@@ -253,7 +255,7 @@ public override String State
 ```
 In order to use AwesomeButton in CSS, a slight addition to the normal Type notation is necessary:
 ```css
-#MyGame.Widgets.AwesomeWidget@MyGameAssemblyName { ... }
+#MyGame.Widgets.AwesomeButton@MyGameAssemblyName { ... }
 ```
 This is how the Type is resolved internally. For more information, see the [.NET Type.GetType() Documentation](http://msdn.microsoft.com/en-us/library/w3f99sx1%28v=vs.100%29.aspx).
 
