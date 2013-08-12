@@ -7,7 +7,7 @@ Each WidgetScreen contains an instance of StyleSheet; this is the master contain
 
 Each Widget also contains an instance of Style; this is an override - it is the first point of reference when performing attribute lookups.
 
-### Using styles directly in C\#
+### Using styles directly in C-Sharp
 Say you wanted to create a set of buttons that each mostly appeared the same (background colour, hover colour, etc.), but had a different image inside and one had a different hover colour:
 ```csharp
 //somehere in your subclass of WidgetScreen...
@@ -146,15 +146,15 @@ Another side-effect of the internal percentage representation is that for pragma
 to be percentages for dimension properties, and anything outside this range is considered to be an absolute value. In the case of percentages in CSS (i.e. values with an explicit
 **%** symbol), these are translated to floats by the CSS parser first, *then* passed to the style system, so this limitation works in reverse, too. This means that:
 ```css
-.firstButton
+.exampleClass
 {
 	/* these are the same: */
 	top: 4000%;
 	top 40px;
 	
 	/* ...so are these: */
-	left: 50%;
 	left 0.5px;
+	left: 50%;
 }
 ```
 Note this is *only* for the dimension properties **left**, **top**, **width**, **height**, **bottom** and **right**.
@@ -214,7 +214,42 @@ for a visual attribute in the following order:
 /* 9*/ StyleSheet[Widget]["normal"]
 /*10*/ StyleSheet[null]["normal"]
 ```
-Note that **null** is used as a Type; StyleSheet\[null\] is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget. 
+Note that **null** is used as a Type; StyleSheet\[null\] is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget.
+
+### Subclassing Widget types
+Since a Widget's Type is an important piece of information to the StyleSheet, there are two overrides that are very important for any subclass of widget to implement. Again, using our example widget **AwesomeButton**:
+```csharp
+/* each Widget type has it's own static list representing it's hierarchy,
+   so we don't have to do slow reflection stuff. Drop the code below into any subclass
+   you make: */
+public override List<Type> Hierarchy
+{
+	get
+	{
+		if (hierarchy == null)
+		{
+			hierarchy = new List<Type>();
+			hierarchy.Add(typeof(AwesomeButton)); ///change this line!
+			hierarchy.AddRange(base.Hierarchy);
+		}
+		return hierarchy;
+	}
+}
+private static List<Type> hierarchy = null;
+
+/*or styling purposes, states are a bar-delimited list of states in descending order of preference.
+  This is how the state part of the search hierarchy is determined.
+  
+  Your actual state needs will be different than this example, but just ensure you
+  include other states your class actually uses in the state list, in the right order. */ 
+public override String State
+{
+	get
+	{
+		return (mouseover?"hover|":"") + "normal";
+	}
+}
+```
 
 ### Visual attribute reference
 These are the on-demand style attributes that are supported on both the C\# AND CSS sides, for every Type and State: 
@@ -232,5 +267,5 @@ These are the **normal-state-specific** attributes that are used for initializat
 - **width** \- *expects a float*: The Width of the Widget, in pixels.
 - **top** \- *expects a float*: The Height of the widget, in pixels.
 - **right** \- *expects a float*: The X value of the Widget's right edge, in pixels. Setting this is an alternative to altering Width.
-- **bottom* \- *expects a float*: The Y value of the Widget's bottom edge, in pixels. Setting this is an alternative to altering Height.
+- **bottom** \- *expects a float*: The Y value of the Widget's bottom edge, in pixels. Setting this is an alternative to altering Height.
 
