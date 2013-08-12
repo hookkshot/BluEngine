@@ -7,9 +7,9 @@ Each WidgetScreen contains an instance of StyleSheet; this is the master contain
 
 Each Widget also contains an instance of Style; this is an override - it is the first point of reference when performing attribute lookups.
 
-### Using styles in C#
+### Using styles in C-Sharp
 Say you wanted to create a set of buttons that each mostly appeared the same (background colour, hover colour, etc.), but had a different image inside and one had a different hover colour:
-```c-sharp
+```csharp
 //somehere in your subclass of WidgetScreen...
 protected override void LoadWidgets()
 {
@@ -78,7 +78,7 @@ and to achieve the same results as the above example, it might look like this:
 }
 ```
 Our MyAwesomeHUD.css class could now be changed to take advantage of the CSS, like this:
-```c-sharp
+```csharp
 protected override void LoadWidgets()
 {
 	base.LoadWidgets();
