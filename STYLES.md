@@ -7,7 +7,7 @@ Each WidgetScreen contains an instance of StyleSheet; this is the master contain
 
 Each Widget also contains an instance of Style; this is an override - it is the first point of reference when performing attribute lookups.
 
-### Using styles directly in C-Sharp
+### Using styles directly in C\#
 Say you wanted to create a set of buttons that each mostly appeared the same (background colour, hover colour, etc.), but had a different image inside and one had a different hover colour:
 ```csharp
 //somehere in your subclass of WidgetScreen...
@@ -139,7 +139,7 @@ Another limitation is that you may not use different dimensions for different st
 	top: 220px; /* ...but this will not! */
 }
 ```
-In the example above, the value **220.0f** will be stored in **secondButton.Style["hover"]["top"]**, but will not be used automatically during widget setup, nor will
+In the example above, the value **220.0f** will be stored in **secondButton.Style\["hover"\]\["top"\]**, but will not be used automatically during widget setup, nor will
 it be used when the state changes (since **Widget.State** is a purely visual property). You may still refer to it yourself in code, of course.
 
 Another side-effect of the internal percentage representation is that for pragmatic reasons, very small values (between **-2.0f** and **2.0f**, inclusive), are considered
@@ -218,12 +218,19 @@ Note that **null** is used as a Type; StyleSheet\[null\] is a reference to a bas
 
 ### Visual attribute reference
 These are the on-demand style attributes that are supported on both the C\# AND CSS sides, for every Type and State: 
-- **alpha** - *expects a float between 0.0f and 1.0f*: sets the master alpha of the widget.
-- **tint** - *expects an XNA Color object*: sets the master colour the widget output is multiplied by.
-- **tint-strength** - *expects a float between 0.0f and 1.0f*: sets the percentage difference the tint colour will be from pure White (e.g. a tint of Red and tint-strength of 0.5 will give the widget a pink tint).
-- **layer-N** - *where N is an integer between 0 and 4; expects an ImageLayer object*: sets the individual image layers of the widget. In CSS you may use a url to a texture file OR any of the CSS colours; and the appropriate type of ImageLayer will be created. 
-- **layer-N-alpha** - *where N is an integer between 0 and 4: expects a float between 0.0f and 1.0f*: sets the individual alpha of image layer N.
+- **alpha** \- *expects a float between 0.0f and 1.0f*: sets the master alpha of the widget.
+- **tint** \- *expects an XNA Color object*: sets the master colour the widget output is multiplied by.
+- **tint-strength** \- *expects a float between 0.0f and 1.0f*: sets the percentage difference the tint colour will be from pure White (e.g. a tint of Red and tint-strength of 0.5 will give the widget a pink tint).
+- **layer-N** \- *where N is an integer between 0 and 4; expects an ImageLayer object*: sets the individual image layers of the widget. In CSS you may use a url to a texture file OR any of the CSS colours; an ImageLayer with the appropriate texture information will be created regardless of the method you use. 
+- **layer-N-alpha** \- *where N is an integer between 0 and 4: expects a float between 0.0f and 1.0f*: sets the individual alpha of image layer N.
 
 ### Dimensional attribute reference
 These are the **normal-state-specific** attributes that are used for initialization from CSS only: 
-- **ref-width** and **ref-height** - *expect a float between 0.0f and 1.0f*: These are specific to the **\#BluEngine.ScreenManager.Widgets.ScreenWidget** Type and are used to set the design-time dimensions of your UI. To set this in C\#, use **Base.RefWidth** and **Base.RefHeight**.
+- **ref-width** and **ref-height** \- *expect a float between 0.0f and 1.0f*: These are specific to the **\#BluEngine.ScreenManager.Widgets.ScreenWidget** Type and are used to set the design-time dimensions of your UI. To set this in C\#, use **Base.RefWidth** and **Base.RefHeight**.
+- **left** \- *expects a float*: The X value of the Widget's left edge, in pixels.
+- **top** \- *expects a float*: The Y value of the Widget's top edge, in pixels.
+- **width** \- *expects a float*: The Width of the Widget, in pixels.
+- **top** \- *expects a float*: The Height of the widget, in pixels.
+- **right** \- *expects a float*: The X value of the Widget's right edge, in pixels. Setting this is an alternative to altering Width.
+- **bottom* \- *expects a float*: The Y value of the Widget's bottom edge, in pixels. Setting this is an alternative to altering Height.
+
