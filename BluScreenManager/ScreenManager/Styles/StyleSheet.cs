@@ -349,49 +349,44 @@ namespace BluEngine.ScreenManager.Styles
         /// <param name="ruleset">The ruleset to parse.</param>
         public void ApplyCSSStyles(StyleAttributes state, CSSRuleset ruleset)
         {
-            foreach (CSSProperty property in ruleset)
+            foreach (ICSSProperty property in ruleset)
             {
                 switch (property.PropertyType)
                 {
                     case CSSPropertyType.URI:
-                        String uri;
-                        if (property.URLValue(out uri))
-                        {
-                            if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
-                                state[property.Name] = new ImageLayer(screen.Content.Load<Texture2D>(uri.Replace('/', '\\')));
-                            else //straight string URL values
-                                state[property.Name] = uri;
-                        }
+                        String uri = (property as CSSURIProperty).Value;
+                        if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
+                            state[property.Name] = new ImageLayer(screen.Content.Load<Texture2D>(uri.Replace('/', '\\')));
+                        else //straight string URL values
+                            state[property.Name] = uri;
                         break;
 
                     case CSSPropertyType.Color:
-                        int R, G, B;
-                        if (property.ColorValue(out R, out G, out B))
+                        CSSColor cssColor = (property as CSSColorProperty).Value;
+                        Color color = new Color((int)cssColor.R, (int)cssColor.G, (int)cssColor.B, (int)(cssColor.A*255.0f));
+                        if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
                         {
-                            Color color = new Color(R, G, B);
-                            if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
-                            {
-                                Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-                                tex.SetData<Color>(new Color[] { color });
-                                state[property.Name] = new ImageLayer(tex);
-                            }
-                            else //straight color values
-                                state[property.Name] = color;
+                            Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+                            tex.SetData<Color>(new Color[] { color });
+                            state[property.Name] = new ImageLayer(tex);
                         }
+                        else //straight color values
+                            state[property.Name] = color;
                         break;
 
                     case CSSPropertyType.Number:
-                        float val;
-                        if (property.FloatValue(out val))
-                            state[property.Name] = val;
+                        float val = (property as CSSNumberProperty).Value;
+                        if ((property as CSSNumberProperty).Units == CSSUnits.Percent)
+                            val /= 100.0f;
+                        state[property.Name] = val;
                         break;
 
                     case CSSPropertyType.String:
-                        state[property.Name] = property.Value;
+                        state[property.Name] = (property as CSSStringProperty).Value;
                         break;
 
                     case CSSPropertyType.Identifier:
-                        state[property.Name] = property.Value;
+                        state[property.Name] = (property as CSSIdentifierProperty).Value;
                         break;
                 }
             }
