@@ -219,9 +219,9 @@ Note that **null** is used as a Type; StyleSheet\[null\] is a reference to a bas
 ### Subclassing Widget types
 Since a Widget's Type is an important piece of information to the StyleSheet, there are two overrides that are very important for any subclass of widget to implement. Again, using our example widget **AwesomeButton**:
 ```csharp
-/* each Widget type has it's own static list representing it's hierarchy,
-   so we don't have to do slow reflection stuff. Drop the code below into any subclass
-   you make: */
+// each Widget type has it's own static list representing it's hierarchy,
+// so we don't have to do slow reflection stuff. Drop the code below into any subclass
+// you make:
 public override List<Type> Hierarchy
 {
 	get
@@ -237,16 +237,17 @@ public override List<Type> Hierarchy
 }
 private static List<Type> hierarchy = null;
 
-/*or styling purposes, states are a bar-delimited list of states in descending order of preference.
-  This is how the state part of the search hierarchy is determined.
-  
-  Your actual state needs will be different than this example, but just ensure you
-  include other states your class actually uses in the state list, in the right order. */ 
+// for styling purposes, State is a bar-delimited list of states in descending order of preference,
+// with the first state in the list being the actual current state of the widget, or whichever is most
+// important. This is how the state part of the search hierarchy is determined.
+
+// Your actual state needs will be different than this example, but just ensure you
+// include other states your class actually uses in the state list, in the right order. 
 public override String State
 {
 	get
 	{
-		return (mouseover?"hover|":"") + "normal";
+		return (!Enabled ? "disabled|" : "") + (mouseover ? "hover|" : "") + "normal";
 	}
 }
 ```
