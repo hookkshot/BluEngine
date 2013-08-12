@@ -251,6 +251,11 @@ public override String State
 	}
 }
 ```
+In order to use AwesomeButton in CSS, a slight addition to the normal Type notation is necessary:
+```css
+#MyGame.Widgets.AwesomeWidget@MyGameAssemblyName { ... }
+```
+This is how the Type is resolved internally. For more information, see the [.NET Type.GetType() Documentation](http://msdn.microsoft.com/en-us/library/w3f99sx1%28v=vs.100%29.aspx).
 
 ### Visual attribute reference
 These are the on-demand style attributes that are supported on both the C\# AND CSS sides, for every Type and State: 
