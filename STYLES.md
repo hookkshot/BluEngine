@@ -159,7 +159,7 @@ to be percentages for dimension properties, and anything outside this range is c
 ```
 Note this is *only* for the dimension properties **left**, **top**, **width**, **height**, **bottom** and **right**.
 
-#### Using more than one CSS file
+### Using more than one CSS file
 You may wish to store a common set of style information in one CSS file, and have it referred to by many of your Screens, which will each load their own specific style information. This is supported. Example:
 ```csharp
 public class StyledScreen : WidgetScreen
@@ -198,30 +198,32 @@ public class SomeOtherAwesomeScreen : StyledScreen
 }
 ```
 
-#### Style lookup order
+### Style lookup order
 For visual style attributes that are referenced on-demand (image layers, alpha, etc), the Widget looks up the attributes from the style hierarchy, ensuring that the highest level containing a particular
-attribute is the one used. This hierarchy is dependant on the Widget's state and type. For example, a subclass of Button, **AwesomeButton**, that was currently being hovered over by the mouse would observe
-the following Style hierarchy:
+attribute is the one used. This hierarchy is dependant on the Widget's state and type. For example, a subclass of Button, **AwesomeButton**, that was currently being hovered over by the mouse would search
+for a visual attribute in the following order:
+```csharp
+/* 1*/ buttonInstance.Style["hover"]
+/* 2*/ StyleSheet[AwesomeButton]["hover"]
+/* 3*/ StyleSheet[Button]["hover"]
+/* 4*/ StyleSheet[Widget]["hover"]
+/* 5*/ StyleSheet[null]["hover"]
+/* 6*/ buttonInstance.Style["normal"]
+/* 7*/ StyleSheet[AwesomeButton]["normal"]
+/* 8*/ StyleSheet[Button]["normal"]
+/* 9*/ StyleSheet[Widget]["normal"]
+/*10*/ StyleSheet[null]["normal"]
+```
+Note that **null** is used as a Type; StyleSheet\[null\] is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget. 
 
-1. buttonInstance.Style\["hover"\]
-2. StyleSheet\[AwesomeButton\]\["hover"\]
-3. StyleSheet\[Button\]\["hover"\]
-4. StyleSheet\[Widget\]\["hover"\]
-5. StyleSheet\[null\]\["hover"\]
-6. buttonInstance.Style\["normal"\]
-7. StyleSheet\[AwesomeButton\]\["normal"\]
-8. StyleSheet\[Button\]\["normal"\]
-9. StyleSheet\[Widget\]\["normal"\]
-10. StyleSheet\[null\]\["normal"\]
+### Visual attribute reference
+These are the on-demand style attributes that are supported on both the C\# AND CSS sides, for every Type and State: 
+- **alpha** - *expects a float between 0.0f and 1.0f*: sets the master alpha of the widget.
+- **tint** - *expects an XNA Color object*: sets the master colour the widget output is multiplied by.
+- **tint-strength** - *expects a float between 0.0f and 1.0f*: sets the percentage difference the tint colour will be from pure White (e.g. a tint of Red and tint-strength of 0.5 will give the widget a pink tint).
+- **layer-N** - *where N is an integer between 0 and 4; expects an ImageLayer object*: sets the individual image layers of the widget. In CSS you may use a url to a texture file OR any of the CSS colours; and the appropriate type of ImageLayer will be created. 
+- **layer-N-alpha** - *where N is an integer between 0 and 4: expects a float between 0.0f and 1.0f*: sets the individual alpha of image layer N.
 
-Note that **null** is used as a Type; StyleSheet\[**null**\] is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget. 
-
-#### General attributes:
-- **alpha** - *expects a float between 0.0f and 1.0f*: ; sets the master alpha of the widget.
-- **tint** - *expects an XNA Color object*: ; sets the master colour the widget output is multiplied by.
-- **tint-strength** - *expects a float between 0.0f and 1.0f*: ; sets the percentage difference the tint colour will be from pure White (i.e. a tint of Red and tint-strength of 0.5 will end up a light pink-red color).
-- **layer-N** - *where N is an integer between 0 and 4; expects an ImageLayer object*: sets the individual image layers of the widget.
-- **layer-N-alpha** - *where N is an integer between 0 and 4; expects a float between 0.0f and 1.0f*: sets the individual alpha of image layer N.
-
-#### Type-specific attributes:
-- **ref-width** - *expects a float between 0.0f and 1.0f*
+### Dimensional attribute reference
+These are the **normal-state-specific** attributes that are used for initialization from CSS only: 
+- **ref-width** and **ref-height** - *expect a float between 0.0f and 1.0f*: These are specific to the **\#BluEngine.ScreenManager.Widgets.ScreenWidget** Type and are used to set the design-time dimensions of your UI. To set this in C\#, use **Base.RefWidth** and **Base.RefHeight**.
