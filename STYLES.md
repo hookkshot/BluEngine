@@ -7,7 +7,7 @@ Each WidgetScreen contains an instance of StyleSheet; this is the master contain
 
 Each Widget also contains an instance of Style; this is an override - it is the first point of reference when performing attribute lookups.
 
-### Using styles in C-Sharp
+### Using styles directly in C-Sharp
 Say you wanted to create a set of buttons that each mostly appeared the same (background colour, hover colour, etc.), but had a different image inside and one had a different hover colour:
 ```csharp
 //somehere in your subclass of WidgetScreen...
@@ -36,6 +36,7 @@ protected override void LoadWidgets()
 ```
 Note that it is not important for style information to go in loading routines, it may be changed at any time. You may change global styles AFTER creating your buttons too; the order of these operations is unimportant.
 
+### Using styles via CSS
 You may also use CSS to style your UI's, which is more practical as it decouples logic code from layout information. It's also far more intuitive as many people are familiar with CSS.
 To use CSS for styling and layouts, create a css file with the same name as your WidgetScreen subclass's Type, and place
 it in Content/Styles. For example, a subclass of WidgetScreen called MyAwesomeHUD would use a css file called MyAwesomeHUD.css,
@@ -95,6 +96,51 @@ protected override void LoadWidgets()
 }
 ```
 Note this time around we didn't touch the global styles; this is because the CSS ID rulesets are interpreted for Types, and automatically applied to the global styles.
+
+### Setting sizes and positions from CSS
+You may also set the position and size properties of UI elements from CSS classes, like this:
+```css
+#BluEngine.ScreenManager.Widgets.ScreenWidget
+{
+	ref-width: 1280px;
+	ref-height: 720px;
+}
+
+.firstButton
+{
+	top: 100px;
+}
+
+.secondButton
+{
+	top: 200px;
+}
+
+.firstButton, .secondButton
+{
+	left: 0px;
+	width: 200px;
+	height: 40px;
+}
+```
+Note that before setting any button attributes a special style for the ScreenWidget type is defined; this Type exposes the **ref-width** and **ref-height**
+properties that allow you to use absolute pixel values for dimensions. If you wish to set dimensions using CSS, this special Type must appear
+before anything else in the CSS file since internally widgets represent all positioning information as being percentages of their parent's width and height.
+
+Another limitation is that you may not use different dimensions for different states:
+```css
+.secondButton
+{
+	top: 200px; /* this will work... */
+}
+
+.secondButton:hover
+{
+	top: 220px; /* ...but this will not! */
+}
+```
+In the example above, the value **220.0f** will be stored in secondButton.Style["hover"]["top"], but will not be used automatically during widget setup, nor will
+it be used when the state changes (since State is a purely visual property). You may still refer to it yourself, of course.
 
 #### General attributes:
 - **alpha** - *expects a float between 0.0f and 1.0f*: ; sets the master alpha of the widget.
