@@ -199,6 +199,21 @@ public class SomeOtherAwesomeScreen : StyledScreen
 }
 ```
 
+#### Style lookup order
+For visual style attributes that are referenced on-demand (image layers, alpha, etc), the Widget looks up the attributes from the style hierarchy, ensuring that the highest level containing a particular
+attribute is the one used. This hierarchy is dependant on the Widget's state and type. For example, a subclass of Button, **AwesomeButton**, that was currently being hovered over by the mouse would observe
+the following Style hierarchy:
+1. buttonInstance.Style["hover"]
+2. StyleSheet[AwesomeButton]["hover"]
+3. StyleSheet[Button]["hover"]
+4. StyleSheet[Widget]["hover"]
+5. StyleSheet[**null**]["hover"]
+6. buttonInstance.Style["normal"]
+7. StyleSheet[AwesomeButton]["normal"]
+8. StyleSheet[Button]["normal"]
+9. StyleSheet[Widget]["normal"]
+10. StyleSheet[**null**]["normal"]
+Note that **null** is used as a Type; StyleSheet[**null**] is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget. 
 
 #### General attributes:
 - **alpha** - *expects a float between 0.0f and 1.0f*: ; sets the master alpha of the widget.
