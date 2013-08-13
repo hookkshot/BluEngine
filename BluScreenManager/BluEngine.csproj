@@ -65,9 +65,9 @@
     <Compile Include="Engine\GameObjects\CollisionGameObject.cs" />
     <Compile Include="Engine\GameObjects\LayeredAnimatedSprite.cs" />
     <Compile Include="Engine\GameObjects\ViewScreen.cs" />
-    <Compile Include="Engine\HitFlags.cs" />
+    <Compile Include="ScreenManager\HitFlags.cs" />
     <Compile Include="Engine\GameObjects\CollisionBoxComponent.cs" />
-    <Compile Include="Engine\IScreenDimensionsProvider.cs" />
+    <Compile Include="ScreenManager\IScreenDimensionsProvider.cs" />
     <Compile Include="Engine\GameObjects\GameObject.cs" />
     <Compile Include="Engine\GameObjects\GameObjectComponent.cs" />
     <Compile Include="Engine\GameObjects\Sprite.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="ScreenManager\Screens\MenuScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
-    <Compile Include="Engine\IInvalidatable.cs" />
+    <Compile Include="ScreenManager\IInvalidatable.cs" />
     <Compile Include="ScreenManager\SolidColours.cs" />
     <Compile Include="ScreenManager\Screens\WidgetScreen.cs" />
     <Compile Include="ScreenManager\Styles\StyleAttributes.cs" />

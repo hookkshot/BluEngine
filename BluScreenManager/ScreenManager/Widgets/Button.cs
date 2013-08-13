@@ -34,7 +34,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <param name="parent">The Widget's parent.</param>
         public Button(Widget parent) : base(parent)
         {
-            HitFlags = Engine.HitFlags.Mouse;
+            HitFlags = HitFlags.Mouse;
         }
 
         public override String State

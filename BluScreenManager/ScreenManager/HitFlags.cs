@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BluEngine.Engine
+namespace BluEngine.ScreenManager
 {
     [Flags]
     public enum HitFlags
