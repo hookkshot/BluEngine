@@ -69,7 +69,17 @@ namespace BluEngine.ScreenManager.Screens
         {
             get { return styles; }
         }
-        private StyleSheet styles;       
+        private StyleSheet styles;
+
+        /// <summary>
+        /// The path to the file this screen will load as it's stylesheet.
+        /// By default, it will simply return the name of the runtime Type, appended with ".css",
+        /// but you may override this if necessary.
+        /// </summary>
+        public virtual String StyleSheetPath
+        {
+            get { return GetType().Name + ".css"; }
+        }
 
         public WidgetScreen()
             : base()
@@ -88,7 +98,7 @@ namespace BluEngine.ScreenManager.Screens
             LoadWidgets();
 
             //load CSS
-            LoadCSS(GetType().Name + ".css");
+            LoadCSS(StyleSheetPath);
         }
 
         /// <summary>
