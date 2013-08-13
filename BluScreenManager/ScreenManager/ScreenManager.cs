@@ -147,7 +147,14 @@ namespace BluEngine.ScreenManager
             filler = new Texture2D(GraphicsDevice, 1, 1);
             filler.SetData(new Color[] { Color.White });
 
-            font = content.Load<SpriteFont>(this.defaultFontLocation);
+            try
+            {
+                font = content.Load<SpriteFont>(this.defaultFontLocation);
+            }
+            catch (ContentLoadException e)
+            {
+                Console.WriteLine("ContentLoadException thrown trying to load the default font! Check your BluEngineInitSettings object.");
+            }
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
@@ -233,7 +240,8 @@ namespace BluEngine.ScreenManager
                 sb.AppendLine("Debug Mode on.");
                 foreach (GameScreen screen in screens)
                     screen.DrawDebug(gameTime, spriteBatch, sb);
-                spriteBatch.DrawString(Font, sb.ToString(), new Vector2(2.0f, 2.0f), Color.White);
+                if (Font != null)
+                    spriteBatch.DrawString(Font, sb.ToString(), new Vector2(2.0f, 2.0f), Color.White);
                 spriteBatch.End();
             }
         }
