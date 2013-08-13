@@ -18,7 +18,7 @@ Each WidgetScreen contains an instance of StyleSheet; this is the master contain
 
 Each Widget also contains an instance of Style; this is an override \- it is the first point of reference when performing attribute lookups.
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
 
 ### Using styles directly in C-Sharp 
 Say you wanted to create a set of buttons that each mostly appeared the same (background colour, hover colour, etc.), but had a different image inside and one had a different hover colour:
@@ -49,7 +49,7 @@ protected override void LoadWidgets()
 ```
 Note that it is not important for style information to go in loading routines, it may be changed at any time. You may change global styles AFTER creating your buttons too; the order of these operations is unimportant.
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
 
 ### Using styles via CSS
 You may also use CSS to style your UI's, which is more practical as it decouples logic code from layout information. It's also far more intuitive as many people are familiar with CSS.
@@ -112,7 +112,7 @@ protected override void LoadWidgets()
 ```
 Note this time around we didn't touch the global styles; this is because the CSS ID rulesets are interpreted for Types, and automatically applied to the global styles.
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
 
 ### Setting sizes and positions from CSS
 You may also set the position and size properties of UI elements from CSS classes, like this:
@@ -176,7 +176,7 @@ to be percentages for dimension properties, and anything outside this range is c
 ```
 Note this is *only* for the dimension properties `left`, `top`, `width`, `height`, `bottom` and `right`.
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
 
 ### Using more than one CSS file
 You may wish to store a common set of style information in one CSS file, and have it referred to by many of your Screens, which will each load their own specific style information. This is supported. Example:
@@ -217,7 +217,7 @@ public class SomeOtherAwesomeScreen : StyledScreen
 }
 ```
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
 
 ### Style lookup order
 For visual style attributes that are referenced on-demand (image layers, alpha, etc), the Widget looks up the attributes from the style hierarchy, ensuring that the highest level containing a particular
@@ -239,7 +239,7 @@ for a visual attribute in the following order:
 ```
 Note that `null` is used as a Type; `StyleSheet[null]` is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget.
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
 
 ### Subclassing Widget types
 Since a Widget's Type is an important piece of information to the StyleSheet, there are two overrides that are very important for any subclass of widget to implement. Again, using our example widget `AwesomeButton`:
@@ -282,7 +282,7 @@ In order to use AwesomeButton in CSS, a slight addition to the normal Type notat
 ```
 This is how the Type is resolved internally. For more information, see the [.NET Type.GetType() Documentation](http://msdn.microsoft.com/en-us/library/w3f99sx1%28v=vs.100%29.aspx).
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
 
 ### Attribute reference
 These are the on-demand style attributes that are supported on both the C\# AND CSS sides, for every Type and State: 
@@ -301,4 +301,4 @@ These are the **normal-state-specific** attributes that are used for initializat
 - **right** \- *expects a float*: The X value of the Widget's right edge, in pixels. Setting this is an alternative to altering Width.
 - **bottom** \- *expects a float*: The Y value of the Widget's bottom edge, in pixels. Setting this is an alternative to altering Height.
 
-<p>[Back to top](#widgets--styles)</p>
+[Back to top](#widgets--styles)
