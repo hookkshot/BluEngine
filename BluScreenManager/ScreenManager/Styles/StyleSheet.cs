@@ -84,8 +84,7 @@ namespace BluEngine.ScreenManager.Styles
         /// Sets the lookup state hierarchy information according to the provided widget and/or statelist.
         /// </summary>
         /// <param name="widget">A widget from which to take a hierarchy.</param>
-        /// <param name="statelist">A statelist string from which to build a descending-precedence list of states.</param>
-        public void StartLookup(Widget widget, String statelist)
+        public void StartLookup(Widget widget)
         {
             //determine the style hierarchy
             currentStyleHierarchy = new List<Style>();
@@ -103,14 +102,7 @@ namespace BluEngine.ScreenManager.Styles
                 }
             }
             currentStyleHierarchy.Add(baseStyle); //base style
-
-            //determine the state list
-            if (statelist == null || statelist.Length == 0)
-                statelist = "normal";
-            if (!statelist.Contains("normal"))
-                statelist += "|normal";
-
-            currentStateList = statelist.Split(new char[]{'|'},StringSplitOptions.RemoveEmptyEntries);
+            currentStateList = widget.StateList;
         }
 
         /// <summary>
@@ -229,6 +221,18 @@ namespace BluEngine.ScreenManager.Styles
         {
             return ValueAttributeLookup<float>(attribute) ?? fallback;
         }
+
+        /// <summary>
+        /// Shortcut for looking up Float attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the Float attribute to look up.</param>
+        /// <returns>The attribute value or null.</returns>
+        public float? FloatLookup(String attribute)
+        {
+            return ValueAttributeLookup<float>(attribute);
+        }
+
+
         /// <summary>
         /// Shortcut for looking up Double attributes.
         /// </summary>
@@ -282,33 +286,7 @@ namespace BluEngine.ScreenManager.Styles
         public void ApplyCSSStylesToWidget(Widget widget, String state, CSSRuleset ruleset)
         {
             ApplyCSSStyles(widget.Style[state],ruleset);
-
-            StyleAttributes attrs = widget.Style.Get("normal");
-            if (attrs != null)
-            {
-                float refWidth = screen.Base.RefWidth;
-                float refHeight = screen.Base.RefHeight;
-
-                float? left = SafeCast<float>(attrs["left"]);
-                float? width = SafeCast<float>(attrs["width"]);
-                float? top = SafeCast<float>(attrs["top"]);
-                float? height = SafeCast<float>(attrs["height"]);
-                float? right = SafeCast<float>(attrs["right"]);
-                float? bottom = SafeCast<float>(attrs["bottom"]);
-
-                if (left.HasValue)
-                    widget.Left = left.Value / ((left.Value < -2.0f || left.Value > 2.0f) ? refWidth : 1.0f);
-                if (width.HasValue)
-                    widget.Width = width.Value / ((width.Value < -2.0f || width.Value > 2.0f) ? refWidth : 1.0f);
-                if (top.HasValue)
-                    widget.Top = top.Value / ((top.Value < -2.0f || top.Value > 2.0f) ? refHeight : 1.0f);
-                if (height.HasValue)
-                    widget.Height = height.Value / ((height.Value < -2.0f || height.Value > 2.0f) ? refHeight : 1.0f);
-                if (right.HasValue)
-                    widget.Right = right.Value / ((right.Value < -2.0f || right.Value > 2.0f) ? refWidth : 1.0f);
-                if (bottom.HasValue)
-                    widget.Bottom = bottom.Value / ((bottom.Value < -2.0f || bottom.Value > 2.0f) ? refHeight : 1.0f);
-            }
+            widget.ApplyStateBasedStyles();
         }
 
         /// <summary>

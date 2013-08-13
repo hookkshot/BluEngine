@@ -233,10 +233,47 @@ namespace BluEngine.ScreenManager.Widgets
         /// <summary>
         /// String representing the statelist of this widget (used for styles). Multiple states may be represented in descending order of precedence by separating them with a bar, e.g. "down|hover|normal".
         /// </summary>
-        public virtual String State
+        public String State
+        {
+            get { return state; }
+            set
+            {
+                String oldState = state;
+                if (value == null || value.Length == 0)
+                    state = "normal";
+                else
+                {
+                    state = value;
+                    if (!state.Contains("normal"))
+                        state += "|normal";
+                }
+
+                if (!oldState.Equals(state))
+                {
+                    StateList = state.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                    ApplyStateBasedStyles();
+                }
+            }
+        }
+        private string state = "normal";
+
+        /// <summary>
+        /// Get the statelist of the widget, but do it "live", based on whatever factors actually affect the statelist. Override this to return what your widget's state should be, and assign it to State any time you change one of the affected variables.
+        /// </summary>
+        protected virtual String CurrentState
         {
             get { return "normal"; }
         }
+
+        /// <summary>
+        /// Array representing the statelist of this widget (used for styles). Multiple states are represented in the array in descending order of precedence, e.g. {"down", "hover", "normal"}. This field is read-only, to set it, use the State property to assign states using a string.
+        /// </summary>
+        public String[] StateList
+        {
+            get { return stateList; }
+            private set { stateList = value; }
+        }
+        private String[] stateList = new String[] { "normal" };
 
         /// <summary>
         /// If true, this widget's dimensions are in need of refreshing.
@@ -424,6 +461,36 @@ namespace BluEngine.ScreenManager.Widgets
             return parent == null ? false : parent.isAncestor(potentialAncestor);
         }
 
+        public virtual void ApplyStateBasedStyles()
+        {
+            //set the target hierarchy to that of this widget
+            Screen.Styles.StartLookup(this);
+
+            float refWidth = Screen.Base.RefWidth;
+            float refHeight = Screen.Base.RefHeight;
+
+            float? left = Screen.Styles.FloatLookup("left");
+            float? width = Screen.Styles.FloatLookup("width");
+            float? top = Screen.Styles.FloatLookup("top");
+            float? height = Screen.Styles.FloatLookup("height");
+            float? right = Screen.Styles.FloatLookup("right");
+            float? bottom = Screen.Styles.FloatLookup("bottom");
+
+            if (left.HasValue)
+                Left = left.Value / ((left.Value < -2.0f || left.Value > 2.0f) ? refWidth : 1.0f);
+            if (width.HasValue)
+                Width = width.Value / ((width.Value < -2.0f || width.Value > 2.0f) ? refWidth : 1.0f);
+            if (top.HasValue)
+                Top = top.Value / ((top.Value < -2.0f || top.Value > 2.0f) ? refHeight : 1.0f);
+            if (height.HasValue)
+                Height = height.Value / ((height.Value < -2.0f || height.Value > 2.0f) ? refHeight : 1.0f);
+            if (right.HasValue)
+                Right = right.Value / ((right.Value < -2.0f || right.Value > 2.0f) ? refWidth : 1.0f);
+            if (bottom.HasValue)
+                Bottom = bottom.Value / ((bottom.Value < -2.0f || bottom.Value > 2.0f) ? refHeight : 1.0f);
+
+        }
+
 
 
         /// <summary>
@@ -502,7 +569,7 @@ namespace BluEngine.ScreenManager.Widgets
             }
 
             //set the target hierarchy to that of this widget
-            Screen.Styles.StartLookup(this, State);
+            Screen.Styles.StartLookup(this);
 
             //alpha
             float alpha = Screen.Styles.FloatLookup("alpha", 1.0f);

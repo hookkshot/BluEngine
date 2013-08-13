@@ -29,9 +29,17 @@ namespace BluEngine.ScreenManager.Widgets
         public bool Enabled
         {
             get { return enabled; }
-            set { enabled = value; }
+            set { enabled = value; State = CurrentState; }
         }
         private bool enabled = true;
+
+        /// <summary>
+        /// Override this to return what your widget's state should be, and use it any time you change one of the affected variables.
+        /// </summary>
+        protected override String CurrentState
+        {
+            get { return (!Enabled ? "disabled|" : "") + base.CurrentState; }
+        }
 
         /// <summary>
         /// Create a new Control with a given parent.
