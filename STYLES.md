@@ -47,7 +47,9 @@ protected override void LoadWidgets()
 	exitButton.Style["hover"]["layer-1"] = ImageLayer.FromColor(new Color(255,0,0,50));
 }
 ```
-Note that it is not important for style information to go in loading routines, it may be changed at any time. You may change global styles AFTER creating your buttons too; the order of these operations is unimportant.
+Note that it is not important for purely visual style information to go in loading routines, it may be changed at any time.
+This isn't necessarily the case for positioning and dimension style information, however.
+To ensure all relevant style information is always applied, perform your widget creation inside `LoadWidgets()`, and NOT `LoadContent()`.
 
 [Back to top](#widgets--styles)
 
@@ -179,7 +181,8 @@ Note this is *only* for the dimension properties `left`, `top`, `width`, `height
 [Back to top](#widgets--styles)
 
 ### Using more than one CSS file
-You may wish to store a common set of style information in one CSS file, and have it referred to by many of your Screens, which will each load their own specific style information. This is supported. Example:
+You may wish to store a common set of style information in one CSS file, and have it referred to by many of your Screens, which will each load their own specific style information.
+This is supported using the function `LoadCSS()`, which takes as it's only parameter a path to the CSS file you wish to load (with the path being relative to `Content/Styles`). Example:
 ```csharp
 public class StyledScreen : WidgetScreen
 {
@@ -277,6 +280,7 @@ For visual style attributes that are referenced on-demand (image layers, alpha, 
 attribute is the one used. This hierarchy is dependant on the Widget's state and type. For example, an instance of `Button` that was currently being hovered over by the mouse would search
 for a visual attribute in the following order:
 ```csharp
+//note that at this point, buttonInstance.State would return "hover|normal"
 /* 1: */ buttonInstance.Style["hover"]
 /* 2: */ StyleSheet[Button]["hover"]
 /* 3: */ StyleSheet[Control]["hover"]
