@@ -140,7 +140,7 @@ You may also set the position and size properties of UI elements from CSS classe
 	height: 40px;
 }
 ```
-Note that before setting any button attributes a special style for the `ScreenWidget` type is defined; this Type exposes the `ref-width` and `ref-height`
+Note that before setting any button attributes, a special style for the `ScreenWidget` type is defined; this Type exposes the `ref-width` and `ref-height`
 properties that allow you to use absolute pixel values for dimensions. If you wish to set dimensions using CSS, this special Type must appear
 before anything else in the CSS file, since internally widgets represent all positioning information as being percentages of their parent's width and height.
 
@@ -156,7 +156,7 @@ You may also alter these based on state:
 	width: 220px;
 }
 ```
-In the example above, the value `220.0f` will automatically become the width of the button when it enters it's hover state. This is currently no way
+In the example above, the value `220.0f` will automatically become the width of the button when it enters it's hover state. There is currently no way
 of performing Tweening from CSS, so these state-based position and dimension changes will be instantaneous.
 
 One side-effect of the way Widgets store positioning information internally is that for pragmatic reasons, very small values (between `-2.0f` and `2.0f`, inclusive), are considered
@@ -220,7 +220,8 @@ public class SomeOtherAwesomeScreen : StyledScreen
 [Back to top](#widgets--styles)
 
 ### Subclassing Widget types
-Since a Widget's Type is an important piece of information to the StyleSheet, there are a few very important overrides for any subclass of widget to implement.
+Since a Widget's Type is an important piece of information to the StyleSheet, there are a few very important overrides for any subclass of widget to implement
+for styles to function correctly.
 
 The first is `Widget.Hierarchy`, which will return a reference to a static `List<Type>` containing the Widget hierarchy up to (and including) the current Type.
 Fortunately it's pretty easy to implement. Just drop the code below into your subclass, replacing `MyCustomWidget` with the new class name:
@@ -242,8 +243,8 @@ private static List<Type> hierarchy = null;
 ```
 It might seem a bit clunky, but generating one static hierarchy for each type is much faster than doing complex reflection stuff during each call to Update()!
 
-You also need to override `Widget.CurrentState` with a "live" version of the bar-delimited list of states currently being employed by your widget,
-and then assign it to `Widget.State` at any new point in your own code where the state changes. One painless way of doing this is using related property setters,
+The second override you need to make is `Widget.CurrentState`. It should return a "live" version of the bar-delimited list of states currently being employed by your widget,
+which is then assigned it to `Widget.State` at any new point in your own code where the state changes. One painless way of doing this is using related property setters,
 like in this example from BluEngine's `Button` class: 
 ```csharp
 protected override String CurrentState
@@ -257,10 +258,12 @@ public bool IsMouseEntered
 	protected set { mouseEntered = value; State = CurrentState; }
 }
 ```
+You will not need to do your own for `Control.Enabled`, `Button.IsMouseDown` and `Button.IsMouseEntered` if you're subclassing these as this logic is already implemented;
+they're just used here as logic examples.
 
 One final change you need to make is in CSS. Due to an unfortunate side-effect of how C\# does type-resolution from strings,
 you need to tell BluEngine the name of the assembly in which your class is located. For example, a custom button called `AwesomeButton`,
-located in an assembly called `MyGameAssembly`, would appear in BluEngine CSS like this:
+inside namespace `MyGame.Widgets`, located in an assembly called `MyGameAssembly`, would appear in BluEngine CSS like this:
 ```css
 #MyGame.Widgets.AwesomeButton@MyGameAssembly { ... }
 ```
@@ -286,18 +289,17 @@ for a visual attribute in the following order:
 /*10: */ StyleSheet[null]["normal"]
 ```
 Note that `null` is used as a Type; `StyleSheet[null]` is a reference to a base Style that is always a part of the StyleSheet and is the root Style for every Widget.
+Remember that for this lookup order to function correctly in subclasses, you must ensure you have [implemented the appropriate overrides!](#subclassing-widget-types)
 
 [Back to top](#widgets--styles)
 
 ### Attribute reference
-These are the on-demand style attributes that are supported on both the C\# AND CSS sides, for every Type and State: 
+The following is a list of all attributes currently reserved for use by BluEngine:
 - **alpha** \- *expects a float between 0.0f and 1.0f*: sets the master alpha of the widget.
 - **tint** \- *expects an XNA Color object*: sets the master colour the widget output is multiplied by.
 - **tint-strength** \- *expects a float between 0.0f and 1.0f*: sets the percentage difference the tint colour will be from pure White (e.g. a tint of Red and tint-strength of 0.5 will give the widget a pink tint).
 - **layer-N** \- *where N is an integer between 0 and 4; expects an ImageLayer object*: sets the individual image layers of the widget. In CSS you may use a url to a texture file OR any of the CSS colours; an ImageLayer with the appropriate texture information will be created regardless of the method you use. 
 - **layer-N-alpha** \- *where N is an integer between 0 and 4: expects a float between 0.0f and 1.0f*: sets the individual alpha of image layer N.
-
-These are the **normal-state-specific** attributes that are used for initialization from CSS only: 
 - **ref-width** and **ref-height** \- *expect a float between 0.0f and 1.0f*: These are specific to the **\#BluEngine.ScreenManager.Widgets.ScreenWidget** Type and are used to set the design-time dimensions of your UI. To set this in C\#, use **Base.RefWidth** and **Base.RefHeight**.
 - **left** \- *expects a float*: The X value of the Widget's left edge, in pixels.
 - **top** \- *expects a float*: The Y value of the Widget's top edge, in pixels.
