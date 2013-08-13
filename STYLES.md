@@ -6,7 +6,7 @@ Widgets & Styles
 2. [Using styles directly in C-Sharp](#using-styles-directly-in-c-sharp)
 3. [Using styles via CSS](#using-styles-via-css)
 4. [Setting sizes and positions from CSS](#setting-sizes-and-positions-from-css)
-5. [Overriding the default CSS file location](#overriding-the-default-CSS-file-location)
+5. [Overriding the default CSS file location](#overriding-the-default-css-file-location)
 6. [Using more than one CSS file](#using-more-than-one-css-file)
 7. [Subclassing Widget types](#subclassing-widget-types)
 8. [Style lookup order](#style-lookup-order)
