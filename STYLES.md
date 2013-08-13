@@ -1,6 +1,17 @@
 Widgets & Styles
 ============
 
+### Contents
+1. [#introduction](Introduction)
+2. [#using-styles-directly-in-c-sharp](Using styles directly in C-Sharp)
+3. [#using-styles-via-css](Using styles via CSS)
+4. [#setting-sizes-and-positions-from-css](Setting sizes and positions from CSS)
+5. [#using-more-than-one-css-file](Using more than one CSS file)
+6. [#style-lookup-order](Style lookup order)
+7. [#subclassing-widget-types](Subclassing Widget types)
+8. [#attribute-reference](Attribute reference)
+
+### Introduction
 BluEngine widgets support a cascading style sheet system, allowing you to quickly specify global style attributes that can still be customized down to the individual Widget level (much like CSS).
 
 Each WidgetScreen contains an instance of StyleSheet; this is the master container of all states and styles applicable to widgets contained by the screen.
@@ -259,7 +270,7 @@ In order to use AwesomeButton in CSS, a slight addition to the normal Type notat
 ```
 This is how the Type is resolved internally. For more information, see the [.NET Type.GetType() Documentation](http://msdn.microsoft.com/en-us/library/w3f99sx1%28v=vs.100%29.aspx).
 
-### Visual attribute reference
+### Attribute reference
 These are the on-demand style attributes that are supported on both the C\# AND CSS sides, for every Type and State: 
 - **alpha** \- *expects a float between 0.0f and 1.0f*: sets the master alpha of the widget.
 - **tint** \- *expects an XNA Color object*: sets the master colour the widget output is multiplied by.
@@ -267,7 +278,6 @@ These are the on-demand style attributes that are supported on both the C\# AND 
 - **layer-N** \- *where N is an integer between 0 and 4; expects an ImageLayer object*: sets the individual image layers of the widget. In CSS you may use a url to a texture file OR any of the CSS colours; an ImageLayer with the appropriate texture information will be created regardless of the method you use. 
 - **layer-N-alpha** \- *where N is an integer between 0 and 4: expects a float between 0.0f and 1.0f*: sets the individual alpha of image layer N.
 
-### Dimensional attribute reference
 These are the **normal-state-specific** attributes that are used for initialization from CSS only: 
 - **ref-width** and **ref-height** \- *expect a float between 0.0f and 1.0f*: These are specific to the **\#BluEngine.ScreenManager.Widgets.ScreenWidget** Type and are used to set the design-time dimensions of your UI. To set this in C\#, use **Base.RefWidth** and **Base.RefHeight**.
 - **left** \- *expects a float*: The X value of the Widget's left edge, in pixels.
