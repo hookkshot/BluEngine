@@ -9,8 +9,20 @@ namespace BluEngine.ScreenManager.Widgets
     /// </summary>
     public class Button : Control
     {
+        public bool IsMouseEntered
+        {
+            get { return mouseEntered; }
+            protected set { mouseEntered = value; State = CurrentState; }
+        }
         private bool mouseEntered = false;
+        
+        public bool IsMouseDown
+        {
+            get { return mouseDown; }
+            protected set { mouseDown = value; State = CurrentState; }
+        }
         private bool mouseDown = false;
+
         public MouseEvent OnClick
         {
             get { return onClick; }
@@ -49,23 +61,20 @@ namespace BluEngine.ScreenManager.Widgets
 
         public override bool MouseEnter(Point pt)
         {
-            mouseEntered = true;
-            State = CurrentState;
+            IsMouseEntered = true;
             return base.MouseEnter(pt);
         }
 
         public override bool MouseLeave(Point pt)
         {
-            mouseEntered = false;
-            State = CurrentState;
+            IsMouseEntered = false;
             return base.MouseLeave(pt);
         }
 
         public override bool MouseDown(Point pt, int button)
         {
             if (button == 1 && Enabled)
-                mouseDown = true;
-            State = CurrentState;
+                IsMouseDown = true;
             return base.MouseDown(pt, button);
         }
 
@@ -75,13 +84,12 @@ namespace BluEngine.ScreenManager.Widgets
             {
                 if (mouseDown)
                 {
-                    mouseDown = false;
                     if (Enabled && CalculatedBoundsI.Contains(pt))
                     {
                         if (onClick != null)
                             onClick(this, pt);
                     }
-                    State = CurrentState;
+                    IsMouseDown = false;
                 }
             }
             return base.MouseUp(pt, button);
