@@ -18,7 +18,7 @@ namespace BluEngine.Engine
         public String SoundsFolder = "Sounds";
         public String MusicFolder = "Music";
         public String ShadersFolder = "Shaders";
-        public String DefaultFont = "smallfont";
+        public String DefaultFont = "defaultfont";
 
         public Color GraphicsClearColor = Color.CornflowerBlue;
         public int ScreenWidth = 1280;
