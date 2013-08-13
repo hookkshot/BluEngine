@@ -6,10 +6,11 @@ Widgets & Styles
 2. [Using styles directly in C-Sharp](#using-styles-directly-in-c-sharp)
 3. [Using styles via CSS](#using-styles-via-css)
 4. [Setting sizes and positions from CSS](#setting-sizes-and-positions-from-css)
-5. [Using more than one CSS file](#using-more-than-one-css-file)
-6. [Subclassing Widget types](#subclassing-widget-types)
-7. [Style lookup order](#style-lookup-order)
-8. [Attribute reference](#attribute-reference)
+5. [Overriding the default CSS file location](#overriding-the-default-CSS-file-location)
+6. [Using more than one CSS file](#using-more-than-one-css-file)
+7. [Subclassing Widget types](#subclassing-widget-types)
+8. [Style lookup order](#style-lookup-order)
+9. [Attribute reference](#attribute-reference)
 
 ### Introduction
 BluEngine widgets support a cascading style sheet system, allowing you to quickly specify global style attributes that can still be customized down to the individual Widget level (much like CSS).
@@ -177,6 +178,32 @@ to be percentages for dimension properties, and anything outside this range is c
 }
 ```
 Note this is *only* for the dimension properties `left`, `top`, `width`, `height`, `bottom` and `right`.
+
+[Back to top](#widgets--styles)
+
+### Overriding the default CSS file location
+The search path for a WidgetScreen's CSS file is determined by `WidgetScreen.StyleSheetPath`. By default this will return the *runtime* Type.Name with `".css"` appended to the end.
+There are situations where this may not be desired; for example, you may have two screens with identical interface, but slightly different functionality, inheriting from one common parent.
+The default behaivour would mean you would require two identical CSS files, one for each class. To remedy this, override `WidgetScreen.StyleSheetPath` with the name of your base class, like this:
+```csharp
+public class Alpha : WidgetScreen { /* ... */ }
+
+public class Prima : Alpha
+{
+	public override String StyleSheetPath
+	{
+		get { return typeof(Alpha).Name + ".css"; }
+	}
+}
+
+public class Secunda : Alpha
+{
+	public override String StyleSheetPath
+	{
+		get { return typeof(Alpha).Name + ".css"; }
+	}
+}
+```
 
 [Back to top](#widgets--styles)
 
