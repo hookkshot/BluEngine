@@ -90,6 +90,8 @@
     <Compile Include="ScreenManager\IInvalidatable.cs" />
     <Compile Include="ScreenManager\SolidColours.cs" />
     <Compile Include="ScreenManager\Screens\WidgetScreen.cs" />
+    <Compile Include="ScreenManager\Styles\BorderLayer.cs" />
+    <Compile Include="ScreenManager\Styles\BorderStyle.cs" />
     <Compile Include="ScreenManager\Styles\StyleAttributes.cs" />
     <Compile Include="ScreenManager\Widgets\Button.cs" />
     <Compile Include="ScreenManager\Widgets\Control.cs" />
