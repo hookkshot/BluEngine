@@ -106,23 +106,6 @@ namespace BluEngine.ScreenManager.Styles
         }
 
         /// <summary>
-        /// Converts an object to a T, if possible.
-        /// </summary>
-        /// <typeparam name="T">The reference type to convert.</typeparam>
-        /// <param name="value">The candidate for conversion.</param>
-        /// <returns>A nullable value</returns>
-        public static T SafeRefCast<T>(object value) where T : class
-        {
-            if (value != null)
-            {
-                T ret = (value as T);
-                if (ret != null)
-                    return ret;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Gets the Reference attribute from the set style hierarchy (set using StartLookup).
         /// </summary>
         /// <typeparam name="T">The type of value to retrieve.</typeparam>
@@ -141,35 +124,13 @@ namespace BluEngine.ScreenManager.Styles
                     StyleAttributes attrs = currentStyle.Get(currentState);
                     if (attrs != null)
                     {
-                        T val = SafeRefCast<T>(attrs[attribute]);
+                        T val = attrs.ReferenceAttributeLookup<T>(attribute);
                         if (val != null)
                             return val;
                     }
                 }
             }
 
-            return null;
-        }
-
-        /// <summary>
-        /// Converts an object to a Nullable<T>, if possible.
-        /// </summary>
-        /// <typeparam name="T">The primitive type to convert.</typeparam>
-        /// <param name="value">The candidate for conversion.</param>
-        /// <returns>A nullable value</returns>
-        public static Nullable<T> SafeCast<T>(object value) where T : struct
-        {
-            if (value != null)
-            {
-                try
-                {
-                    return (T)value;
-                }
-                catch
-                {
-                    ;
-                }
-            }
             return null;
         }
 
@@ -192,7 +153,7 @@ namespace BluEngine.ScreenManager.Styles
                     StyleAttributes attrs = currentStyle.Get(currentState);
                     if (attrs != null)
                     {
-                        T? attVal = SafeCast<T>(attrs[attribute]);
+                        T? attVal = attrs.ValueAttributeLookup<T>(attribute);
                         if (attVal.HasValue)
                             return attVal.Value;
                     }
@@ -209,6 +170,16 @@ namespace BluEngine.ScreenManager.Styles
         public ImageLayer ImageLayerLookup(String attribute)
         {
             return ReferenceAttributeLookup<ImageLayer>(attribute);
+        }
+
+        /// <summary>
+        /// Shortcut for looking up BorderLayer attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the BorderLayer attribute to look up.</param>
+        /// <returns>The BorderLayer, or null.</returns>
+        public BorderLayer BorderLayerLookup(String attribute)
+        {
+            return ReferenceAttributeLookup<BorderLayer>(attribute);
         }
 
         /// <summary>
@@ -278,6 +249,16 @@ namespace BluEngine.ScreenManager.Styles
         }
 
         /// <summary>
+        /// Shortcut for looking up Color attributes.
+        /// </summary>
+        /// <param name="attribute">The name of the Color attribute to look up.</param>
+        /// <returns>The attribute value or null.</returns>
+        public Color? ColorLookup(String attribute)
+        {
+            return ValueAttributeLookup<Color>(attribute);
+        }
+
+        /// <summary>
         /// Handles the translating of CSS rulesets to WidgetStyle values.
         /// </summary>
         /// <param name="widget">The Widget object that is the recipient.</param>
@@ -309,10 +290,10 @@ namespace BluEngine.ScreenManager.Styles
                     if (attrs != null)
                     {
 
-                        float? refWidth = SafeCast<float>(attrs["ref-width"]);
+                        float? refWidth = attrs.ValueAttributeLookup<float>("ref-width");
                         if (refWidth.HasValue)
                             screen.Base.RefWidth = refWidth.Value;
-                        float? refHeight = SafeCast<float>(attrs["ref-height"]);
+                        float? refHeight = attrs.ValueAttributeLookup<float>("ref-height");
                         if (refHeight.HasValue)
                             screen.Base.RefHeight = refHeight.Value;
                     }
@@ -364,9 +345,36 @@ namespace BluEngine.ScreenManager.Styles
                         break;
 
                     case CSSPropertyType.Identifier:
-                        state[property.Name] = (property as CSSIdentifierProperty).Value;
+                        if (property.Name.Equals("border-style"))
+                        {
+                            BorderStyle border = BorderStyle.None;
+                            switch ((property as CSSIdentifierProperty).Value)
+                            {
+                                case "dotted": border = BorderStyle.Dotted; break;
+                                case "dashed": border = BorderStyle.Dashed; break;
+                                case "solid": border = BorderStyle.Solid; break;
+                                case "double": border = BorderStyle.Double; break;
+                            }
+                            state[property.Name] = border;
+                        }
+                        else
+                            state[property.Name] = (property as CSSIdentifierProperty).Value;
+
                         break;
                 }
+            }
+
+            float? borderWidth = state.ValueAttributeLookup<float>("border-width");
+            BorderStyle? borderStyle = state.ValueAttributeLookup<BorderStyle>("border-style");
+            Color? borderColour = state.ValueAttributeLookup<Color>("border-color");
+            if (borderWidth.HasValue && borderStyle.HasValue && borderColour.HasValue)
+            {
+                BorderLayer borderLayer = state.ReferenceAttributeLookup<BorderLayer>("border");
+                if (borderLayer == null)
+                    state["border"] = borderLayer = new BorderLayer();
+                borderLayer.BorderStyle = borderStyle.Value;
+                borderLayer.BorderWidth = borderWidth.Value;
+                borderLayer.BorderColour = borderColour.Value;
             }
         }
     }
