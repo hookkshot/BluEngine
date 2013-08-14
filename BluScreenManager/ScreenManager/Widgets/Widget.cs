@@ -252,6 +252,7 @@ namespace BluEngine.ScreenManager.Widgets
                 {
                     StateList = state.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                     ApplyStateBasedStyles();
+                    StateChanged(oldState);
                 }
             }
         }
@@ -281,16 +282,6 @@ namespace BluEngine.ScreenManager.Widgets
         public bool Invalidated
         {
             get { return !valid; }
-        }
-
-        /// <summary>
-        /// Flags this widget (and all children) as in need of refreshing before next redraw.
-        /// </summary>
-        public void Invalidate()
-        {
-            valid = false;
-            foreach (Widget child in children)
-                child.Invalidate();
         }
 
         /// <summary>
@@ -431,6 +422,7 @@ namespace BluEngine.ScreenManager.Widgets
                 throw new ArgumentNullException("screen");
             Screen = screen;
             Parent = parent;
+            StateChanged("");
         }
 
         /// <summary>
@@ -444,6 +436,22 @@ namespace BluEngine.ScreenManager.Widgets
         /// </summary>
         /// <param name="parent">The Widget's parent.</param>
         public Widget(Widget parent) : this(parent.Screen, parent) { }
+
+        /// <summary>
+        /// Flags this widget (and all children) as in need of refreshing before next redraw.
+        /// </summary>
+        public void Invalidate()
+        {
+            valid = false;
+            foreach (Widget child in children)
+                child.Invalidate();
+        }
+
+        /// <summary>
+        /// Called when the state is changed.
+        /// </summary>
+        /// <param name="oldState">The previous state.</param>
+        protected virtual void StateChanged(String oldState) { }
 
         /// <summary>
         /// Check if a Widget is an ancestor of this one.
