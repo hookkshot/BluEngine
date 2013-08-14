@@ -95,7 +95,7 @@ namespace BluEngine.ScreenManager.Styles
 
         public virtual void Draw(SpriteBatch spriteBatch, Widget widget, Color col)
         {
-            if (texture == null)
+            if (texture == null || col.A == 0)
                 return;
 
             spriteBatch.Draw(
@@ -108,7 +108,6 @@ namespace BluEngine.ScreenManager.Styles
                 ),
                 col);
         }
-
         
         public static ImageLayer FromColor(Color color)
         {

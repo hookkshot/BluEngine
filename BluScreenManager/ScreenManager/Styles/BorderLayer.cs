@@ -35,7 +35,11 @@ namespace BluEngine.ScreenManager.Styles
 
         public override void Draw(SpriteBatch spriteBatch, Widget widget, Color col)
         {
-            if (Texture == null || BorderStyle == Styles.BorderStyle.None || BorderStyle == Styles.BorderStyle.Hidden || BorderWidth <= 0.0f)
+            if (Texture == null
+                || col.A == 0
+                || BorderStyle == Styles.BorderStyle.None
+                || BorderStyle == Styles.BorderStyle.Hidden
+                || BorderWidth <= 0.0f)
                 return;
 
             int left = (int)((float)widget.CalculatedBoundsI.X * Width);
