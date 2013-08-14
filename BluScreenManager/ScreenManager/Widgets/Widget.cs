@@ -603,6 +603,11 @@ namespace BluEngine.ScreenManager.Widgets
                 if (layer != null)
                     layer.Draw(spriteBatch, this, tint * alpha * layerAlpha);
             }
+
+            //border
+            BorderLayer borderLayer = Screen.Styles.BorderLayerLookup("border");
+            if (borderLayer != null)
+                borderLayer.Draw(spriteBatch, this, borderLayer.BorderColour * alpha);
         }
 
         /// <summary>
