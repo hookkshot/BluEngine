@@ -36,6 +36,24 @@ namespace BluEngine.ScreenManager.Styles
             set { bounds.Y = value; }
         }
 
+        /// <summary>
+        /// The percentage Width of this layer.
+        /// </summary>
+        public virtual float Width
+        {
+            get { return bounds.W; }
+            set { bounds.W = Math.Max(value, 0.0f); }
+        }
+
+        /// <summary>
+        /// The percentage Height of this layer.
+        /// </summary>
+        public virtual float Height
+        {
+            get { return bounds.Z; }
+            set { bounds.Z = Math.Max(value, 0.0f); }
+        }
+
             /// <summary>
         /// The percentage Right of this layer.
         /// </summary>
