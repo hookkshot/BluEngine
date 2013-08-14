@@ -17,12 +17,12 @@ namespace BluEngine.ScreenManager.Styles
         }
         private BorderStyle borderStyle;
 
-        public float BorderWidth
+        public int BorderWidth
         {
             get { return borderWidth; }
             set { borderWidth = value; }
         }
-        private float borderWidth;
+        private int borderWidth;
 
         public Color BorderColour
         {
@@ -31,7 +31,13 @@ namespace BluEngine.ScreenManager.Styles
         }
         private Color borderColour;
 
-        public BorderLayer() : base(SolidColours.White) { }
+        public BorderLayer(int width, BorderStyle style, Color color) : base(SolidColours.White)
+        {
+            borderWidth = width;
+            borderStyle = style;
+            borderColour = color;
+        }
+        public BorderLayer() : this(0,BorderStyle.Hidden,Color.Black) { }
 
         public override void Draw(SpriteBatch spriteBatch, Widget widget, Color col)
         {
@@ -39,62 +45,61 @@ namespace BluEngine.ScreenManager.Styles
                 || col.A == 0
                 || BorderStyle == Styles.BorderStyle.None
                 || BorderStyle == Styles.BorderStyle.Hidden
-                || BorderWidth <= 0.0f)
+                || BorderWidth <= 0)
                 return;
 
             int left = (int)((float)widget.CalculatedBoundsI.X * Width);
             int top = (int)((float)widget.CalculatedBoundsI.Y * Height);
             int width = (int)((float)widget.CalculatedBoundsI.Width * Width);
             int height = (int)((float)widget.CalculatedBoundsI.Height * Height);
-            int bw = (int)BorderWidth;
 
             if (BorderStyle == Styles.BorderStyle.Solid || BorderStyle == Styles.BorderStyle.Double)
             {
                 //top and bottom
-                spriteBatch.Draw(Texture, new Rectangle(left, top, width, bw), col);
-                spriteBatch.Draw(Texture, new Rectangle(left, top + height - bw, width, bw), col);
+                spriteBatch.Draw(Texture, new Rectangle(left, top, width, BorderWidth), col);
+                spriteBatch.Draw(Texture, new Rectangle(left, top + height - BorderWidth, width, BorderWidth), col);
 
                 //left and right
-                spriteBatch.Draw(Texture, new Rectangle(left, top + bw, bw, height - 2 * bw), col);
-                spriteBatch.Draw(Texture, new Rectangle(left + width - bw, top + bw, bw, height - 2 * bw), col);
+                spriteBatch.Draw(Texture, new Rectangle(left, top + BorderWidth, BorderWidth, height - 2 * BorderWidth), col);
+                spriteBatch.Draw(Texture, new Rectangle(left + width - BorderWidth, top + BorderWidth, BorderWidth, height - 2 * BorderWidth), col);
                 
 
                 if (BorderStyle == Styles.BorderStyle.Double)
                 {
-                    left += bw * 2;
-                    top += bw * 2;
-                    width -= bw * 4;
-                    height -= bw * 4;
+                    left += BorderWidth * 2;
+                    top += BorderWidth * 2;
+                    width -= BorderWidth * 4;
+                    height -= BorderWidth * 4;
 
                     //top and bottom
-                    spriteBatch.Draw(Texture, new Rectangle(left, top, width, bw), col);
-                    spriteBatch.Draw(Texture, new Rectangle(left, top + height - bw, width, bw), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left, top, width, BorderWidth), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left, top + height - BorderWidth, width, BorderWidth), col);
 
                     //left and right
-                    spriteBatch.Draw(Texture, new Rectangle(left, top + bw, bw, height - 2 * bw), col);
-                    spriteBatch.Draw(Texture, new Rectangle(left + width - bw, top + bw, bw, height - 2 * bw), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left, top + BorderWidth, BorderWidth, height - 2 * BorderWidth), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left + width - BorderWidth, top + BorderWidth, BorderWidth, height - 2 * BorderWidth), col);
                 }
             }
             else if (BorderStyle == Styles.BorderStyle.Dotted || BorderStyle == Styles.BorderStyle.Dashed)
             {
-                int len = bw * (BorderStyle == Styles.BorderStyle.Dotted ? 1 : 4);
+                int len = BorderWidth * (BorderStyle == Styles.BorderStyle.Dotted ? 1 : 4);
                 
                 //top and bottom
                 int pos = 0;
                 while (pos < width)
                 {
-                    spriteBatch.Draw(Texture, new Rectangle(left + pos, top, len, bw), col);
-                    spriteBatch.Draw(Texture, new Rectangle(left + pos, top + height - bw, len, bw), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left + pos, top, len, BorderWidth), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left + pos, top + height - BorderWidth, len, BorderWidth), col);
                     pos += len * 2;
                 }
 
                 //left and right
-                height -= bw * 2;
+                height -= BorderWidth * 2;
                 pos = 0;
                 while (pos < height)
                 {
-                    spriteBatch.Draw(Texture, new Rectangle(left, top + bw + pos, bw, len), col);
-                    spriteBatch.Draw(Texture, new Rectangle(left + width - bw, top + bw + pos, bw, len), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left, top + BorderWidth + pos, BorderWidth, len), col);
+                    spriteBatch.Draw(Texture, new Rectangle(left + width - BorderWidth, top + BorderWidth + pos, BorderWidth, len), col);
                     pos += len * 2;
                 }
             }

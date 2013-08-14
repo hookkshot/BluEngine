@@ -199,7 +199,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <param name="N">The N layer index.</param>
         public float GetLayerNAlpha(int N)
         {
-            if (N < 0 || N >= Style.STYLE_LAYERS)
+            if (N < 0 || N >= StyleSheet.STYLE_LAYERS)
                 return 1.0f;
             return GetPercentageStyleValue("layer-"+N+"-alpha", 1.0f);
         }
@@ -211,7 +211,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <param name="value">The new value.</param>
         public void SetLayerNAlpha(int N, float value)
         {
-            if (N < 0 || N >= Style.STYLE_LAYERS)
+            if (N < 0 || N >= StyleSheet.STYLE_LAYERS)
                 return;
             SetPercentageStyleValue("layer-" + N + "-alpha", 1.0f);
         }
@@ -595,7 +595,7 @@ namespace BluEngine.ScreenManager.Widgets
             tint = new Color(R, G, B);
 
             //layers
-            for (int i = 0; i < Style.STYLE_LAYERS; i++)
+            for (int i = 0; i < StyleSheet.STYLE_LAYERS; i++)
             {
                 ImageLayer layer = Screen.Styles.ImageLayerLookup("layer-" + i);
                 float layerAlpha = Screen.Styles.FloatLookup("layer-"+i+"-alpha", 1.0f);

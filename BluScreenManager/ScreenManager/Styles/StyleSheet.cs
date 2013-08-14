@@ -12,6 +12,15 @@ namespace BluEngine.ScreenManager.Styles
 {
     public sealed class StyleSheet
     {
+        public const int TYPE_IMAGELAYER = 100;
+
+        /// <summary>
+        /// <para>The maximum number of ImageLayers that may be used in a Style (accessed by "layer-x" where X is the 0-based layer index).</para>
+        /// <para>There is of course nothing stopping you from assigning ImageLayers to whatever you like ("layer-dicks"), but the only ones that
+        /// will actually get rendered by the Widget class's Draw() is "layer-0" to "layer-STYLE_LAYERS".</para>
+        /// </summary>
+        public const int STYLE_LAYERS = 5;
+        
         private Dictionary<Type, Style> styles;
         private Style baseStyle;
         private List<Style> currentStyleHierarchy = null;
@@ -264,7 +273,7 @@ namespace BluEngine.ScreenManager.Styles
         /// <param name="widget">The Widget object that is the recipient.</param>
         /// <param name="state">The state of the recipient.</param>
         /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStylesToWidget(Widget widget, String state, CSSRuleset ruleset)
+        public void ApplyCSSStylesToWidget(Widget widget, String state, List<ICSSProperty> ruleset)
         {
             ApplyCSSStyles(widget.Style[state],ruleset);
             widget.ApplyStateBasedStyles();
@@ -276,7 +285,7 @@ namespace BluEngine.ScreenManager.Styles
         /// <param name="widget">The Widget object that is the recipient.</param>
         /// <param name="state">The state of the recipient.</param>
         /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStylesToType(Type type, String state, CSSRuleset ruleset)
+        public void ApplyCSSStylesToType(Type type, String state, List<ICSSProperty> ruleset)
         {
             ApplyCSSStyles(this[type][state], ruleset);
 
@@ -306,76 +315,33 @@ namespace BluEngine.ScreenManager.Styles
         /// </summary>
         /// <param name="state">The StyleAttributes object that is the recipient.</param>
         /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStyles(StyleAttributes state, CSSRuleset ruleset)
+        public void ApplyCSSStyles(StyleAttributes state, List<ICSSProperty> ruleset)
         {
             foreach (ICSSProperty property in ruleset)
             {
                 switch (property.PropertyType)
                 {
-                    case CSSPropertyType.URI:
-                        String uri = (property as CSSURIProperty).Value;
-                        if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
-                            state[property.Name] = new ImageLayer(screen.Content.Load<Texture2D>(uri.Replace('/', '\\')));
-                        else //straight string URL values
-                            state[property.Name] = uri;
+                    case StyleSheet.TYPE_IMAGELAYER:
+                        state[property.Name] = property;
                         break;
 
-                    case CSSPropertyType.Color:
+                    case CSSConstants.TYPE_COLOR:
                         CSSColor cssColor = (property as CSSColorProperty).Value;
                         Color color = new Color((int)cssColor.R, (int)cssColor.G, (int)cssColor.B, (int)(cssColor.A*255.0f));
-                        if (REGEX_LAYER_N.IsMatch(property.Name)) //imagelayer values
-                        {
-                            Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-                            tex.SetData<Color>(new Color[] { color });
-                            state[property.Name] = new ImageLayer(tex);
-                        }
-                        else //straight color values
-                            state[property.Name] = color;
+                        state[property.Name] = color;
                         break;
 
-                    case CSSPropertyType.Number:
+                    case CSSConstants.TYPE_NUMBER:
                         float val = (property as CSSNumberProperty).Value;
                         if ((property as CSSNumberProperty).Units == CSSUnits.Percent)
                             val /= 100.0f;
                         state[property.Name] = val;
                         break;
 
-                    case CSSPropertyType.String:
+                    case CSSConstants.TYPE_STRING:
                         state[property.Name] = (property as CSSStringProperty).Value;
                         break;
-
-                    case CSSPropertyType.Identifier:
-                        if (property.Name.Equals("border-style"))
-                        {
-                            BorderStyle border = BorderStyle.None;
-                            switch ((property as CSSIdentifierProperty).Value)
-                            {
-                                case "hidden": border = BorderStyle.Hidden; break;
-                                case "dotted": border = BorderStyle.Dotted; break;
-                                case "dashed": border = BorderStyle.Dashed; break;
-                                case "solid": border = BorderStyle.Solid; break;
-                                case "double": border = BorderStyle.Double; break;
-                            }
-                            state[property.Name] = border;
-                        }
-                        else
-                            state[property.Name] = (property as CSSIdentifierProperty).Value;
-
-                        break;
                 }
-            }
-
-            float? borderWidth = state.ValueAttributeLookup<float>("border-width");
-            BorderStyle? borderStyle = state.ValueAttributeLookup<BorderStyle>("border-style");
-            Color? borderColour = state.ValueAttributeLookup<Color>("border-color");
-            if (borderWidth.HasValue && borderStyle.HasValue && borderColour.HasValue)
-            {
-                BorderLayer borderLayer = state.ReferenceAttributeLookup<BorderLayer>("border");
-                if (borderLayer == null)
-                    state["border"] = borderLayer = new BorderLayer();
-                borderLayer.BorderStyle = borderStyle.Value;
-                borderLayer.BorderWidth = borderWidth.Value;
-                borderLayer.BorderColour = borderColour.Value;
             }
         }
     }

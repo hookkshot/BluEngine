@@ -2,13 +2,14 @@
 using BluEngine.ScreenManager.Widgets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Marzersoft.CSS;
 
 namespace BluEngine.ScreenManager.Styles
 {
     /// <summary>
     /// An image layer within a widget style. Use these to build up multi-layer widgets.
     /// </summary>
-    public class ImageLayer
+    public class ImageLayer : ICSSProperty
     {
         public virtual Texture2D Texture
         {
@@ -91,7 +92,6 @@ namespace BluEngine.ScreenManager.Styles
         {
             this.texture = tex;
         }
-        public ImageLayer() : this(null) { }
 
         public virtual void Draw(SpriteBatch spriteBatch, Widget widget, Color col)
         {
@@ -114,6 +114,24 @@ namespace BluEngine.ScreenManager.Styles
             Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             tex.SetData<Color>(new Color[] { color });
             return new ImageLayer(tex);
+        }
+
+        /// <summary>
+        /// The Name of the CSS property this was interpreted from. Meaningless if this was not created from CSS.
+        /// </summary>
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        private String name;
+
+        /// <summary>
+        /// The integer Type of the value when accessed through the ICSSProperty interface. For easier casting.
+        /// </summary>
+        public int PropertyType
+        {
+            get { return StyleSheet.TYPE_IMAGELAYER; }
         }
     }
 }

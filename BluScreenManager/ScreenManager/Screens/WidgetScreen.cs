@@ -9,6 +9,7 @@ using System.IO;
 using System.Text;
 using Marzersoft.CSS;
 using System.Collections.Generic;
+using BluEngine.ScreenManager.Styles.CSS;
 
 
 namespace BluEngine.ScreenManager.Screens
@@ -63,6 +64,34 @@ namespace BluEngine.ScreenManager.Screens
         }
 
         /// <summary>
+        /// The static CSSParser object shared by all WidgetScreens.
+        /// </summary>
+        public BluEngineCSSParser CSSParser
+        {
+            get
+            {
+                if (cssParser == null)
+                {
+                    List<CSSPropertyInterpreter> interpreters = new List<CSSPropertyInterpreter>();
+                    interpreters.Add(new BorderLayerInterpreter());
+                    interpreters.Add(new ImageLayerInterpreter());
+
+                    CSSColorInterpreter colorInterpreter = new CSSColorInterpreter();
+                    colorInterpreter.NameRegex = "tint|border-color";
+                    interpreters.Add(colorInterpreter);
+
+                    CSSDimensionInterpreter dimensionInterpreter = new CSSDimensionInterpreter();
+                    dimensionInterpreter.NameRegex = "border-width|bottom|top|right|left|(?:ref-)?width|(?:ref-)?height|alpha|tint-strength|layer-[0-" + (StyleSheet.STYLE_LAYERS - 1) + "]-alpha";
+                    interpreters.Add(dimensionInterpreter);
+
+                    cssParser = new BluEngineCSSParser(interpreters);
+                }
+                return cssParser;
+            }
+        }
+        private static BluEngineCSSParser cssParser = null;
+
+        /// <summary>
         /// All cascading Widget styles used by this screen.
         /// </summary>
         public StyleSheet Styles
@@ -110,11 +139,13 @@ namespace BluEngine.ScreenManager.Screens
         protected void LoadCSS(string file)
         {
             //load CSS document
-            CSSDocument document = new CSSDocument(ScreenManager.Game.ContentRoot + "\\" + ScreenManager.Game.StylesPath + file, true);
-            CSSRulesets rulesets = document.Rulesets;
+            CSSParser.ActiveScreen = this;
+            CSSParser.Parse(ScreenManager.Game.ContentRoot + "\\" + ScreenManager.Game.StylesPath + file, true);
+            CSSParser.ActiveScreen = null;
+            Dictionary<String, List<ICSSProperty>> rulesets = CSSParser.Rulesets;
 
             //loop through CSS document
-            foreach (KeyValuePair<String, CSSRuleset> kvp in rulesets)
+            foreach (KeyValuePair<String, List<ICSSProperty>> kvp in rulesets)
             {
                 String[] selector = kvp.Key.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                 String name = selector[0];
@@ -147,6 +178,8 @@ namespace BluEngine.ScreenManager.Screens
                     }
                 }
             }
+            
+            CSSParser.Clear();
         }
 
         /// <summary>
