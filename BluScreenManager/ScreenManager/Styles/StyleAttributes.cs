@@ -40,5 +40,72 @@ namespace BluEngine.ScreenManager.Styles
         {
             attributes = new Dictionary<string, object>();
         }
+
+        /// <summary>
+        /// Gets the Nullable attribute from the attributes list.
+        /// </summary>
+        /// <typeparam name="T">The type of value to retrieve.</typeparam>
+        /// <param name="attribute">The name of the attribute.</param>
+        /// <returns>The attribute value, or null if it was not found or was an incompatible type.</returns>
+        public Nullable<T> ValueAttributeLookup<T>(String attribute) where T : struct
+        {
+            T? attVal = SafeCast<T>(this[attribute]);
+            if (attVal.HasValue)
+                return attVal.Value;
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the Reference attribute from the attributes list.
+        /// </summary>
+        /// <typeparam name="T">The type of value to retrieve.</typeparam>
+        /// <param name="attribute">The name of the attribute.</param>
+        /// <returns>The attribute value, or null if it was not found or was an incompatible type.</returns>
+        public T ReferenceAttributeLookup<T>(String attribute) where T : class
+        {
+            T val = SafeRefCast<T>(this[attribute]);
+            if (val != null)
+                return val;
+            return null;
+        }
+
+        /// <summary>
+        /// Converts an object to a Nullable<T>, if possible.
+        /// </summary>
+        /// <typeparam name="T">The primitive type to convert.</typeparam>
+        /// <param name="value">The candidate for conversion.</param>
+        /// <returns>A nullable value</returns>
+        public static Nullable<T> SafeCast<T>(object value) where T : struct
+        {
+            if (value != null)
+            {
+                try
+                {
+                    return (T)value;
+                }
+                catch
+                {
+                    ;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Converts an object to a T, if possible.
+        /// </summary>
+        /// <typeparam name="T">The reference type to convert.</typeparam>
+        /// <param name="value">The candidate for conversion.</param>
+        /// <returns>A nullable value</returns>
+        public static T SafeRefCast<T>(object value) where T : class
+        {
+            if (value != null)
+            {
+                T ret = (value as T);
+                if (ret != null)
+                    return ret;
+            }
+            return null;
+        }
     }
 }
