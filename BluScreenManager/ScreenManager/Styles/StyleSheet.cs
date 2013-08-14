@@ -350,6 +350,7 @@ namespace BluEngine.ScreenManager.Styles
                             BorderStyle border = BorderStyle.None;
                             switch ((property as CSSIdentifierProperty).Value)
                             {
+                                case "hidden": border = BorderStyle.Hidden; break;
                                 case "dotted": border = BorderStyle.Dotted; break;
                                 case "dashed": border = BorderStyle.Dashed; break;
                                 case "solid": border = BorderStyle.Solid; break;
