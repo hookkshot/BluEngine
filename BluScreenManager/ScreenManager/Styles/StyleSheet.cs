@@ -332,10 +332,7 @@ namespace BluEngine.ScreenManager.Styles
                         break;
 
                     case CSSConstants.TYPE_NUMBER:
-                        float val = (property as CSSNumberProperty).Value;
-                        if ((property as CSSNumberProperty).Units == CSSUnits.Percent)
-                            val /= 100.0f;
-                        state[property.Name] = val;
+                        state[property.Name] = (property as CSSNumberProperty).Value;
                         break;
 
                     case CSSConstants.TYPE_STRING:
