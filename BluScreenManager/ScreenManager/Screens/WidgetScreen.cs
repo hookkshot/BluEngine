@@ -66,30 +66,16 @@ namespace BluEngine.ScreenManager.Screens
         /// <summary>
         /// The static CSSParser object shared by all WidgetScreens.
         /// </summary>
-        public BluEngineCSSParser CSSParser
+        public BluCSSParser CSSParser
         {
             get
             {
                 if (cssParser == null)
-                {
-                    List<CSSPropertyInterpreter> interpreters = new List<CSSPropertyInterpreter>();
-                    interpreters.Add(new BorderLayerInterpreter());
-                    interpreters.Add(new ImageLayerInterpreter());
-
-                    CSSColorInterpreter colorInterpreter = new CSSColorInterpreter();
-                    colorInterpreter.NameRegex = "tint|border-color";
-                    interpreters.Add(colorInterpreter);
-
-                    CSSDimensionInterpreter dimensionInterpreter = new CSSDimensionInterpreter();
-                    dimensionInterpreter.NameRegex = "border-width|bottom|top|right|left|(?:ref-)?width|(?:ref-)?height|alpha|tint-strength|layer-[0-" + (StyleSheet.STYLE_LAYERS - 1) + "]-alpha";
-                    interpreters.Add(dimensionInterpreter);
-
-                    cssParser = new BluEngineCSSParser(interpreters);
-                }
+                    cssParser = new BluCSSParser(GenerateCustomCSSInterpreterList());
                 return cssParser;
             }
         }
-        private static BluEngineCSSParser cssParser = null;
+        private static BluCSSParser cssParser = null;
 
         /// <summary>
         /// All cascading Widget styles used by this screen.
@@ -116,6 +102,22 @@ namespace BluEngine.ScreenManager.Screens
             
             styles = new StyleSheet(this);
             cssStyleLinks = new Dictionary<String, List<Widget>>();
+        }
+
+        /// <summary>
+        /// Generates a new list of CSSInterpreters used to initialize the CSSParser. Add to the output of this list to add your own.
+        /// </summary>
+        /// <returns>A list of CSSPropertyInterpreters customized for BluEngine CSS.</returns>
+        public static List<CSSPropertyInterpreter> GenerateCustomCSSInterpreterList()
+        {
+            List<CSSPropertyInterpreter> interpreters = new List<CSSPropertyInterpreter>();
+            interpreters.Add(new BorderLayerInterpreter());
+            interpreters.Add(new ImageLayerURLInterpreter());
+            interpreters.Add(new ImageLayerColorInterpreter());
+            interpreters.Add(new ColorInterpreter());
+            interpreters.Add(new PercentageInterpreter());
+            interpreters.Add(new DimensionInterpreter());
+            return interpreters;
         }
 
         public override void LoadContent()
