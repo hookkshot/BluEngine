@@ -111,9 +111,7 @@ namespace BluEngine.ScreenManager.Styles
         
         public static ImageLayer FromColor(Color color)
         {
-            Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            tex.SetData<Color>(new Color[] { color });
-            return new ImageLayer(tex);
+            return new ImageLayer(SolidColours.TexFromColor(color));
         }
 
         /// <summary>
@@ -132,6 +130,14 @@ namespace BluEngine.ScreenManager.Styles
         public int PropertyType
         {
             get { return StyleSheet.TYPE_IMAGELAYER; }
+        }
+
+        /// <summary>
+        /// Outputs the CSS-style value of this ImageLayer. Meaningless if this was not created from CSS.
+        /// </summary>
+        public override String ToString()
+        {
+            return Name + ": [ImageLayer]";
         }
     }
 }
