@@ -11,11 +11,16 @@ namespace BluEngine.ScreenManager
         private static Texture2D red, green, blue, cyan, magenta, yellow, black, white;
         private static Texture2D black95, black98, black90, black85, black80, black70, black60, black50;
 
-        private static Texture2D InitializeColour(Color color, out Texture2D tex)
+        public static Texture2D TexFromColor(Color color)
         {
-            tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            Texture2D tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             tex.SetData<Color>(new Color[] { color });
             return tex;
+        }
+
+        private static Texture2D InitializeColour(Color color, out Texture2D tex)
+        {
+            return tex = TexFromColor(color);
         }
 
         public static Texture2D Red { get { return red ?? InitializeColour(Color.Red, out red); } }
