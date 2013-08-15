@@ -34,16 +34,8 @@ namespace BluEngine.ScreenManager.Styles.CSS
             }
             
             //color
-            Color bc;
-            try
-            {
-                CSSColor cssColor = new CSSColorProperty(nameMatch.Value, valueMatch.Groups[3].Value).Value;
-                bc = new Color((int)cssColor.R, (int)cssColor.G, (int)cssColor.B, (int)(cssColor.A * 255.0f));
-            }
-            catch (ArgumentOutOfRangeException) //CSSColorProperty throws this if the input is invalid, so must be url
-            {
-                bc = Color.White;
-            }
+            CSSColor cssColor = new CSSColorProperty(nameMatch.Value, valueMatch.Groups[3].Value).Value;
+            Color bc = new Color((int)cssColor.R, (int)cssColor.G, (int)cssColor.B, (int)(cssColor.A * 255.0f));
 
             BorderLayer bl = new BorderLayer(bw, bs, bc);
             bl.Name = nameMatch.Value;
