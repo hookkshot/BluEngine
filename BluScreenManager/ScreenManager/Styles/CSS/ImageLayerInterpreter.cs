@@ -21,18 +21,15 @@ namespace BluEngine.ScreenManager.Styles.CSS
         protected override ICSSProperty TranslateValue(Match nameMatch, Match valueMatch)
         {
             Texture2D tex = null;
-            try
+            if (valueMatch.Value[0] == 'u') //url
+                tex = (Parser as BluEngineCSSParser).ActiveScreen.Content.Load<Texture2D>(valueMatch.Groups[1].Value.Replace('/', '\\'));
+            else
             {
                 CSSColor cssColor = new CSSColorProperty(nameMatch.Value,valueMatch).Value;
                 Color color = new Color((int)cssColor.R, (int)cssColor.G, (int)cssColor.B, (int)(cssColor.A*255.0f));
                 tex = new Texture2D(ScreenManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
                 tex.SetData<Color>(new Color[] { color });
             }
-            catch (ArgumentOutOfRangeException) //CSSColorProperty throws this if the input is invalid, so must be url
-            {
-                tex = (Parser as BluEngineCSSParser).ActiveScreen.Content.Load<Texture2D>(valueMatch.Groups[1].Value.Replace('/', '\\'));
-            }
-
             ImageLayer layer = new ImageLayer(tex);
             layer.Name = nameMatch.Value;
             return layer; 
