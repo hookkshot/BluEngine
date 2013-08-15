@@ -37,7 +37,20 @@ namespace BluEngine.ScreenManager.Styles
             borderStyle = style;
             borderColour = color;
         }
+        public BorderLayer(int width, BorderStyle style) : base(null)
+        {
+            borderWidth = width;
+            borderStyle = style;
+        }
         public BorderLayer() : this(0,BorderStyle.Hidden,Color.Black) { }
+
+        /// <summary>
+        /// Outputs the CSS-style value of this BorderLayer. Meaningless if this was not created from CSS.
+        /// </summary>
+        public override String ToString()
+        {
+            return Name + ": [BorderLayer]";
+        }
 
         public override void Draw(SpriteBatch spriteBatch, Widget widget, Color col)
         {
