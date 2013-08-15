@@ -40,10 +40,11 @@
     </Reference>
     <Reference Include="FastColoredTextBoxLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\FastColoredTextBoxLib.dll</HintPath>
+      <HintPath>..\FastColoredTextBoxLib.dll</HintPath>
     </Reference>
-    <Reference Include="Marzersoft.CSS">
-      <HintPath>..\..\CSSParser\bin\Marzersoft.CSS.dll</HintPath>
+    <Reference Include="Marzersoft.CSS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Marzersoft.CSS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -35,7 +35,7 @@
     </Reference>
     <Reference Include="Marzersoft.CSS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CSSParser\bin\Marzersoft.CSS.dll</HintPath>
+      <HintPath>..\Marzersoft.CSS.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -52,8 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Unwinnable Wars Game Jam\Game\Tao.Sdl.dll</HintPath>
     </Reference>
-    <Reference Include="UniversalTweenEngine">
-      <HintPath>..\..\UniversalTweenEngineCS\bin\UniversalTweenEngine.dll</HintPath>
+    <Reference Include="UniversalTweenEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\UniversalTweenEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
