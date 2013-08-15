@@ -52,9 +52,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Unwinnable Wars Game Jam\Game\Tao.Sdl.dll</HintPath>
     </Reference>
-    <Reference Include="UniversalTweenEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Unwinnable Wars Game Jam\Game\UniversalTweenEngine.dll</HintPath>
+    <Reference Include="UniversalTweenEngine">
+      <HintPath>..\..\UniversalTweenEngineCS\bin\UniversalTweenEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +91,12 @@
     <Compile Include="ScreenManager\Screens\WidgetScreen.cs" />
     <Compile Include="ScreenManager\Styles\BorderLayer.cs" />
     <Compile Include="ScreenManager\Styles\BorderStyle.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\ColorInterpreter.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\DimensionInterpreter.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\PercentageInterpreter.cs" />
     <Compile Include="ScreenManager\Styles\CSS\BorderLayerInterpreter.cs" />
-    <Compile Include="ScreenManager\Styles\CSS\ImageLayerInterpreter.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\ImageLayerColorInterpreter.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\ImageLayerURLInterpreter.cs" />
     <Compile Include="ScreenManager\Styles\StyleAttributes.cs" />
     <Compile Include="ScreenManager\Widgets\Button.cs" />
     <Compile Include="ScreenManager\Widgets\Control.cs" />
@@ -106,7 +109,7 @@
     <Compile Include="TweenAccessors\WidgetAccessor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ScreenManager\Styles\CSS\BluEngineCSSParser.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\BluCSSParser.cs" />
     <Content Include="SDL.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
