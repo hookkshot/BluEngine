@@ -7,13 +7,13 @@
 #endregion
 
 #region Using Statements
+using System;
+using System.Text;
 using AurelienRibon.TweenEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using System;
 using Microsoft.Xna.Framework.Graphics;
-using System.Text;
-using BluEngine.Engine;
+
 #endregion
 
 namespace BluEngine.ScreenManager.Screens

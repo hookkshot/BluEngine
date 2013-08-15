@@ -1,10 +1,7 @@
 ﻿using System;
-using AurelienRibon.TweenEngine;
-using BluEngine.ScreenManager.Screens;
-using BluEngine.ScreenManager.Widgets;
-using BluEngine.TweenAccessors;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using AurelienRibon.TweenEngine;
+using Microsoft.Xna.Framework;
 
 
 namespace BluEngine.Engine

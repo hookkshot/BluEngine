@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text.RegularExpressions;
 using Marzersoft.CSS;
-using System.Text.RegularExpressions;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using BluEngine.ScreenManager.Screens;
 
 namespace BluEngine.ScreenManager.Styles.CSS
 {

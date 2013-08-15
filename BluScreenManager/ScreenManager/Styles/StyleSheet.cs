@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using BluEngine.ScreenManager.Screens;
 using BluEngine.ScreenManager.Widgets;
-using System.IO;
 using Marzersoft.CSS;
 using Microsoft.Xna.Framework;
-using System.Text.RegularExpressions;
-using Microsoft.Xna.Framework.Graphics;
-using BluEngine.ScreenManager.Screens;
 
 namespace BluEngine.ScreenManager.Styles
 {

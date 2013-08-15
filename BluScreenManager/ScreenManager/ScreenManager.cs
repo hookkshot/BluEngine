@@ -9,12 +9,12 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Text;
 using BluEngine.Engine;
 using BluEngine.ScreenManager.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Text;
 #endregion
 
 namespace BluEngine.ScreenManager

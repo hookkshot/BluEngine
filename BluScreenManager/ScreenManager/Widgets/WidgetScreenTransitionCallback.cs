@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AurelienRibon.TweenEngine;
+﻿using AurelienRibon.TweenEngine;
 using BluEngine.ScreenManager.Screens;
 
 namespace BluEngine.ScreenManager.Widgets

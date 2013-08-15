@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using BluEngine.Engine;
 using BluEngine.ScreenManager.Screens;
 using Microsoft.Xna.Framework;
-using BluEngine.ScreenManager.Styles;
-using Marzersoft.CSS;
 
 namespace BluEngine.ScreenManager.Widgets
 {

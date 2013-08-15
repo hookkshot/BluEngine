@@ -1,8 +1,8 @@
 ﻿using System;
 using BluEngine.ScreenManager.Widgets;
+using Marzersoft.CSS;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Marzersoft.CSS;
 
 namespace BluEngine.ScreenManager.Styles
 {

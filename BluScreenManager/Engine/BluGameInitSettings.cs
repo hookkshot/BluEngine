@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using BluEngine.TweenAccessors;
-using BluEngine.ScreenManager.Widgets;
 using AurelienRibon.TweenEngine;
+using BluEngine.ScreenManager.Widgets;
+using BluEngine.TweenAccessors;
+using Microsoft.Xna.Framework;
 
 namespace BluEngine.Engine
 {
