@@ -141,11 +141,9 @@ namespace BluEngine.ScreenManager.Screens
             //load CSS document
             CSSParser.ActiveScreen = this;
             CSSParser.Parse(ScreenManager.Game.ContentRoot + "\\" + ScreenManager.Game.StylesPath + file, true);
-            CSSParser.ActiveScreen = null;
-            Dictionary<String, List<ICSSProperty>> rulesets = CSSParser.Rulesets;
 
             //loop through CSS document
-            foreach (KeyValuePair<String, List<ICSSProperty>> kvp in rulesets)
+            foreach (KeyValuePair<String, List<ICSSProperty>> kvp in CSSParser.Rulesets)
             {
                 String[] selector = kvp.Key.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                 String name = selector[0];
@@ -179,6 +177,8 @@ namespace BluEngine.ScreenManager.Screens
                 }
             }
             
+            //cleanup
+            CSSParser.ActiveScreen = null;
             CSSParser.Clear();
         }
 
