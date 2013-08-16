@@ -92,12 +92,10 @@
     <Compile Include="ScreenManager\Screens\WidgetScreen.cs" />
     <Compile Include="ScreenManager\Styles\BorderLayer.cs" />
     <Compile Include="ScreenManager\Styles\BorderStyle.cs" />
-    <Compile Include="ScreenManager\Styles\CSS\ColorInterpreter.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\BorderInterpreters.cs" />
     <Compile Include="ScreenManager\Styles\CSS\DimensionInterpreter.cs" />
     <Compile Include="ScreenManager\Styles\CSS\PercentageInterpreter.cs" />
-    <Compile Include="ScreenManager\Styles\CSS\BorderLayerInterpreter.cs" />
-    <Compile Include="ScreenManager\Styles\CSS\ImageLayerColorInterpreter.cs" />
-    <Compile Include="ScreenManager\Styles\CSS\ImageLayerURLInterpreter.cs" />
+    <Compile Include="ScreenManager\Styles\CSS\ImageLayerInterpreter.cs" />
     <Compile Include="ScreenManager\Styles\StyleAttributes.cs" />
     <Compile Include="ScreenManager\Widgets\Button.cs" />
     <Compile Include="ScreenManager\Widgets\Control.cs" />

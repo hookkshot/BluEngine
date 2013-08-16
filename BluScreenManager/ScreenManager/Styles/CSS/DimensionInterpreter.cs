@@ -1,11 +1,14 @@
 ﻿using Marzersoft.CSS;
+using System.Text.RegularExpressions;
+using Marzersoft.CSS.Interpreters.Numbers;
+using Marzersoft.CSS.Interpreters;
 
 namespace BluEngine.ScreenManager.Styles.CSS
 {
-    public class DimensionInterpreter : CSSDimensionInterpreter
+    public class DimensionInterpreter : NameInterpreter
     {
-        public DimensionInterpreter()
-            : base(
+        public DimensionInterpreter(CSSParser parser)
+            : base(parser, new Regex(
             "left"
             + "|top"
             + "|(?:ref-)?width"
@@ -13,7 +16,9 @@ namespace BluEngine.ScreenManager.Styles.CSS
             + "|right"
             + "|bottom"
             //add more dimension properties here as the needs for them in CSS grows
-            ,
-            CSSConstants.NUM + "(px)") { }
+            ))
+        {
+            ValueInterpreters.Add(new NumberValueInterpreter(parser, new Regex(CSSConstants.NUM + "(px)")));
+        }
     }
 }

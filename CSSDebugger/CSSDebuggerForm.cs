@@ -18,7 +18,7 @@ namespace CSSDebugger
         public CSSDebuggerForm()
         {
             InitializeComponent();
-            parser = new BluCSSParser(WidgetScreen.GenerateCustomCSSInterpreterList(),true);
+            parser = new BluCSSParser(true);
         }
 
         private void tbInput_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)

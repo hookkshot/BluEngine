@@ -28,18 +28,19 @@ namespace BluEngine.ScreenManager.Styles
         }
         private Color borderColour;
 
-        public BorderLayer(int width, BorderStyle style, Color color) : base(SolidColours.White)
+        public BorderLayer(String name, int width, BorderStyle style, Color color) : base(name, SolidColours.White)
         {
             borderWidth = width;
             borderStyle = style;
             borderColour = color;
         }
-        public BorderLayer(int width, BorderStyle style) : base(null)
+        public BorderLayer(String name, int width, BorderStyle style)
+            : base(name, null)
         {
             borderWidth = width;
             borderStyle = style;
         }
-        public BorderLayer() : this(0,BorderStyle.Hidden,Color.Black) { }
+        public BorderLayer(String name) : this(name, 0, BorderStyle.Hidden, Color.Black) { }
 
         /// <summary>
         /// Outputs the CSS-style value of this BorderLayer. Meaningless if this was not created from CSS.

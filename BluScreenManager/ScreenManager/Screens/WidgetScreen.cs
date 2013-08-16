@@ -7,6 +7,7 @@ using Marzersoft.CSS;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Marzersoft.CSS.Interpreters;
 
 
 namespace BluEngine.ScreenManager.Screens
@@ -68,7 +69,7 @@ namespace BluEngine.ScreenManager.Screens
             get
             {
                 if (cssParser == null)
-                    cssParser = new BluCSSParser(GenerateCustomCSSInterpreterList());
+                    cssParser = new BluCSSParser();
                 return cssParser;
             }
         }
@@ -101,22 +102,6 @@ namespace BluEngine.ScreenManager.Screens
             cssStyleLinks = new Dictionary<String, List<Widget>>();
         }
 
-        /// <summary>
-        /// Generates a new list of CSSInterpreters used to initialize the CSSParser. Add to the output of this list to add your own.
-        /// </summary>
-        /// <returns>A list of CSSPropertyInterpreters customized for BluEngine CSS.</returns>
-        public static List<CSSPropertyInterpreter> GenerateCustomCSSInterpreterList()
-        {
-            List<CSSPropertyInterpreter> interpreters = new List<CSSPropertyInterpreter>();
-            interpreters.Add(new BorderLayerInterpreter());
-            interpreters.Add(new ImageLayerURLInterpreter());
-            interpreters.Add(new ImageLayerColorInterpreter());
-            interpreters.Add(new ColorInterpreter());
-            interpreters.Add(new PercentageInterpreter());
-            interpreters.Add(new DimensionInterpreter());
-            return interpreters;
-        }
-
         public override void LoadContent()
         {
             base.LoadContent();
@@ -142,7 +127,7 @@ namespace BluEngine.ScreenManager.Screens
             CSSParser.Parse(ScreenManager.Game.ContentRoot + "\\" + ScreenManager.Game.StylesPath + file, true);
 
             //loop through CSS document
-            foreach (KeyValuePair<String, List<ICSSProperty>> kvp in CSSParser.Rulesets)
+            foreach (KeyValuePair<String, List<IProperty>> kvp in CSSParser.Rulesets)
             {
                 String[] selector = kvp.Key.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                 String name = selector[0];

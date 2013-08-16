@@ -5,6 +5,8 @@ using BluEngine.ScreenManager.Screens;
 using BluEngine.ScreenManager.Widgets;
 using Marzersoft.CSS;
 using Microsoft.Xna.Framework;
+using Marzersoft.CSS.Interpreters;
+using Marzersoft.CSS.Interpreters.Numbers;
 
 namespace BluEngine.ScreenManager.Styles
 {
@@ -271,7 +273,7 @@ namespace BluEngine.ScreenManager.Styles
         /// <param name="widget">The Widget object that is the recipient.</param>
         /// <param name="state">The state of the recipient.</param>
         /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStylesToWidget(Widget widget, String state, List<ICSSProperty> ruleset)
+        public void ApplyCSSStylesToWidget(Widget widget, String state, List<IProperty> ruleset)
         {
             ApplyCSSStyles(widget.Style[state],ruleset);
             widget.ApplyStateBasedStyles();
@@ -283,7 +285,7 @@ namespace BluEngine.ScreenManager.Styles
         /// <param name="widget">The Widget object that is the recipient.</param>
         /// <param name="state">The state of the recipient.</param>
         /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStylesToType(Type type, String state, List<ICSSProperty> ruleset)
+        public void ApplyCSSStylesToType(Type type, String state, List<IProperty> ruleset)
         {
             ApplyCSSStyles(this[type][state], ruleset);
 
@@ -313,9 +315,9 @@ namespace BluEngine.ScreenManager.Styles
         /// </summary>
         /// <param name="state">The StyleAttributes object that is the recipient.</param>
         /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStyles(StyleAttributes state, List<ICSSProperty> ruleset)
+        public void ApplyCSSStyles(StyleAttributes state, List<IProperty> ruleset)
         {
-            foreach (ICSSProperty property in ruleset)
+            foreach (IProperty property in ruleset)
             {
                 switch (property.PropertyType)
                 {
@@ -324,17 +326,17 @@ namespace BluEngine.ScreenManager.Styles
                         break;
 
                     case CSSConstants.TYPE_COLOR:
-                        CSSColor cssColor = (property as CSSColorProperty).Value;
+                        Marzersoft.CSS.Interpreters.Colors.Color cssColor = (property as Marzersoft.CSS.Interpreters.Colors.Color).Value;
                         Color color = new Color((int)cssColor.R, (int)cssColor.G, (int)cssColor.B, (int)(cssColor.A*255.0f));
                         state[property.Name] = color;
                         break;
 
                     case CSSConstants.TYPE_NUMBER:
-                        state[property.Name] = (property as CSSNumberProperty).Value;
+                        state[property.Name] = (property as Number).Value;
                         break;
 
                     case CSSConstants.TYPE_STRING:
-                        state[property.Name] = (property as CSSStringProperty).Value;
+                        state[property.Name] = (property as BaseString).Value;
                         break;
                 }
             }

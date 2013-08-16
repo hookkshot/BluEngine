@@ -3,13 +3,14 @@ using BluEngine.ScreenManager.Widgets;
 using Marzersoft.CSS;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Marzersoft.CSS.Interpreters;
 
 namespace BluEngine.ScreenManager.Styles
 {
     /// <summary>
     /// An image layer within a widget style. Use these to build up multi-layer widgets.
     /// </summary>
-    public class ImageLayer : ICSSProperty
+    public class ImageLayer : Named, IProperty, IValue<ImageLayer>
     {
         public virtual Texture2D Texture
         {
@@ -88,7 +89,7 @@ namespace BluEngine.ScreenManager.Styles
             }
         }
 
-        public ImageLayer(Texture2D tex)
+        public ImageLayer(String name, Texture2D tex) : base(name)
         {
             this.texture = tex;
         }
@@ -109,20 +110,10 @@ namespace BluEngine.ScreenManager.Styles
                 col);
         }
         
-        public static ImageLayer FromColor(Color color)
+        public static ImageLayer FromColor(String name, Color color)
         {
-            return new ImageLayer(SolidColours.TexFromColor(color));
+            return new ImageLayer(name, SolidColours.TexFromColor(color));
         }
-
-        /// <summary>
-        /// The Name of the CSS property this was interpreted from. Meaningless if this was not created from CSS.
-        /// </summary>
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-        private String name;
 
         /// <summary>
         /// The integer Type of the value when accessed through the ICSSProperty interface. For easier casting.
@@ -137,7 +128,12 @@ namespace BluEngine.ScreenManager.Styles
         /// </summary>
         public override String ToString()
         {
-            return Name + ": [ImageLayer]";
+            return base.ToString() + "[ImageLayer]";
+        }
+
+        public ImageLayer Value
+        {
+            get { return this; }
         }
     }
 }
