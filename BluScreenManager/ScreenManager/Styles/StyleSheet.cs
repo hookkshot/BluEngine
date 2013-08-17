@@ -7,6 +7,7 @@ using Marzersoft.CSS;
 using Microsoft.Xna.Framework;
 using Marzersoft.CSS.Interpreters;
 using Marzersoft.CSS.Interpreters.Numbers;
+using Marzersoft.CSS.Rulesets;
 
 namespace BluEngine.ScreenManager.Styles
 {
@@ -272,10 +273,10 @@ namespace BluEngine.ScreenManager.Styles
         /// </summary>
         /// <param name="widget">The Widget object that is the recipient.</param>
         /// <param name="state">The state of the recipient.</param>
-        /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStylesToWidget(Widget widget, String state, List<IProperty> ruleset)
+        /// <param name="stateProperties">The state's list of properties to parse.</param>
+        public void ApplyCSSStylesToWidget(Widget widget, String state, State stateProperties)
         {
-            ApplyCSSStyles(widget.Style[state],ruleset);
+            ApplyCSSStyles(widget.Style[state], stateProperties);
             widget.ApplyStateBasedStyles();
         }
 
@@ -284,10 +285,10 @@ namespace BluEngine.ScreenManager.Styles
         /// </summary>
         /// <param name="widget">The Widget object that is the recipient.</param>
         /// <param name="state">The state of the recipient.</param>
-        /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStylesToType(Type type, String state, List<IProperty> ruleset)
+        /// <param name="stateProperties">The state's list of properties to parse.</param>
+        public void ApplyCSSStylesToType(Type type, String state, State stateProperties)
         {
-            ApplyCSSStyles(this[type][state], ruleset);
+            ApplyCSSStyles(this[type][state], stateProperties);
 
             //check if we've applied ScreenWidget-specific ref-width/ref-height values
             if (type == typeof(ScreenWidget))
@@ -314,10 +315,10 @@ namespace BluEngine.ScreenManager.Styles
         /// Handles the translating of CSS rulesets to WidgetStyle values.
         /// </summary>
         /// <param name="state">The StyleAttributes object that is the recipient.</param>
-        /// <param name="ruleset">The ruleset to parse.</param>
-        public void ApplyCSSStyles(StyleAttributes state, List<IProperty> ruleset)
+        /// <param name="stateProperties">The state's list of properties to parse.</param>
+        public void ApplyCSSStyles(StyleAttributes state, State stateProperties)
         {
-            foreach (IProperty property in ruleset)
+            foreach (IProperty property in stateProperties)
             {
                 switch (property.PropertyType)
                 {

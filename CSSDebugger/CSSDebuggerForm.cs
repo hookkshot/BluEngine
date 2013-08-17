@@ -23,8 +23,7 @@ namespace CSSDebugger
 
         private void tbInput_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
         {
-            parser.Parse(tbInput.Text);
-            tbOutput.Text = parser.ToString();
+            tbOutput.Text = parser.ParseText(tbInput.Text).ToString();
         }
     }
 }

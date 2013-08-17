@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Marzersoft.CSS.Interpreters;
+using System.IO;
+using Marzersoft.CSS.Rulesets;
 
 
 namespace BluEngine.ScreenManager.Screens
@@ -122,48 +124,52 @@ namespace BluEngine.ScreenManager.Screens
         /// <param name="file">The filename of the css file found in BluGame.StylesPath.</param>
         protected void LoadCSS(string file)
         {
+            String fullPath = ScreenManager.Game.ContentRoot + "\\" + ScreenManager.Game.StylesPath + file;
+            if (!File.Exists(fullPath))
+            {
+                Console.WriteLine("Styles warning: CSS file \"" + fullPath + "\" does not exist.");
+                return;
+            }
+            
             //load CSS document
             CSSParser.ActiveScreen = this;
-            CSSParser.Parse(ScreenManager.Game.ContentRoot + "\\" + ScreenManager.Game.StylesPath + file, true);
+            CSSDocument document = CSSParser.ParseFile(fullPath);
 
             //loop through CSS document
-            foreach (KeyValuePair<String, List<IProperty>> kvp in CSSParser.Rulesets)
+            foreach (KeyValuePair<String, Ruleset> ruleset in document.Rulesets)
             {
-                String[] selector = kvp.Key.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-                String name = selector[0];
-                String state = selector.Length > 1 ? selector[1] : "normal";
-
-                if (name[0] == '#') //it's an implicit Type style, pass it to the stylesheet
+                foreach (KeyValuePair<String, State> state in ruleset.Value.States)
                 {
-                    selector = name.Substring(1).Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                    String typeName = selector[0].Trim() + ", " + (selector.Length > 1 ? selector[1].Trim() : "BluEngine");
-                    try
+                    string stateKey = state.Key.Equals("") ? "normal" : state.Key;
+                    if (ruleset.Value.Prefix.Equals("#")) //it's an implicit Type style, pass it to the stylesheet
                     {
-                        Type type = Type.GetType(typeName);
-                        if (type != null)
-                            Styles.ApplyCSSStylesToType(type, state, kvp.Value);
-                        else
-                            Console.WriteLine("Reflection error: Cannot create Type from string \"" + typeName + "\"");
+                        String typeName = ruleset.Value.Name + ", " + (ruleset.Value.Suffix.Equals("") ? "BluEngine" : ruleset.Value.Suffix);
+                        try
+                        {
+                            Type type = Type.GetType(typeName,true,true);
+                            if (type != null)
+                                Styles.ApplyCSSStylesToType(type, stateKey, state.Value);
+                            else
+                                Console.WriteLine("Reflection error: Cannot create Type from string \"" + typeName + "\"");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Reflection error: " + e.GetType().Name + " thrown while creating Type from string \"" + typeName + "\"");
+                        }
                     }
-                    catch (Exception e)
+                    else if (ruleset.Value.Prefix.Equals(".")) //it's an explicit instance style
                     {
-                        Console.WriteLine("Reflection error: " + e.GetType().Name + " thrown while creating Type from string \"" + typeName + "\"");
-                    }
-                }
-                else if (name[0] == '.') //it's an explicit instance style
-                {
-                    List<Widget> explicitWidgets = null;
-                    if (cssStyleLinks.TryGetValue(name.Substring(1), out explicitWidgets))
-                    {
-                        foreach (Widget widget in explicitWidgets)
-                            Styles.ApplyCSSStylesToWidget(widget, state, kvp.Value);
+                        List<Widget> explicitWidgets = null;
+                        if (cssStyleLinks.TryGetValue(ruleset.Value.Name, out explicitWidgets))
+                        {
+                            foreach (Widget widget in explicitWidgets)
+                                Styles.ApplyCSSStylesToWidget(widget, stateKey, state.Value);
+                        }
                     }
                 }
             }
-            
             //cleanup
             CSSParser.ActiveScreen = null;
-            CSSParser.Clear();
         }
 
         /// <summary>
