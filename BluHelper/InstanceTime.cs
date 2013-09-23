@@ -53,6 +53,14 @@ namespace BluHelper
             get { return target; }
         }
 
+        /// <summary>
+        /// Get the total time this program has been running.
+        /// </summary>
+        public long TotalTime
+        {
+            get { return time; }
+        }
+
         public InstanceTime()
         {
             time = DateTime.Now.Ticks;
@@ -95,6 +103,33 @@ namespace BluHelper
             return time.ToString();
         }
 
-        
+        #region AutoFormats
+
+        public static long FromSeconds(int v)
+        {
+            return v * 1000;
+        }
+
+        public static long FromMinutes(int v)
+        {
+            return v * 60000;
+        }
+
+        public static long FromHours(int v)
+        {
+            return v * FromMinutes(60);
+        }
+
+        public static long FromDays(int v)
+        {
+            return v * FromHours(24);
+        }
+
+        public static long Zero
+        {
+            get { return 0; }
+        }
+
+        #endregion
     }
 }
