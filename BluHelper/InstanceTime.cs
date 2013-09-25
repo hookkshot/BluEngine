@@ -130,6 +130,11 @@ namespace BluHelper
             get { return 0; }
         }
 
+        public static string ShowTime()
+        {
+            return "";
+        }
+
         #endregion
     }
 }
