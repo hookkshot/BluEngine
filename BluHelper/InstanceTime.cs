@@ -58,13 +58,13 @@ namespace BluHelper
         /// </summary>
         public long TotalTime
         {
-            get { return time; }
+            get { return time/10000; }
         }
 
         public InstanceTime()
         {
             time = DateTime.Now.Ticks;
-            frameTime = 1000 / 30;
+            frameTime = InstanceTime.FromSeconds(1) / 30;
         }
 
         /// <summary>
@@ -91,28 +91,24 @@ namespace BluHelper
                     Frame(this, new EventArgs());
                     elapsedLast = time;
                 }
-                else
-                {
-                    Thread.Sleep((int)(frameTime - (time - elapsedLast)));
-                }
             }
         }
 
         public override string ToString()
         {
-            return time.ToString();
+            return  this.TotalTime.ToString();
         }
 
         #region AutoFormats
 
         public static long FromSeconds(int v)
         {
-            return v * 1000;
+            return v * 10000000 ;
         }
 
         public static long FromMinutes(int v)
         {
-            return v * 60000;
+            return v * FromSeconds(60);
         }
 
         public static long FromHours(int v)
