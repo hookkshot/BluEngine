@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using AurelienRibon.TweenEngine;
 using Microsoft.Xna.Framework;
 
+using BluHelper;
+
 
 namespace BluEngine.Engine
 {
@@ -10,6 +12,7 @@ namespace BluEngine.Engine
 	{
         private GraphicsDeviceManager graphics;
         private BluGameInitSettings initSettings = null;
+        private InstanceTime gameTime;
 
         public String ContentRoot { get { return initSettings.ContentFolder; } }
         public String FontsPath { get { return initSettings.FontsFolder + "\\"; } }
