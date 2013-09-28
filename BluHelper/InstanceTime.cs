@@ -17,6 +17,7 @@ namespace BluHelper
     {
         private long time;
         private long elapsedLast;
+        private long elapsedTime;
 
         private long last;
 
@@ -28,16 +29,19 @@ namespace BluHelper
         private Thread timer;
 
         /// <summary>
-        /// Returns the elapsed amount of time since Elapsed was used.
+        /// Returns the elapsed amount of time since Elapsed was used (In Milliseconds).
         /// </summary>
         public long Elapsed
         {
             get
             {
-                long elapsed = time - last;
-                last = time;
-                return elapsed;
+                return elapsedTime;
             }
+        }
+
+        public float ElapsedSeconds
+        {
+            get { return (float)elapsedTime / 1000; }
         }
 
         /// <summary>
@@ -97,6 +101,12 @@ namespace BluHelper
         public override string ToString()
         {
             return  this.TotalTime.ToString();
+        }
+
+        public void Update()
+        {
+            long elapsed = TotalTime - last;
+            last = TotalTime;
         }
 
         #region AutoFormats

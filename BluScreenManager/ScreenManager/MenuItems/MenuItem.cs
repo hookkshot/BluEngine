@@ -7,6 +7,7 @@
 #endregion
 
 using Microsoft.Xna.Framework;
+using BluHelper;
 
 namespace BluEngine.ScreenManager.MenuItems
 {
@@ -60,7 +61,7 @@ namespace BluEngine.ScreenManager.MenuItems
         /// Runs the update logic of the menu item for each frame
         /// </summary>
         /// <param name="gameTime"></param>
-        public virtual void Update(GameTime gameTime) { }
+        public virtual void Update(InstanceTime gameTime) { }
 
         /// <summary>
         /// Handles any input needed by the menu item from the user and lets the menu item know if it is in focus. (only needs to be called if the screen is active)

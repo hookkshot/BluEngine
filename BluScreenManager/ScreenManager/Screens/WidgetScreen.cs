@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Marzersoft.CSS.Interpreters;
 using System.IO;
 using Marzersoft.CSS.Rulesets;
-
+using BluHelper;
 
 namespace BluEngine.ScreenManager.Screens
 {
@@ -199,7 +199,7 @@ namespace BluEngine.ScreenManager.Screens
         /// <param name="gameTime">The gametime object passed in from Update().</param>
         /// <param name="otherScreenHasFocus"></param>
         /// <param name="coveredByOtherScreen"></param>
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public override void Update(InstanceTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             UpdateWorld(gameTime);
@@ -211,13 +211,13 @@ namespace BluEngine.ScreenManager.Screens
         /// If this WidgetScreen has a "world" layer to it, perform it's updates here.
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Update().</param>
-        protected virtual void UpdateWorld(GameTime gameTime) { }
+        protected virtual void UpdateWorld(InstanceTime gameTime) { }
 
         /// <summary>
         /// Update the UI layer of this WidgetScreen. This does not include widgets; this function is for doing your own custom UI-layer updating SEPARATE to the widget layer.
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Update().</param>
-        protected virtual void UpdateUI(GameTime gameTime) { }
+        protected virtual void UpdateUI(InstanceTime gameTime) { }
 
         /// <summary>
         /// Handles the input provided by the ScreenManager's InputControl. You should not need to override this - use the specialized input methods instead!
@@ -351,7 +351,7 @@ namespace BluEngine.ScreenManager.Screens
         /// <param name="gameTime">The gametime object passed in from Update().</param>
         /// <param name="otherScreenHasFocus"></param>
         /// <param name="coveredByOtherScreen"></param>
-        public override void Draw(GameTime gameTime)
+        public override void Draw(InstanceTime gameTime)
         {
             base.Draw(gameTime);
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
@@ -371,14 +371,14 @@ namespace BluEngine.ScreenManager.Screens
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Draw().</param>
         /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
-        protected virtual void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch) {}
+        protected virtual void DrawWorld(InstanceTime gameTime, SpriteBatch spriteBatch) {}
 
         /// <summary>
         /// If this WidgetScreen has a "UI" layer to it, perform it's drawing here. This does not include widgets; this function is for doing your own custom rendering ON TOP of the widget layer.
         /// </summary>
         /// <param name="gameTime">The gametime object passed in from Draw().</param>
         /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
-        protected virtual void DrawUI(GameTime gameTime, SpriteBatch spriteBatch) { }
+        protected virtual void DrawUI(InstanceTime gameTime, SpriteBatch spriteBatch) { }
 
     }
 

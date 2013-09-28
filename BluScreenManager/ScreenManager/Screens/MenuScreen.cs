@@ -12,6 +12,8 @@ using BluEngine.ScreenManager.MenuItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using BluHelper;
+
 namespace BluEngine.ScreenManager.Screens
 {
     public class MenuScreen : GameScreen
@@ -42,7 +44,7 @@ namespace BluEngine.ScreenManager.Screens
         /// Unlike HandleInput, this method is called regardless of whether the screen
         /// is active, hidden, or in the middle of a transition.
         /// </summary>
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public override void Update(InstanceTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             foreach (MenuItem item in menuItems)
             {
@@ -69,7 +71,7 @@ namespace BluEngine.ScreenManager.Screens
         /// <summary>
         /// This is called when the screen should draw itself.
         /// </summary>
-        public override void Draw(GameTime gameTime)
+        public override void Draw(InstanceTime gameTime)
         {
 
 

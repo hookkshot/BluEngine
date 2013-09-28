@@ -3,6 +3,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using BluHelper;
+
 namespace BluEngine.Engine.GameObjects
 {
     public class LayeredAnimatedSprite : AnimatedSprite
@@ -34,9 +36,9 @@ namespace BluEngine.Engine.GameObjects
 
         #endregion
 
-        public override void Update(GameTime gameTime)
+        public override void Update(InstanceTime gameTime)
         {
-            if (gameTime.TotalGameTime - lastUpdate > animationSpeed && playing == true && sourceImages.Count > 0)
+            if (gameTime.TotalTime - lastUpdate > animationSpeed && playing == true && sourceImages.Count > 0)
             {
                 currentFrame++;
 

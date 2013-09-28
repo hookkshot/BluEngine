@@ -186,7 +186,7 @@ namespace BluEngine.ScreenManager
         /// <summary>
         /// Allows each screen to run logic.
         /// </summary>
-        public override void Update(GameTime gameTime)
+        public override void Update(InstanceTime gameTime)
         {
             // Read the keyboard and gamepad.
             input.Update(gameTime);
@@ -232,7 +232,7 @@ namespace BluEngine.ScreenManager
         /// <summary>
         /// Tells each screen to draw itself.
         /// </summary>
-        public override void Draw(GameTime gameTime)
+        public override void Draw(InstanceTime gameTime)
         {
             foreach (GameScreen screen in screens)
                 screen.Draw(gameTime);

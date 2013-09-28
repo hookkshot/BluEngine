@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+using BluHelper;
+
 namespace BluEngine
 {
     public class InputControl
@@ -23,17 +25,13 @@ namespace BluEngine
         private Vector2 leftMouseClickPosition;
         private bool leftMouseHold;
 
-        private GameTime gameTime;
-
         public InputControl()
         {
             mouseHold = new TimeSpan[3];
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(InstanceTime gameTime)
         {
-            this.gameTime = gameTime;
-
             previousKeyboardState = currentKeyboardState;
             previousMouseState = currentMouseState;
 

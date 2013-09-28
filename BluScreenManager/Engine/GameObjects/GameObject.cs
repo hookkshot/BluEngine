@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using BluHelper;
+
 namespace BluEngine.Engine.GameObjects
 {
     public class GameObject
@@ -132,7 +134,7 @@ namespace BluEngine.Engine.GameObjects
         /// <summary>
         /// Allows logic to be processed and updated by the game object.
         /// </summary>
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(InstanceTime gameTime)
         {
             foreach (KeyValuePair<Type,GameObjectComponent> kvp in components)
             {

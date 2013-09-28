@@ -3,6 +3,9 @@ using BluEngine.Engine.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using BluHelper;
+using BluEngine.Engine;
+
 namespace BluEngine.ScreenManager.Screens
 {
     /// <summary>
@@ -19,11 +22,7 @@ namespace BluEngine.ScreenManager.Screens
     /// </summary>
     public class GameplayScreen : WidgetScreen
     {
-        protected List<GameObject> GameObjects
-        {
-            get { return gameObjects; }
-        }
-        private List<GameObject> gameObjects = new List<GameObject>();
+        private Engine.Engine engine;
 
         /// <summary>
         /// Represents the "camera" or "viewport" of the game world render layer.
@@ -39,20 +38,18 @@ namespace BluEngine.ScreenManager.Screens
         {
             base.LoadContent();
             viewScreen = new ViewScreen(ScreenManager.GraphicsDevice.Viewport.Width,ScreenManager.GraphicsDevice.Viewport.Height);
+
+            engine.LoadContent();
         }
 
-        protected override void UpdateWorld(GameTime gameTime)
+        protected override void UpdateWorld(InstanceTime gameTime)
         {
-            foreach (GameObject gameObject in gameObjects)
-                gameObject.Update(gameTime);
+            engine.Update(gameTime);
         }
         
-        protected override void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch)
+        protected override void DrawWorld(InstanceTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (GameObject gameObject in gameObjects)
-                gameObject.Draw(spriteBatch, viewScreen.Position);
+            engine.Draw(gameTime, spriteBatch);
         }
-
-
     }
 }

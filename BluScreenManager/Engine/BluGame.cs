@@ -12,7 +12,7 @@ namespace BluEngine.Engine
 	{
         private GraphicsDeviceManager graphics;
         private BluGameInitSettings initSettings = null;
-        private InstanceTime gameTime;
+        private InstanceTime instanceTime;
 
         public String ContentRoot { get { return initSettings.ContentFolder; } }
         public String FontsPath { get { return initSettings.FontsFolder + "\\"; } }
@@ -38,6 +38,7 @@ namespace BluEngine.Engine
         public BluGame(BluGameInitSettings settings)
             : base()
         {
+            instanceTime = new InstanceTime();
             initSettings = settings ?? new BluGameInitSettings();
 
             graphics = new GraphicsDeviceManager(this);
@@ -75,14 +76,15 @@ namespace BluEngine.Engine
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            screenManager.Update(gameTime);
+            instanceTime.Update();
+            screenManager.Update(instanceTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(initSettings.GraphicsClearColor);
             base.Draw(gameTime);
-            screenManager.Draw(gameTime);
+            screenManager.Draw(instanceTime);
         }
 	}
 }

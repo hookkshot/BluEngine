@@ -37,9 +37,20 @@ namespace BluEngine.Engine
         }
     }
 
-    public static class CollisionSimulator
+    public class CollisionSimulator
     {
         #region fields
+
+        public static CollisionSimulator Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new CollisionSimulator();
+                return instance;
+            }
+        }
+        private static CollisionSimulator instance;
 
         private static Dictionary<short, CollisionType> collisionTypes = new Dictionary<short, CollisionType>();
         private static Dictionary<short, List<CollisionBoxComponent>> collisionLists = new Dictionary<short, List<CollisionBoxComponent>>();
@@ -56,6 +67,14 @@ namespace BluEngine.Engine
         public static Dictionary<short, List<CollisionBoxComponent>> CollisionLists
         {
             get { return collisionLists; }
+        }
+
+        #endregion
+
+        #region Initialize
+
+        private CollisionSimulator()
+        {
         }
 
         #endregion

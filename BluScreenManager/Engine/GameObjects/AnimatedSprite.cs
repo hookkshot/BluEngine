@@ -3,6 +3,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using BluHelper;
+
 namespace BluEngine.Engine.GameObjects
 {
 
@@ -17,8 +19,8 @@ namespace BluEngine.Engine.GameObjects
 
         protected bool playing = true;
 
-        protected TimeSpan animationSpeed = TimeSpan.Zero;
-        protected TimeSpan lastUpdate = TimeSpan.Zero;
+        protected long animationSpeed = InstanceTime.Zero;
+        protected long lastUpdate = InstanceTime.Zero;
 
         public int Repeat = 1;
         protected int timesPlayed = 0;
@@ -57,7 +59,7 @@ namespace BluEngine.Engine.GameObjects
             }
         }
 
-        public TimeSpan AnimationSpeed
+        public long AnimationSpeed
         {
             get { return animationSpeed; }
             set { animationSpeed = value; }
@@ -67,9 +69,9 @@ namespace BluEngine.Engine.GameObjects
 
         #region Update
 
-        public override void Update(GameTime gameTime)
+        public override void Update(InstanceTime gameTime)
         {
-            if (gameTime.TotalGameTime - lastUpdate > animationSpeed && playing == true)
+            if (gameTime.TotalTime - lastUpdate > animationSpeed && playing == true)
             {
                 currentFrame++;
 
@@ -88,7 +90,7 @@ namespace BluEngine.Engine.GameObjects
                     }
                 }
 
-                lastUpdate = gameTime.TotalGameTime;
+                lastUpdate = gameTime.TotalTime;
             }
         }
 
