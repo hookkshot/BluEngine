@@ -127,6 +127,7 @@ namespace BluEngine.Engine.GameObjects
             }
         }
 
+        [XmlIgnore()]
         public Vector2[] BoundingCorners
         {
             get
@@ -140,6 +141,7 @@ namespace BluEngine.Engine.GameObjects
             }
         }
 
+        [XmlIgnore()]
         public Vector2 GetCenter
         {
             get
@@ -155,6 +157,11 @@ namespace BluEngine.Engine.GameObjects
             if (CollisionType != null)
             {
                 CollisionSimulator.CollisionLists[CollisionType.ID].Add(this);
+            }
+
+            if (ConnectedGameObject != null)
+            {
+                ConnectedGameObject[typeof(Transform)] = this;
             }
         }
 

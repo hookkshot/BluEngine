@@ -13,7 +13,6 @@ namespace BluEngine.Engine.GameObjects
         #region Fields
 
         private bool active = true;
-        private Transform transform;
         private Dictionary<Type, GameObjectComponent> components;
 
         #endregion
@@ -21,28 +20,12 @@ namespace BluEngine.Engine.GameObjects
         #region Properties
 
         /// <summary>
-        /// 
-        /// </summary>
-        public virtual Transform Transform
-        {
-            get { return transform; }
-            protected set
-            {
-                if (value == null || value == transform)
-                    return;
-                transform = value;
-                transform.ConnectedGameObject = this;
-                components[typeof(Transform)] = value;
-            }
-        }
-
-        /// <summary>
         /// The game world position of the game object.
         /// </summary>
         public virtual Vector2 Position
         {
-            get { return transform.Position; }
-            set { transform.Position = value; }
+            get { return ((Transform)this[typeof(Transform)]).Position; }
+            set { ((Transform)this[typeof(Transform)]).Position = value; }
         }
 
         /// <summary>
@@ -50,8 +33,8 @@ namespace BluEngine.Engine.GameObjects
         /// </summary>
         public virtual float Scale
         {
-            get { return transform.Scale; }
-            set { transform.Scale = value; }
+            get { return ((Transform)this[typeof(Transform)]).Scale; }
+            set { ((Transform)this[typeof(Transform)]).Scale = value; }
         }
 
         /// <summary>
@@ -59,8 +42,8 @@ namespace BluEngine.Engine.GameObjects
         /// </summary>
         public virtual float Rotation
         {
-            get { return transform.Rotation; }
-            set { transform.Rotation = value; }
+            get { return ((Transform)this[typeof(Transform)]).Rotation; }
+            set { ((Transform)this[typeof(Transform)]).Rotation = value; }
         }
 
         public bool Active
@@ -69,15 +52,6 @@ namespace BluEngine.Engine.GameObjects
             set { active = value; }
         }
 
-        /// <summary>
-        /// Returns list of all attached Game Object components.
-        ///
-        /// I'd recommend not leaving the actual data structure exposed as it will cause a bit of a security issue, since in doing that you can't police how the collection is accessed directly...
-        /// </summary>
-        //public Dictionary<Type, GameObjectComponent> Components
-        //{
-        //    get { return components; }
-        //}
 
         /// <summary>
         /// The attached GameObjectComponent of the given Type.
@@ -105,9 +79,8 @@ namespace BluEngine.Engine.GameObjects
 
         public GameObject()
         {
-            transform = new Transform();
             components = new Dictionary<Type, GameObjectComponent>();
-            components[typeof(Transform)] = transform;
+            components[typeof(Transform)] = new Transform();
         }
 
         #endregion
