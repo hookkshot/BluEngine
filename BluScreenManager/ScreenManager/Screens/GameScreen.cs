@@ -156,9 +156,9 @@ namespace BluEngine.ScreenManager.Screens
         /// Unlike HandleInput, this method is called regardless of whether the screen
         /// is active, hidden, or in the middle of a transition.
         /// </summary>
-        public virtual void Update(InstanceTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public virtual void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            tweenManager.Update(gameTime.ElapsedSeconds * tweenSpeed);
+            tweenManager.Update(gameTime.ElapsedGameTime.Seconds * tweenSpeed);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace BluEngine.ScreenManager.Screens
         /// <summary>
         /// This is called when the screen should draw itself.
         /// </summary>
-        public virtual void Draw(InstanceTime gameTime)
+        public virtual void Draw(GameTime gameTime)
         {
         
         }
@@ -182,7 +182,7 @@ namespace BluEngine.ScreenManager.Screens
         /// <param name="gameTime">The gametime object passed in from Draw().</param>
         /// <param name="spriteBatch">The SpriteBatch object passed in from the ScreenManager.</param>
         /// <param name="stringBuilder">The StringBuilder object passed in from the ScreenManager that will be used to output a string after the chain of DrawDebug() calls has finished.</param>
-        public virtual void DrawDebug(InstanceTime gameTime, SpriteBatch spriteBatch, StringBuilder stringBuilder) { }
+        public virtual void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch, StringBuilder stringBuilder) { }
 
 
         #endregion

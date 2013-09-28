@@ -134,7 +134,7 @@ namespace BluEngine.Engine.GameObjects
         /// <summary>
         /// Allows logic to be processed and updated by the game object.
         /// </summary>
-        public virtual void Update(InstanceTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             foreach (KeyValuePair<Type,GameObjectComponent> kvp in components)
             {

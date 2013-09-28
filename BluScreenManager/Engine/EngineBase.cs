@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using BluHelper;
 using BluEngine.ScreenManager;
 using BluEngine.Engine.GameObjects;
 
@@ -61,7 +61,7 @@ namespace BluEngine.Engine
 
         #region Update
 
-        public virtual void Update(InstanceTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
 
         }
@@ -70,7 +70,7 @@ namespace BluEngine.Engine
 
         #region Draw
 
-        public virtual void Draw(InstanceTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
         }
 

@@ -30,7 +30,7 @@ namespace BluEngine
             mouseHold = new TimeSpan[3];
         }
 
-        public void Update(InstanceTime gameTime)
+        public void Update(GameTime gameTime)
         {
             previousKeyboardState = currentKeyboardState;
             previousMouseState = currentMouseState;

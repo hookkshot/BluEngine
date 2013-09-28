@@ -36,9 +36,9 @@ namespace BluEngine.Engine.GameObjects
 
         #endregion
 
-        public override void Update(InstanceTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            if (gameTime.TotalTime - lastUpdate > animationSpeed && playing == true && sourceImages.Count > 0)
+            if (gameTime.TotalGameTime - lastUpdate > animationSpeed && playing == true && sourceImages.Count > 0)
             {
                 currentFrame++;
 

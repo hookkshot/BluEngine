@@ -42,12 +42,12 @@ namespace BluEngine.ScreenManager.Screens
             engine.LoadContent();
         }
 
-        protected override void UpdateWorld(InstanceTime gameTime)
+        protected override void UpdateWorld(GameTime gameTime)
         {
             engine.Update(gameTime);
         }
         
-        protected override void DrawWorld(InstanceTime gameTime, SpriteBatch spriteBatch)
+        protected override void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch)
         {
             engine.Draw(gameTime, spriteBatch);
         }

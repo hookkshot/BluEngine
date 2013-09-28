@@ -39,11 +39,6 @@ namespace BluHelper
             }
         }
 
-        public float ElapsedSeconds
-        {
-            get { return (float)elapsedTime / 1000; }
-        }
-
         /// <summary>
         /// The target clock rate of the timer.
         /// </summary>
@@ -63,6 +58,14 @@ namespace BluHelper
         public long TotalTime
         {
             get { return time/10000; }
+        }
+
+        /// <summary>
+        /// Returnt he total number of ticks.
+        /// </summary>
+        public long Ticks
+        {
+            get { return time; }
         }
 
         public InstanceTime()
