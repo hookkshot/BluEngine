@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BluEngine.Engine.GameObjects;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 using BluHelper;
@@ -22,6 +23,11 @@ namespace BluEngine.ScreenManager.Screens
     /// </summary>
     public class GameplayScreen : WidgetScreen
     {
+        protected Engine.Engine Engine
+        {
+            get { return engine; }
+            set { engine = value; }
+        }
         private Engine.Engine engine;
 
         /// <summary>
@@ -39,6 +45,7 @@ namespace BluEngine.ScreenManager.Screens
             base.LoadContent();
             viewScreen = new ViewScreen(ScreenManager.GraphicsDevice.Viewport.Width,ScreenManager.GraphicsDevice.Viewport.Height);
 
+            engine.Content = new Microsoft.Xna.Framework.Content.ContentManager(ScreenManager.Game.Services);
             engine.LoadContent();
         }
 
@@ -50,6 +57,16 @@ namespace BluEngine.ScreenManager.Screens
         protected override void DrawWorld(GameTime gameTime, SpriteBatch spriteBatch)
         {
             engine.Draw(gameTime, spriteBatch);
+        }
+
+        protected override void KeyDown(Keys key)
+        {
+            engine.KeyDown(key);
+        }
+
+        protected override void KeyUp(Keys key)
+        {
+            engine.KeyUp(key);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 using BluEngine.ScreenManager;
@@ -14,6 +15,13 @@ namespace BluEngine.Engine
     public class Engine
     {
         #region Fields
+
+        public Microsoft.Xna.Framework.Content.ContentManager Content
+        {
+            get { return content; }
+            set { content = value; }
+        }
+        private Microsoft.Xna.Framework.Content.ContentManager content;
 
         protected BluEngine.ScreenManager.ScreenManager Screenmanager
         {
@@ -63,7 +71,10 @@ namespace BluEngine.Engine
 
         public virtual void Update(GameTime gameTime)
         {
-
+            foreach (GameObject item in gameObjects)
+            {
+                item.Update(gameTime);
+            }
         }
 
         #endregion
@@ -71,6 +82,22 @@ namespace BluEngine.Engine
         #region Draw
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (GameObject item in gameObjects)
+            {
+                item.Draw(spriteBatch, Vector2.Zero);
+            }
+        }
+
+        #endregion
+
+        #region KeyEvents
+
+        public virtual void KeyDown(Keys key)
+        {
+        }
+
+        public virtual void KeyUp(Keys key)
         {
         }
 

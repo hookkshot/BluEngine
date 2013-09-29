@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿//Collision Simulator
+//Author: Keirron Stach
+//Created: 29/09/2013
+
+using System.Collections.Generic;
 
 using BluEngine.Engine.GameObjects;
 

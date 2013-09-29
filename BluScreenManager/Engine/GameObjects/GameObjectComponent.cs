@@ -15,7 +15,7 @@ namespace BluEngine.Engine.GameObjects
 
         #region Properties
 
-        public GameObject ConnectedGameObject
+        public virtual GameObject ConnectedGameObject
         {
             get { return connectedGameObject; }
             set { connectedGameObject = value; }
@@ -52,6 +52,10 @@ namespace BluEngine.Engine.GameObjects
         #endregion
 
         #region Methods
+
+        public virtual void ConnectedGameObjectApply()
+        {
+        }
 
         #endregion
     }

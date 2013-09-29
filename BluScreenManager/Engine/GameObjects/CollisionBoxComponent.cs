@@ -158,14 +158,14 @@ namespace BluEngine.Engine.GameObjects
             {
                 CollisionSimulator.CollisionLists[CollisionType.ID].Add(this);
             }
-
-            if (ConnectedGameObject != null)
-            {
-                ConnectedGameObject[typeof(Transform)] = this;
-            }
         }
 
         #region Methods
+
+        public override void ConnectedGameObjectApply()
+        {
+            ConnectedGameObject[typeof(Transform)] = this;
+        }
 
         protected void recalculateTranslationMatrix()
         {
