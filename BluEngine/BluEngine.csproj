@@ -64,8 +64,10 @@
     <Compile Include="Engine\EngineBase.cs" />
     <Compile Include="Engine\EngineDraw.cs" />
     <Compile Include="Engine\GameObjects\AnimatedSprite.cs" />
+    <Compile Include="Engine\GameObjects\Light.cs" />
     <Compile Include="Engine\GameObjects\LayeredAnimatedSprite.cs" />
     <Compile Include="Engine\GameObjects\ViewScreen.cs" />
+    <Compile Include="Engine\LightEngine.cs" />
     <Compile Include="ScreenManager\HitFlags.cs" />
     <Compile Include="Engine\GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="ScreenManager\IScreenDimensionsProvider.cs" />
@@ -110,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ScreenManager\Styles\CSS\BluCSSParser.cs" />
-    <Content Include="Engine\PixelEffect.fx" />
     <Content Include="SDL.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

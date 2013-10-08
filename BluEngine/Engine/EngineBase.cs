@@ -54,20 +54,21 @@ namespace BluEngine.Engine
 
         //Render Targets
         private RenderTarget2D _colorMapRenderTarget;
-        private RenderTarget2D _depthMapRenderTarget;
+        private RenderTarget2D _lightMapRenderTarget;
         private RenderTarget2D _normalMapRenderTarget;
-        private RenderTarget2D _shadowMapRenderTarget;
 
-        private Texture2D _colorMapTexture;
-        private Texture2D _depthMapTexture;
-        private Texture2D _normalMapTexture;
-        private Texture2D _shadowMapTexture;
+        private Effect _lightEffect;
 
-        private VertexDeclaration _vertexDeclaration;
-        private VertexPositionTexture[] _vertices;
+        private ViewScreen viewScreen;
 
-        private Effect _lightEffect1;
-        private Effect _lightEffect2;
+        /// <summary>
+        /// The viewscreen showing the gameworld
+        /// </summary>
+        public ViewScreen ViewScreen
+        {
+            get { return viewScreen; }
+            set { viewScreen = value; }
+        }
 
         #endregion
 
@@ -79,7 +80,7 @@ namespace BluEngine.Engine
 
         public virtual void LoadContent()
         {
-
+            
             PresentationParameters pp = Screenmanager.GraphicsDevice.PresentationParameters;
             int width = pp.BackBufferWidth;
             int height = pp.BackBufferHeight;
@@ -87,21 +88,9 @@ namespace BluEngine.Engine
 
             //_colorMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height,true, format)
             _colorMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
-            _depthMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
-            _normalMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
-            _shadowMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
+            _lightMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
 
-            //_lightEffect1 = Content.Load<Effect>("ShadersLightingShadow");
-            //_lightEffect2 = Content.Load<Effect>("ShadersLightingCombined");
-
-
-            _vertices = new VertexPositionTexture[4];
-            _vertices[0] = new VertexPositionTexture(new Vector3(-1,1,0), new Vector2(0,0));
-            _vertices[1] = new VertexPositionTexture(new Vector3(1,1,0), new Vector2(1,0));
-            _vertices[2] = new VertexPositionTexture(new Vector3(-1,-1,0), new Vector2(0,1));
-            _vertices[3] = new VertexPositionTexture(new Vector3(1,-1,0), new Vector2(1,1));
-            //_vertexDeclaration = new VertexDeclaration(Screenmanager.GraphicsDevice, VertexPositionTexture.VertexDeclaration);
- 
+            _lightEffect = Content.Load<Effect>("BluEngine\\LightEffect");
         }
 
         #endregion
@@ -122,22 +111,47 @@ namespace BluEngine.Engine
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            //Create image to draw to screen
+            #region Base Color Map
             GraphicsDevice gd = Screenmanager.GraphicsDevice;
 
             gd.SetRenderTarget(_colorMapRenderTarget);
 
             gd.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1, 0);
 
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+
             foreach (GameObject item in gameObjects)
             {
                 item.Draw(spriteBatch, Vector2.Zero);
             }
 
+            spriteBatch.End();
+
+            
+            #endregion
+
             gd.SetRenderTarget(null);
 
-            _colorMapTexture = _colorMapRenderTarget;
+            #region Light Map
+            gd.SetRenderTarget(_lightMapRenderTarget);
 
-            spriteBatch.Draw(_colorMapTexture, new Rectangle(0,0,gd.Viewport.Width,gd.Viewport.Height), Color.White); 
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+            spriteBatch.End();
+            #endregion
+
+            gd.SetRenderTarget(_lightMapRenderTarget);
+            gd.Clear(Color.Black);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+            LightEngine.Instance.Draw(spriteBatch, ViewScreen.Position);
+            spriteBatch.End();
+            gd.SetRenderTarget(null);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            _lightEffect.Parameters["lightMask"].SetValue(_lightMapRenderTarget);
+            _lightEffect.CurrentTechnique.Passes[0].Apply();
+            spriteBatch.Draw(_colorMapRenderTarget, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
 
         #endregion

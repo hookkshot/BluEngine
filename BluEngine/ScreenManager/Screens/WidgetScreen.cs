@@ -356,9 +356,7 @@ namespace BluEngine.ScreenManager.Screens
             base.Draw(gameTime);
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
             DrawWorld(gameTime, spriteBatch);
-            spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             baseWidget.DrawAll(spriteBatch);
