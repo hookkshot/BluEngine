@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ScreenManager\Styles\CSS\BluCSSParser.cs" />
+    <Content Include="Engine\PixelEffect.fx" />
     <Content Include="SDL.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
