@@ -45,7 +45,7 @@ namespace BluEngine.ScreenManager.Screens
             base.LoadContent();
             viewScreen = new ViewScreen(ScreenManager.GraphicsDevice.Viewport.Width,ScreenManager.GraphicsDevice.Viewport.Height);
 
-            engine.Content = new Microsoft.Xna.Framework.Content.ContentManager(ScreenManager.Game.Services);
+            engine.Content = new Microsoft.Xna.Framework.Content.ContentManager(ScreenManager.Game.Services,"Content");
             engine.LoadContent();
         }
 

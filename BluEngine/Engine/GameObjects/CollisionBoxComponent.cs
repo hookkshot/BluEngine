@@ -63,6 +63,22 @@ namespace BluEngine.Engine.GameObjects
             }
         }
 
+        public override GameObject ConnectedGameObject
+        {
+            get
+            {
+                return base.ConnectedGameObject;
+            }
+            set
+            {
+                base.ConnectedGameObject = value;
+                if (value[typeof(Transform)] != (Transform)this)
+                {
+                    value[typeof(Transform)] = this;
+                }
+            }
+        }
+
         public override float Scale
         {
             get
