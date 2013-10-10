@@ -38,11 +38,18 @@ namespace BluEngine.Engine.GameObjects
         {
             try
             {
-                lightMask = content.Load<Texture2D>(Path.Combine(path, sourceName));
+                if(lightMask == null)
+                    lightMask = content.Load<Texture2D>(Path.Combine(path, sourceName));
+
             }
             catch (Exception e)
             {
 
+            }
+
+            if (lightMask != null)
+            {
+                LightEngine.Instance.Lights.Add(this);
             }
         }
 

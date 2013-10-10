@@ -31,6 +31,7 @@ namespace BluEngine.Engine.GameObjects
         /// <param name="path">The path that all your game content is placed</param>
         public virtual void Initialize(ContentManager content, string path)
         {
+
         }
 
         #endregion
