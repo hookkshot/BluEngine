@@ -25,19 +25,19 @@ namespace BluEngine.Engine
             get { return collidingIDs; }
         }
 
-        public CollisionType(short id)
+        private CollisionType() { }
+
+        private CollisionType(short id)
         {
             this.id = id;
+        }
 
+        public static CollisionType CollisionTypeInstance(short id)
+        {
             if (!CollisionSimulator.CollisionTypes.ContainsKey(id))
-                CollisionSimulator.CollisionTypes.Add(id, this);
+                CollisionSimulator.CollisionTypes.Add(id, new CollisionType(id));
 
-            if (!CollisionSimulator.CollisionLists.ContainsKey(id))
-            {
-                CollisionSimulator.CollisionLists.Add(id, new List<CollisionBoxComponent>());
-            }
-
-
+            return CollisionSimulator.CollisionTypes[id];
         }
     }
 

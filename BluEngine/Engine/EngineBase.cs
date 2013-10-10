@@ -41,7 +41,7 @@ namespace BluEngine.Engine
         /// </summary>
         protected Random Random
         {
-            get { return Random; }
+            get { return random; }
         }
         private Random random;
 
@@ -54,10 +54,6 @@ namespace BluEngine.Engine
 
         //Render Targets
         private RenderTarget2D _colorMapRenderTarget;
-        private RenderTarget2D _lightMapRenderTarget;
-        private RenderTarget2D _normalMapRenderTarget;
-
-        private Effect _lightEffect;
 
         private ViewScreen viewScreen;
 
@@ -80,17 +76,7 @@ namespace BluEngine.Engine
 
         public virtual void LoadContent()
         {
-            
-            PresentationParameters pp = Screenmanager.GraphicsDevice.PresentationParameters;
-            int width = pp.BackBufferWidth;
-            int height = pp.BackBufferHeight;
-            SurfaceFormat format = pp.BackBufferFormat;
-
-            //_colorMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height,true, format)
-            _colorMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
-            _lightMapRenderTarget = new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
-
-            _lightEffect = Content.Load<Effect>("BluEngine\\LightEffect");
+            _colorMapRenderTarget = NewScreenRenderTarget();
         }
 
         #endregion
@@ -133,25 +119,14 @@ namespace BluEngine.Engine
 
             gd.SetRenderTarget(null);
 
-            #region Light Map
-            gd.SetRenderTarget(_lightMapRenderTarget);
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            spriteBatch.End();
-            #endregion
-
-            gd.SetRenderTarget(_lightMapRenderTarget);
-            gd.Clear(Color.Black);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            LightEngine.Instance.Draw(spriteBatch, ViewScreen.Position);
-            spriteBatch.End();
-            gd.SetRenderTarget(null);
-
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            _lightEffect.Parameters["lightMask"].SetValue(_lightMapRenderTarget);
-            _lightEffect.CurrentTechnique.Passes[0].Apply();
-            spriteBatch.Draw(_colorMapRenderTarget, Vector2.Zero, Color.White);
+            spriteBatch.Draw(PostProcess(_colorMapRenderTarget,spriteBatch,gd), Vector2.Zero, Color.White);
             spriteBatch.End();
+        }
+
+        public virtual Texture2D PostProcess(Texture2D screenTexture, SpriteBatch spriteBatch, GraphicsDevice gd)
+        {
+            return screenTexture;
         }
 
         #endregion
@@ -164,6 +139,20 @@ namespace BluEngine.Engine
 
         public virtual void KeyUp(Keys key)
         {
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected RenderTarget2D NewScreenRenderTarget()
+        {
+            PresentationParameters pp = Screenmanager.GraphicsDevice.PresentationParameters;
+            int width = pp.BackBufferWidth;
+            int height = pp.BackBufferHeight;
+            SurfaceFormat format = pp.BackBufferFormat;
+
+            return new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
         }
 
         #endregion
