@@ -1,6 +1,8 @@
 BluEngine
 =========
 
+Version 1.0
+
 This engine is built on a edited monogame 3.0.1 build and is currently for PC only.
 
 [Blurift](http://www.blurift.com) our website.
@@ -8,15 +10,21 @@ This engine is built on a edited monogame 3.0.1 build and is currently for PC on
 Features:
 ======
 
-## Currently Working On
+## New to version 1.0
 
-* Animated Sprite (Needs to be pulled)
-* Collision Simulator (Needs to be pulled)
-* Collision Object Component ( Needs to be pulled)
+* Animated Sprites
+* Collision
+* Post Proccessing
+* Simple Lighting system.
 
-## To Do
+## Coming in version 1.1
 
-* SoundBatch
-* SoundCue
- 
-SoundBatch will allow soundcue to be added and played and volume controlled. It also allows for the soundCues to be faded out if too far away from the player.
+* New widget screen components
+* New game object components
+* Game Sounds
+
+## Future Updates
+
+We are continually developing this engine and will be looking too improve our own games with it.
+
+Our future plans include adding out of the box post processing options, map editors, sprite editor, advanced lighting and many other plans.

@@ -53,7 +53,6 @@
     <Compile Include="Engine\BluGame.cs" />
     <Compile Include="Engine\CollisionSimulator.cs" />
     <Compile Include="Engine\EngineBase.cs" />
-    <Compile Include="Engine\EngineDraw.cs" />
     <Compile Include="Engine\GameObjects\AnimatedSprite.cs" />
     <Compile Include="Engine\GameObjects\Light.cs" />
     <Compile Include="Engine\GameObjects\LayeredAnimatedSprite.cs" />
