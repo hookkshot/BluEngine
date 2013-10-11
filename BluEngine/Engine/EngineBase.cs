@@ -117,7 +117,8 @@ namespace BluEngine.Engine
             
             #endregion
 
-            gd.SetRenderTarget(null);
+            Screenmanager.GraphicsDevice.SetRenderTarget(null);
+            Screenmanager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             spriteBatch.Draw(PostProcess(_colorMapRenderTarget,spriteBatch,gd), Vector2.Zero, Color.White);
@@ -152,7 +153,7 @@ namespace BluEngine.Engine
             int height = pp.BackBufferHeight;
             SurfaceFormat format = pp.BackBufferFormat;
 
-            return new RenderTarget2D(Screenmanager.GraphicsDevice, width, height, true, format, pp.DepthStencilFormat);
+            return new RenderTarget2D(Screenmanager.GraphicsDevice, width, height);
         }
 
         #endregion
