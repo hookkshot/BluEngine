@@ -105,7 +105,7 @@ namespace BluEngine.Engine
 
             gd.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1, 0);
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
 
             foreach (GameObject item in gameObjects)
             {
