@@ -62,8 +62,17 @@ namespace BluEngine.Engine.GameObjects
 
         public override void Initialize(ContentManager content, string path)
         {
-            if(content != null && path != null)
-                sourceImage = content.Load<Texture2D>(Path.Combine(path, sourceImageName));
+            if (content != null)
+            {
+                if (path == null)
+                {
+                    sourceImage = content.Load<Texture2D>(sourceImageName);
+                }
+                else
+                {
+                    sourceImage = content.Load<Texture2D>(Path.Combine(path, sourceImageName));
+                }
+            }
         }
 
         #endregion

@@ -35,7 +35,12 @@ namespace BluEngine.Engine
         public static CollisionType CollisionTypeInstance(short id)
         {
             if (!CollisionSimulator.CollisionTypes.ContainsKey(id))
+            {
                 CollisionSimulator.CollisionTypes.Add(id, new CollisionType(id));
+                CollisionSimulator.CollisionLists.Add(id, new List<CollisionBoxComponent>());
+            }
+
+
 
             return CollisionSimulator.CollisionTypes[id];
         }
@@ -114,6 +119,18 @@ namespace BluEngine.Engine
             }
 
             return null;
+        }
+
+        public static void Update()
+        {
+            foreach(KeyValuePair<short, List<CollisionBoxComponent>> list in collisionLists)
+            {
+                for (int i = list.Value.Count-1; i > -1; i--)
+                {
+                    if (list.Value[i].ConnectedGameObject.Active == false)
+                        list.Value.RemoveAt(i);
+                }
+            }
         }
     }
 }

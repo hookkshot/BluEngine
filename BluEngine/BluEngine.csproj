@@ -57,6 +57,7 @@
     <Compile Include="Engine\GameObjects\Light.cs" />
     <Compile Include="Engine\GameObjects\LayeredAnimatedSprite.cs" />
     <Compile Include="Engine\GameObjects\ViewScreen.cs" />
+    <Compile Include="Engine\Helper.cs" />
     <Compile Include="Engine\LightEngine.cs" />
     <Compile Include="ScreenManager\HitFlags.cs" />
     <Compile Include="Engine\GameObjects\CollisionBoxComponent.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="ScreenManager\Widgets\ScreenWidget.cs" />
     <Compile Include="ScreenManager\Styles\Style.cs" />
     <Compile Include="ScreenManager\Styles\StyleSheet.cs" />
+    <Compile Include="ScreenManager\Widgets\Textbox.cs" />
     <Compile Include="ScreenManager\Widgets\Widget.cs" />
     <Compile Include="ScreenManager\Widgets\WidgetScreenTransitionCallback.cs" />
     <Compile Include="TweenAccessors\WidgetAccessor.cs" />

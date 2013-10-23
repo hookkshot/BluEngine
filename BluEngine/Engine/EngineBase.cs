@@ -43,7 +43,7 @@ namespace BluEngine.Engine
         {
             get { return random; }
         }
-        private Random random;
+        private Random random = new Random();
 
 
         protected List<GameObject> GameObjects
@@ -89,6 +89,12 @@ namespace BluEngine.Engine
             {
                 item.Update(gameTime);
             }
+            for (int i = gameObjects.Count-1; i > -1 ; i--)
+            {
+                if (gameObjects[i].Active == false) gameObjects.RemoveAt(i);
+            }
+
+            CollisionSimulator.Update();
         }
 
         #endregion
