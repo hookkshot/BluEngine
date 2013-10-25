@@ -672,6 +672,16 @@ namespace BluEngine.ScreenManager.Widgets
             return OnKeyUp != null ? OnKeyUp(this, key) : false;
         }
 
+        /// <summary>
+        /// If a widget is selectable this will hold which one is currently selected.
+        /// </summary>
+        public static Widget SelectedWidget
+        {
+            get { return selectedWidget; }
+            set { selectedWidget = value; }
+        }
+        private static Widget selectedWidget = null;
+
         public float ScreenX
         {
             get { return CalculatedBoundsF.X; }
