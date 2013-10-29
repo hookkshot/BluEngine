@@ -114,6 +114,16 @@ namespace BluEngine.ScreenManager.Widgets
         }
 
         /// <summary>
+        /// Master flag controlling visibility of this widget and all it's children. Will not receive input events if false.
+        /// </summary>
+        public bool Visible
+        {
+            get { return visible; }
+            set { visible = value; }
+        }
+        private bool visible = true;
+
+        /// <summary>
         /// A mask containing the set of flags this widget should respond to for ChildAtPoint calls.
         /// </summary>
         public HitFlags HitFlags
@@ -552,6 +562,9 @@ namespace BluEngine.ScreenManager.Widgets
         /// <returns>The found widget, or null.</returns>
         public Widget ChildAtPoint(Point pt, HitFlags hitflags)
         {
+            if (!visible)
+                return null;
+            
             for (int i = children.Count - 1; i >= 0; i--)
             {
                 Widget child = children[i].ChildAtPoint(pt, hitflags);
@@ -567,6 +580,9 @@ namespace BluEngine.ScreenManager.Widgets
         /// <param name="spriteBatch">The SpriteBatch object used for drawing.</param>
         public void DrawAll(SpriteBatch spriteBatch)
         {
+            if (!visible)
+                return;
+
             Screen.Styles.StartLookup(this);
             Draw(spriteBatch);
             foreach (Widget child in children)
