@@ -56,7 +56,7 @@ namespace BluEngine.ScreenManager.Widgets
 
         protected override String CurrentState
         {
-            get { return (Enabled ? (onClick != null && mouseEntered ? (mouseDown ? "down|" : "") + "hover|" : "") : "") + base.CurrentState; }
+            get { return (Enabled ? (mouseEntered ? (mouseDown ? "down|" : "") + "hover|" : "") : "") + base.CurrentState; }
         }
 
         public override bool MouseEnter(Point pt)

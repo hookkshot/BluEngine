@@ -95,14 +95,15 @@ namespace BluEngine.ScreenManager.Widgets
             {
                 string textToDraw = "";
                 if (HideCharacters)
-                    textToDraw = text.Substring(0, index) + "|" + text.Substring(index, text.Length - index);
-                else
                 {
-                    for (int i = 0; i < textToDraw.Length; i++)
+                    for (int i = 0; i < text.Length; i++)
                     {
                         textToDraw += "*";
                     }
+                    
                 }
+                else
+                    textToDraw = text.Substring(0, index) + "|" + text.Substring(index, text.Length - index);
                 
 
                 Vector2 pos = new Vector2(CalculatedBoundsF.X, CalculatedBoundsF.Y);
