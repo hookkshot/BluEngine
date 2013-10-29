@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace BluEngine.ScreenManager.Widgets
@@ -43,7 +44,7 @@ namespace BluEngine.ScreenManager.Widgets
             get { return text; }
             set { text = value; }
         }
-        private string text;
+        private string text = "";
 
         Keys[] keysToCheck = new Keys[] {Keys.A, Keys.B, Keys.C, Keys.D, Keys.E,
             Keys.F, Keys.G, Keys.H, Keys.I, Keys.J,
@@ -68,6 +69,12 @@ namespace BluEngine.ScreenManager.Widgets
 
         private int index = 0;
 
+        public SpriteFont Font
+        {
+            set { font = value; }
+        }
+        private SpriteFont font;
+
         #endregion
 
         #region Constructors
@@ -80,86 +87,103 @@ namespace BluEngine.ScreenManager.Widgets
 
         #endregion
 
+        protected override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            if (font != null)
+            {
+                string textToDraw = text.Substring(0, index) + "|" + text.Substring(index, text.Length - index);
+
+                Vector2 pos = new Vector2(CalculatedBoundsF.X, CalculatedBoundsF.Y);
+
+                Vector2 textsize = font.MeasureString(textToDraw);
+
+                float maxWidth = CalculatedBoundsF.W-6;
+
+                while(font.MeasureString(textToDraw).X > maxWidth)
+                {
+                    if (textToDraw.Length - index >= index)
+                        textToDraw = textToDraw.Substring(0, textToDraw.Length - 1);
+                    else
+                        textToDraw = textToDraw.Substring(1, textToDraw.Length - 1);
+                }
+
+                Vector2 insidePos = new Vector2(3,CalculatedBoundsF.Z/2-textsize.Y/2);
+
+                spriteBatch.DrawString(font, textToDraw, pos+insidePos, Color.White);
+            }
+        }
 
         #region Methods
 
-        public override bool MouseEnter(Point pt)
-        {
-            isMouseEntered = true;
-            return base.MouseEnter(pt);
-        }
-
-        public override bool MouseLeave(Point pt)
-        {
-            isMouseEntered = false;
-            return base.MouseLeave(pt);
-        }
-
         public override bool MouseDown(Point pt, int button)
         {
-            if (button == 1 && isMouseEntered == true)
-            {
-                Widget.SelectedWidget = this;
-            }
             return base.MouseDown(pt, button);
         }
 
         public override bool KeyDown(Keys key)
         {
-            if (Widget.SelectedWidget == this)
+            if(keysToCheck.Contains(key))
             {
-                if(keysToCheck.Contains(key))
+                switch(key)
                 {
-                    switch(key)
-                    {
-                        case Keys.Enter:
-                            if (onEnter != null)
-                                onEnter(text);
-                            break;
-                        case Keys.Back:
-                            if (index > 0 && index <= text.Length)
+                    case Keys.Enter:
+                        if (onEnter != null)
+                            onEnter(text);
+                        break;
+                    case Keys.Back:
+                        if (index > 0 && index <= text.Length)
+                        {
+                            text = text.Substring(0, index - 1) + text.Substring(index, text.Length - index);
+                            index--;
+                        }
+                        break;
+                    case Keys.Space:
+                        if (text.Length < maxCharacters)
+                        {
+                            if (index <= text.Length)
                             {
-                                text.Remove(index - 1, index);
-                            }
-                            break;
-                        case Keys.Space:
-                            if (text.Length < maxCharacters)
-                            {
-                                if (index <= text.Length)
-                                {
-                                    text.Insert(index, " ");
-                                    index++;
-                                }
-                            }
-                            break;
-                        case Keys.Left:
-                            if (index > 0)
-                                index--;
-                            break;
-                        case Keys.Right:
-                            if (index < text.Length)
+                                InsertText(" ");
                                 index++;
-                            break;
-                        default:
-                            string charToAdd = key.ToString();
-
-                            if (!Keyboard.GetState().IsKeyDown(Keys.LeftShift) && Keyboard.GetState().IsKeyDown(Keys.RightShift))
-                                charToAdd = charToAdd.ToLower();
-
-                            if (text.Length < maxCharacters)
-                            {
-                                if (index <= text.Length)
-                                {
-                                    text.Insert(index, charToAdd);
-                                    index++;
-                                }
                             }
+                        }
+                        break;
+                    case Keys.Left:
+                        if (index > 0)
+                            index--;
+                        break;
+                    case Keys.Right:
+                        if (index < text.Length)
+                            index++;
+                        break;
+                    default:
+                        string charToAdd = key.ToString();
 
-                            break;
-                    }
+                        if (!Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !Keyboard.GetState().IsKeyDown(Keys.RightShift))
+                            charToAdd = charToAdd.ToLower();
+
+                        if (text.Length < maxCharacters)
+                        {
+                            if (index <= text.Length)
+                            {
+                                //text.Insert(index, charToAdd);
+                                InsertText(charToAdd);
+                                index++;
+                            }
+                        }
+
+                        break;
                 }
+
+                return true;
             }
             return base.KeyDown(key);
+        }
+
+        private void InsertText(string insert)
+        {
+            text = text.Substring(0, index) + insert + text.Substring(index, text.Length-index);
         }
 
         #endregion

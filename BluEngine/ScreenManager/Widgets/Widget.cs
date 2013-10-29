@@ -32,6 +32,16 @@ namespace BluEngine.ScreenManager.Widgets
         public event KeyEvent OnKeyUp;
 
         /// <summary>
+        /// Tell a widget screen if this widget is selectable.
+        /// </summary>
+        public bool CanSelect
+        {
+            get { return canSelect; }
+            set { canSelect = value; }
+        }
+        private bool canSelect = false;
+
+        /// <summary>
         /// The WidgetScreen that this widget (and it's hierarchy) belongs to.
         /// </summary>
         public WidgetScreen Screen

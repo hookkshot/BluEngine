@@ -267,7 +267,15 @@ namespace BluEngine.ScreenManager.Screens
                             cascade = !widgetAtPoint.MouseDown(mousePos, i);
 
                         if (cascade)
+                        {
                             MouseDown(mousePos, i);
+                            selectedWidget = null;
+                        }
+                        else
+                        {
+                            if(widgetAtPoint.CanSelect)
+                                selectedWidget = widgetAtPoint;
+                        }
                     }
                     else
                     {

@@ -28,7 +28,7 @@ namespace BluEngine.ScreenManager.Widgets
             get { return refWidth; }
             set { refWidth = (value <= 0.0f || value > 3000.0f ? 1280.0f : value); Invalidate(); }
         }
-        private float refWidth = 800.0f;
+        private float refWidth = ScreenManager.Instance.ScreenWidth;
 
         /// <summary>
         /// The height used to calculate this widget's ScreenRatio.
@@ -38,7 +38,7 @@ namespace BluEngine.ScreenManager.Widgets
             get { return refHeight; }
             set { refHeight = (value <= 0.0f || value > 3000.0f ? 720.0f : value); Invalidate(); }
         }
-        private float refHeight = 600.0f;
+        private float refHeight = ScreenManager.Instance.ScreenHeight;
 
         public override Widget Parent
         {
