@@ -277,6 +277,7 @@ namespace BluEngine.ScreenManager.Styles
         public void ApplyCSSStylesToWidget(Widget widget, String state, State stateProperties)
         {
             ApplyCSSStyles(widget.Style[state], stateProperties);
+            StartLookup(widget);
             widget.ApplyStateBasedStyles();
         }
 

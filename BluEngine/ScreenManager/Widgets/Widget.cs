@@ -261,6 +261,7 @@ namespace BluEngine.ScreenManager.Widgets
                 if (!oldState.Equals(state))
                 {
                     StateList = state.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                    Screen.Styles.StartLookup(this);
                     ApplyStateBasedStyles();
                     StateChanged(oldState);
                 }
@@ -481,9 +482,6 @@ namespace BluEngine.ScreenManager.Widgets
 
         public virtual void ApplyStateBasedStyles()
         {
-            //set the target hierarchy to that of this widget
-            Screen.Styles.StartLookup(this);
-
             float refWidth = Screen.Base.RefWidth;
             float refHeight = Screen.Base.RefHeight;
 
@@ -569,6 +567,7 @@ namespace BluEngine.ScreenManager.Widgets
         /// <param name="spriteBatch">The SpriteBatch object used for drawing.</param>
         public void DrawAll(SpriteBatch spriteBatch)
         {
+            Screen.Styles.StartLookup(this);
             Draw(spriteBatch);
             foreach (Widget child in children)
                 child.DrawAll(spriteBatch);
@@ -585,9 +584,6 @@ namespace BluEngine.ScreenManager.Widgets
                 Refresh();
                 valid = true;
             }
-
-            //set the target hierarchy to that of this widget
-            Screen.Styles.StartLookup(this);
 
             //alpha
             float alpha = Screen.Styles.FloatLookup("alpha", 1.0f);
