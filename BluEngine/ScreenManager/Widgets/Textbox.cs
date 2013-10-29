@@ -37,8 +37,6 @@ namespace BluEngine.ScreenManager.Widgets
         }
         private static List<Type> hierarchy = null;
 
-        private bool isMouseEntered = false;
-
         public string Text
         {
             get { return text; }
@@ -54,6 +52,8 @@ namespace BluEngine.ScreenManager.Widgets
             Keys.Z, Keys.D0, Keys.D1, Keys.D2, Keys.D3,
             Keys.D4, Keys.D5, Keys.D6, Keys.D7, Keys.D8,
             Keys.D9, Keys.Back, Keys.Space, Keys.Left, Keys.Right, Keys.Enter };
+
+        Keys[] numsToCheck = new Keys[] { Keys.D0, Keys.D1, Keys.D2, Keys.D3, Keys.D4, Keys.D5, Keys.D6, Keys.D7, Keys.D8, Keys.D9 };
 
         /// <summary>
         /// If this is selected all the characters will appear as *'s.
@@ -171,8 +171,14 @@ namespace BluEngine.ScreenManager.Widgets
                     default:
                         string charToAdd = key.ToString();
 
-                        if (!Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !Keyboard.GetState().IsKeyDown(Keys.RightShift))
+                        bool shift = Keyboard.GetState().IsKeyDown(Keys.LeftShift) || Keyboard.GetState().IsKeyDown(Keys.RightShift);
+
+                        charToAdd = Format(charToAdd, shift);
+
+                        if (!shift)
                             charToAdd = charToAdd.ToLower();
+                        
+                      
 
                         if (text.Length < maxCharacters)
                         {
@@ -195,6 +201,55 @@ namespace BluEngine.ScreenManager.Widgets
         private void InsertText(string insert)
         {
             text = text.Substring(0, index) + insert + text.Substring(index, text.Length-index);
+        }
+
+        private string Format(string sequence, bool shift)
+        {
+            switch(sequence)
+            {
+                case "D1":
+                    if (shift)
+                        return "!";
+                    return "1";
+                case "D2":
+                    if (shift)
+                        return "!";
+                    return "2";
+                case "D3":
+                    if (shift)
+                        return "!";
+                    return "3";
+                case "D4":
+                    if (shift)
+                        return "!";
+                    return "4";
+                case "D5":
+                    if (shift)
+                        return "!";
+                    return "5";
+                case "D6":
+                    if (shift)
+                        return "!";
+                    return "6";
+                case "D7":
+                    if (shift)
+                        return "!";
+                    return "7";
+                case "D8":
+                    if (shift)
+                        return "!";
+                    return "8";
+                case "D9":
+                    if (shift)
+                        return "!";
+                    return "9";
+                case "D0":
+                    if (shift)
+                        return "!";
+                    return "0";
+            }
+
+            return sequence;
         }
 
         #endregion
