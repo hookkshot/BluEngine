@@ -7,6 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BluEngine.Engine
 {
@@ -83,6 +84,18 @@ namespace BluEngine.Engine
             if (response != null) response.Close();
 
             return responseString;
+        }
+
+
+        /// <summary>
+        /// Allows text to be absolute centered.
+        /// </summary>
+        /// <param name="font"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static Vector2 CenterTextPosition(SpriteFont font, string text)
+        {
+            return new Vector2(-font.MeasureString(text).X / 2,-font.MeasureString(text).Y / 2);
         }
     }
 }
