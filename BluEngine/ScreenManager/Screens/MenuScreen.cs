@@ -12,8 +12,6 @@ using BluEngine.ScreenManager.MenuItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using BluHelper;
-
 namespace BluEngine.ScreenManager.Screens
 {
     public class MenuScreen : GameScreen

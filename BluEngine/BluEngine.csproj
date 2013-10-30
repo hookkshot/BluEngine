@@ -59,6 +59,7 @@
     <Compile Include="Engine\GameObjects\ViewScreen.cs" />
     <Compile Include="Engine\Helper.cs" />
     <Compile Include="Engine\LightEngine.cs" />
+    <Compile Include="Engine\Sound\SoundPlayer.cs" />
     <Compile Include="ScreenManager\HitFlags.cs" />
     <Compile Include="Engine\GameObjects\CollisionBoxComponent.cs" />
     <Compile Include="ScreenManager\IScreenDimensionsProvider.cs" />
@@ -108,12 +109,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BluHelper\BluHelper.csproj">
-      <Project>{e6a51f71-1153-41fb-95ca-44547c515c10}</Project>
-      <Name>BluHelper</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

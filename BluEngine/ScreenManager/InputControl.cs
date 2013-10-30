@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using BluHelper;
-
 namespace BluEngine
 {
     public class InputControl

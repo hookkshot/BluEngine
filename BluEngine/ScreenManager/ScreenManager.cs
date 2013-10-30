@@ -13,8 +13,7 @@ using System.Text;
 
 using BluEngine.Engine;
 using BluEngine.ScreenManager.Screens;
-
-using BluHelper;
+using BluEngine.Engine.Sound;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -41,8 +40,8 @@ namespace BluEngine.ScreenManager
         private List<GameScreen> screensToUpdate = new List<GameScreen>();
         private InputControl input = new InputControl();
         private string defaultFontLocation;
-        private int soundLevel = 100;
-        private int musicLevel = 100;
+        private float soundLevel = 1;
+        private float musicLevel = 1;
         private SpriteBatch spriteBatch;
         private SpriteFont font;
         Texture2D filler;
@@ -109,6 +108,17 @@ namespace BluEngine.ScreenManager
             set { traceEnabled = value; }
         }
 
+        public float SoundLevel
+        {
+            get { return soundLevel; }
+            set { soundLevel = value; }
+        }
+
+        public float MusicLevel
+        {
+            get { return musicLevel; }
+            set { musicLevel = value; }
+        }
 
         #endregion
 
@@ -190,6 +200,8 @@ namespace BluEngine.ScreenManager
         {
             // Read the keyboard and gamepad.
             input.Update(gameTime);
+
+            SoundPlayer.Update();
 
             mousePosition = new Vector2(input.MouseX(), input.MouseY());
 

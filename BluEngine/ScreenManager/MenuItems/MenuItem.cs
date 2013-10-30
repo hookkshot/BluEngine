@@ -7,7 +7,6 @@
 #endregion
 
 using Microsoft.Xna.Framework;
-using BluHelper;
 
 namespace BluEngine.ScreenManager.MenuItems
 {

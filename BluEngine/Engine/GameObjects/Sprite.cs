@@ -92,7 +92,7 @@ namespace BluEngine.Engine.GameObjects
 
         #region Methods
 
-        public void MakeCenter()
+        public virtual void MakeCenter()
         {
             imageOffset = new Vector2(Width / 2, Height / 2);
         }

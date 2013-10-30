@@ -3,8 +3,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using BluHelper;
-
 namespace BluEngine.Engine.GameObjects
 {
 
@@ -71,7 +69,11 @@ namespace BluEngine.Engine.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime - lastUpdate > animationSpeed && playing == true)
+            TimeSpan current = gameTime.TotalGameTime.Subtract(lastUpdate);
+
+            bool yes = current > animationSpeed;
+
+            if (yes && playing == true)
             {
                 currentFrame++;
 
@@ -100,7 +102,8 @@ namespace BluEngine.Engine.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 screenOffset)
         {
-            spriteBatch.Draw(sourceImage, ConnectedGameObject.Position - screenOffset,
+            spriteBatch.Draw(sourceImage, 
+                new Vector2((int)(ConnectedGameObject.Position.X - screenOffset.X),(int)(ConnectedGameObject.Position.Y - screenOffset.Y)),
                 new Rectangle(frameWidth * currentFrame, 0, frameWidth, frameHeight),
                 Color.White, ConnectedGameObject.Rotation, ImageOffset,
                 ConnectedGameObject.Scale, SpriteEffects.None, layer);
@@ -116,6 +119,11 @@ namespace BluEngine.Engine.GameObjects
             playing = true;
             currentFrame = 0;
             timesPlayed = 0;
+        }
+
+        public override void MakeCenter()
+        {
+            ImageOffset = new Vector2(frameWidth / 2, frameHeight / 2);
         }
 
         #endregion

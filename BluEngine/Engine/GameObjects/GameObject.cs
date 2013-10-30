@@ -4,8 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-using BluHelper;
-
 namespace BluEngine.Engine.GameObjects
 {
     public class GameObject
