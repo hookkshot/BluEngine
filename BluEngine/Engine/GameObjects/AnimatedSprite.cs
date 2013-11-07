@@ -133,7 +133,8 @@ namespace BluEngine.Engine.GameObjects
         public void Play()
         {
             playing = true;
-            currentFrame = 0;
+            currentFrameX = 0;
+            currentFrameY = 0;
             timesPlayed = 0;
         }
 
