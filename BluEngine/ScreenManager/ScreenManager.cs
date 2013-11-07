@@ -34,7 +34,7 @@ namespace BluEngine.ScreenManager
     {
         #region Fields
 
-        public const string version = "BluEngine Version 1.0.3";
+        public const string version = "BluEngine Version 1.0.5";
         private static ScreenManager instance = null;
         private List<GameScreen> screens = new List<GameScreen>();
         private List<GameScreen> screensToUpdate = new List<GameScreen>();

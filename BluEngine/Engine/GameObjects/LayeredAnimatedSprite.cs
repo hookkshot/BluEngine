@@ -34,36 +34,11 @@ namespace BluEngine.Engine.GameObjects
 
         #endregion
 
-        public override void Update(GameTime gameTime)
-        {
-            if (gameTime.TotalGameTime - lastUpdate > animationSpeed && playing == true && sourceImages.Count > 0)
-            {
-                currentFrame++;
-
-
-                if (currentFrame >= sourceImages[0].Width / frameWidth)
-                {
-                    timesPlayed++;
-                    currentFrame = 0;
-
-                    if (timesPlayed >= Repeat && Repeat != 0)
-                    {
-
-                        //if (base.AnimationFinished != null)
-                            //base.AnimationFinished(this, new EventArgs());
-                        playing = false;
-                    }
-                }
-
-                lastUpdate = gameTime.TotalGameTime;
-            }
-        }
-
         public override void Draw(SpriteBatch spriteBatch,Vector2 screenOffset)
         {
             foreach (Sprite sprite in sourceImages)
             {
-                spriteBatch.Draw(sprite.SourceImage, ConnectedGameObject.Position - screenOffset, new Rectangle(frameWidth * currentFrame, 0, frameWidth, frameHeight), Color.White, ConnectedGameObject.Rotation, ImageOffset, ConnectedGameObject.Scale, SpriteEffects.None, sprite.Layer);
+                spriteBatch.Draw(sprite.SourceImage, ConnectedGameObject.Position - screenOffset, new Rectangle(frameWidth * currentFrameX, frameHeight * currentFrameY, frameWidth, frameHeight), Color.White, ConnectedGameObject.Rotation, ImageOffset, ConnectedGameObject.Scale, SpriteEffects.None, sprite.Layer);
             }
         }
     }

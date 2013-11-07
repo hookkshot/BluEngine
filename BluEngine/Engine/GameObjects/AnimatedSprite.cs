@@ -13,7 +13,11 @@ namespace BluEngine.Engine.GameObjects
         protected int frameWidth = 0;
         protected int frameHeight = 0;
 
-        protected int currentFrame = 0;
+        protected int currentFrameX = 0;
+        protected int currentFrameY = 0;
+
+        private int xframes = 0;
+        private int yframes = 0;
 
         protected bool playing = true;
 
@@ -65,31 +69,43 @@ namespace BluEngine.Engine.GameObjects
 
         #endregion
 
+        public override void Initialize(Microsoft.Xna.Framework.Content.ContentManager content, string path)
+        {
+            base.Initialize(content, path);
+
+            xframes = sourceImage.Width / frameWidth;
+            yframes = sourceImage.Height / frameHeight;
+        }
+
         #region Update
 
         public override void Update(GameTime gameTime)
         {
-            TimeSpan current = gameTime.TotalGameTime.Subtract(lastUpdate);
-
-            bool yes = current > animationSpeed;
-
-            if (yes && playing == true)
+            if (gameTime.TotalGameTime - lastUpdate > animationSpeed && playing == true)
             {
-                currentFrame++;
+                currentFrameX++;
 
 
-                if (currentFrame >= sourceImage.Width / frameWidth)
+                if (currentFrameX >= xframes)
                 {
                     timesPlayed++;
-                    currentFrame = 0;
-                    
-                    if (timesPlayed >= Repeat && Repeat != 0)
+                    currentFrameX = 0;
+                    currentFrameY++;
+
+                    if (currentFrameY >= yframes)
                     {
-                        
-                        if (AnimationFinished != null)
-                            AnimationFinished(this, new EventArgs());
-                        playing = false;
+                        timesPlayed++;
+                        currentFrameY = 0;
+                        if (timesPlayed >= Repeat && Repeat != 0)
+                        {
+
+                            if (AnimationFinished != null)
+                                AnimationFinished(this, new EventArgs());
+                            playing = false;
+                        }
                     }
+                    
+                    
                 }
 
                 lastUpdate = gameTime.TotalGameTime;
@@ -104,7 +120,7 @@ namespace BluEngine.Engine.GameObjects
         {
             spriteBatch.Draw(sourceImage, 
                 new Vector2((int)(ConnectedGameObject.Position.X - screenOffset.X),(int)(ConnectedGameObject.Position.Y - screenOffset.Y)),
-                new Rectangle(frameWidth * currentFrame, 0, frameWidth, frameHeight),
+                new Rectangle(frameWidth * currentFrameX, frameHeight * currentFrameY, frameWidth, frameHeight),
                 Color.White, ConnectedGameObject.Rotation, ImageOffset,
                 ConnectedGameObject.Scale, SpriteEffects.None, layer);
         }
