@@ -729,5 +729,31 @@ namespace BluEngine.ScreenManager.Widgets
             get { return CalculatedBoundsF.W / CalculatedBoundsF.Z; }
             set { ; }
         }
+
+        /// <summary>
+        /// Destructively removes this widget (and all children) entirely from the heirarchy, unlinking styles and clearing references. Use this only if you wish to destroy a widget.
+        /// </summary>
+        public void Remove()
+        {
+            if (children.Count > 0)
+            {
+                List<Widget> childrenProxy = new List<Widget>();
+                childrenProxy.AddRange(children);
+                foreach (Widget child in childrenProxy)
+                    child.Remove();
+                childrenProxy.Clear();
+            }
+
+            if (style != null)
+                style.Clear();
+            
+            if (widgetScreen != null)
+            {
+                widgetScreen.UnregisterCSSClass(this);
+                widgetScreen = null;
+            }
+
+            Parent = null;
+        }
     }
 }
