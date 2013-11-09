@@ -179,6 +179,11 @@ namespace BluEngine.ScreenManager.Screens
             
         }
 
+        /// <summary>
+        /// Registers a widget for use with a CSS class-based ruleset (eg .SomeClass).
+        /// </summary>
+        /// <param name="cssClassName">The name of the class (without the preceding period character)</param>
+        /// <param name="widget">The widget object to which the class style will be applied.</param>
         protected void RegisterCSSClass(String cssClassName, Widget widget)
         {
             if (cssClassName == null || cssClassName.Length == 0 || widget == null)
@@ -190,6 +195,36 @@ namespace BluEngine.ScreenManager.Screens
 
             if (!explicitWidgets.Contains(widget))
                 explicitWidgets.Add(widget);
+        }
+
+        /// <summary>
+        /// Registers a list of widgets for use with a CSS class-based ruleset (eg .SomeClass).
+        /// </summary>
+        /// <param name="cssClassName">The name of the class (without the preceding period character)</param>
+        /// <param name="widgets">The list of widget objects to which the class style will be applied.</param>
+        protected void RegisterCSSClass(String cssClassName, List<Widget> widgets)
+        {
+            if (cssClassName == null || cssClassName.Length == 0 || widgets == null || widgets.Count == 0)
+                return;
+
+            foreach (Widget widget in widgets)
+                RegisterCSSClass(cssClassName,widget);
+        }
+
+        /// <summary>
+        /// If a widget has been registered as a CSS class target, unregister it.
+        /// </summary>
+        /// <param name="widget">The widget to unregister.</param>
+        public void UnregisterCSSClass(Widget widget)
+        {
+            if (widget == null || widget.Screen != this)
+                return;
+
+            foreach (KeyValuePair<String, List<Widget>> kvp in cssStyleLinks)
+            {
+                while (kvp.Value.Contains(widget))
+                    kvp.Value.Remove(widget);
+            }
         }
 
         /// <summary>
